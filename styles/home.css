@@ -1,0 +1,42 @@
+#custom-style .h1 {
+    color: #004AAD;
+    font-weight: bold;
+    margin-top: 64px;
+    padding-left: 40px;
+    margin-bottom: 50px;
+}
+
+#custom-style .card-img-top {
+    height: 180px;
+}
+
+#custom-style .card:first-child {
+    margin-left: 15px;
+}
+
+#custom-style .card {
+    flex-shrink: 0;
+    margin-right: 15px;
+}
+
+#custom-style .list-cards {
+    overflow-x: scroll;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+#custom-style .list-cards::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+#custom-style .list-cards {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+@media (max-width:900px)
+{
+    #custom-style .card-img-top {
+        height: 130px;
+    }
+}
