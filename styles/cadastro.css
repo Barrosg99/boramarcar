@@ -17,10 +17,16 @@
     padding: 24px;
     margin: 24px;
 }
-#input-email, #input-senha, #input-confirma-senha, #input-cpf-cnpj {
+#input-email, #input-senha, #input-confirma-senha, #input-cpf-cnpj, #input-nome, #input-nascimento, #input-telefone,#input-uf, #input-cep {
     color: #004AAD;
     height: 64px;
     background-color: #A9BFDD;
+}
+#input-email::placeholder, #input-senha::placeholder, #input-confirma-senha::placeholder, #input-cpf-cnpj::placeholder, #input-nome::placeholder, #input-nascimento::placeholder, #input-telefone::placeholder, #input-uf::placeholder, #input-cep::placeholder {
+    color: #FFFF;
+}
+#input-nascimento, #input-telefone,#input-uf, #input-cep {
+    width: 44%;
 }
 ::placeholder {
     font-family: 'Fredoka', sans-serif;
@@ -39,6 +45,9 @@
     font-family: 'Fredoka', sans-serif;
     width: 35%;
     height: 50px;
+}
+.custom-buttons .cadastro {
+    width: 45%;
 }
 .custom-buttons button:hover {
     background-color: #A9BFDD;

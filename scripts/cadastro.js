@@ -54,3 +54,7 @@ document.getElementById("btn-comercio").addEventListener("click", function () {
         window.location.href = "sucesso-cadastro.html";
     }
 });
+
+function cadastro() {
+    window.location.href = "sucesso-cadastro.html";
+}
