@@ -17,10 +17,18 @@
     padding: 24px;
     margin: 24px;
 }
-#input-email, #input-senha, #input-confirma-senha, #input-cpf-cnpj {
+#custom-style input, #custom-style select {
     color: #004AAD;
     height: 64px;
     background-color: #A9BFDD;
+    font-family: 'Fredoka', sans-serif;
+}
+#custom-style input::placeholder {
+    color: #FFFF;
+}
+#input-nascimento, #input-telefone,#input-uf, #input-cep, #custom-style select {
+    width: 44%;
+    font-family: 'Fredoka', sans-serif;
 }
 ::placeholder {
     font-family: 'Fredoka', sans-serif;
@@ -39,6 +47,9 @@
     font-family: 'Fredoka', sans-serif;
     width: 35%;
     height: 50px;
+}
+.custom-buttons .cadastro {
+    width: 45%;
 }
 .custom-buttons button:hover {
     background-color: #A9BFDD;
