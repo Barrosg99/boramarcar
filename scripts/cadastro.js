@@ -78,8 +78,8 @@ function getParameters() {
   return null; // Não encontrou ? na URL
 }
 
-var password = document.getElementById("input-senha")
-var confirm_password = document.getElementById("input-confirma-senha");
+const password = document.getElementById("input-senha")
+const confirm_password = document.getElementById("input-confirma-senha");
 
 function validatePassword(){
   if(password.value != confirm_password.value) {
@@ -89,9 +89,21 @@ function validatePassword(){
   }
 }
 
-password.onchange = validatePassword;
-confirm_password.onkeyup = validatePassword;
+if(password) 
+  password.onchange = validatePassword;
+if(confirm_password) 
+  confirm_password.onkeyup = validatePassword;
 
-// function cadastro() {
-//     window.location.href = "sucesso-cadastro.html";
-// }
+var params = new Array();
+params = getParameters();
+// console.log(params);
+const form = document.querySelector("form.form-cadastro");
+// console.log(form);
+if(form && params)
+  for (let [key, value] of Object.entries(params)) {
+      const input = document.createElement("input");
+      input.setAttribute("name",key)
+      input.hidden = true;
+      input.setAttribute("value",value)
+      form.appendChild(input)
+  }
