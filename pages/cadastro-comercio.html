@@ -38,17 +38,25 @@
     <div class="container-form">
         <form class="form-cadastro" method="GET">
             <div class="mb-4 titulo">
-                <h1>Informe seus dados:</h1>
+                <h1>Informe os dados do seu estabelecimento:</h1>
             </div>
             <div class="mb-4">
-              <input type="text" class="form-control" id="input-nome" name="nome" aria-describedby="nomeHelp" placeholder="Nome:" pattern="[A-Za-záàâãéèêíóôõúç\s]{8,50}" title="Nome com 8 a 50 letras" required>
+              <input type="text" class="form-control" id="input-nome" aria-describedby="nomeHelp" placeholder="Razão Social:" pattern="[A-Za-záàâãéèêíóôõúç\s]{8,50}" title="Nome com 8 a 50 letras" required>
             </div>
             <div class="mb-4">
-                <input type="text" class="form-control cpf-mask" id="input-cpf-cnpj" placeholder="CPF:" required>
+                <input type="text" class="form-control" data-mask="00.000.000/0000-00" autocomplete="off" id="input-cpf-cnpj" placeholder="CNPJ:" required>
             </div>
             <div class="mb-4 d-flex justify-content-between">
-                <input type="date" class="form-control" id="input-nascimento" name="dataDeNascimento" aria-describedby="nomeHelp" placeholder="Data de Nascimento:" min="1923-01-01" onfocus="this.max=new Date().toISOString().split('T')[0]" required>
-                <input type="text" class="form-control cel-sp-mask" id="input-telefone" name="telefone" aria-describedby="nomeHelp" placeholder="Telefone:" required>
+                <input type="text" class="form-control cel-sp-mask" id="input-telefone" name="telefone" aria-describedby="nomeHelp" placeholder="Telefone:" required >
+                <select class="form-select" id="tipo" name="tipo" required>
+                    <option value="" selected hidden>Tipo</option>
+                    <option value="restaurante">Restaurante</option>
+                    <option value="bar">Bar</option>
+                    <option value="casaDeFestas">Casa de Festas</option>
+                    <option value="karaoke">Karaokê</option>
+                    <option value="buffet">Buffet</option>
+                    <option value="shopping">Shopping</option>
+                </select>
             </div>
             <div class="mb-4 d-flex justify-content-between">
                 <select class="form-select" id="estado" name="uf" required>
@@ -85,20 +93,20 @@
                 <input type="text" class="form-control cep-mask" id="input-cep" name="cep" aria-describedby="nomeHelp" placeholder="CEP:" required>
             </div>
             <div class="mb-4">
-              <input type="text" class="form-control" name="municipio" placeholder="Municipio:" minlength="8" required>
+              <input type="text" class="form-control" id="input-senha" placeholder="Municipio:" minlength="8" required>
             </div>
             <div class="mb-4">
-                <input type="text" class="form-control" name="endereco" placeholder="Endereço:" minlength="8" required>
+                <input type="text" class="form-control" id="input-confirma-senha" placeholder="Endereço:" minlength="8" required>
             </div>
             <div class="d-md-flex justify-content-md-center custom-buttons" id="type-buttons">
                 <button class="btn btn-primary cadastro" id="btn-pessoal" type="submit" formaction="sucesso-cadastro.html">CADASTRE-SE</button>
               </div>
           </form>
     </div>
-    <script src="../scripts/utils.js"></script> 
-    <script src="../scripts/cadastro.js"></script> 
+    <script src="scripts/utils.js"></script> 
+    <script src="scripts/cadastro.js"></script>
     <script async="" src="//www.google-analytics.com/analytics.js"></script><script type="text/javascript" src="//code.jquery.com/jquery-2.0.3.min.js"></script>
-    <script type="text/javascript" src="//assets.locaweb.com.br/locastyle/2.0.6/javascripts/locastyle.js"></script>
+    <script type="text/javascript" src="//assets.locaweb.com.br/locastyle/2.0.6/javascripts/locastyle.js"></script> 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
 </body>
 </html>
