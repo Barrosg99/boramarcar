@@ -78,12 +78,13 @@
 }
 
 .content {
-    padding: 15px;
+    padding: 5px;
     font-family: 'Fredoka', sans-serif;
     font-size: 20px;
-  }
+}
   
-  #custom-style h3 {
+#custom-style h3 {
+    margin-top: 5px;
     border-radius: 20px;
     background: #004AAD;
     color: white;
@@ -92,35 +93,41 @@
     text-align: center;
     margin-left: auto;
     margin-right: auto;
-  }
-  
-  table.tabela {
+}
+
+table.tabela {
     background-color: white;
     text-align: left;
     padding: 10px;
     width: 80%;
     margin-left: auto;
     margin-right: auto;
-  }
-  
-  table.tabela td {
+}
+
+table.tabela td {
     text-align: center;
     border: 5px;
     font-size: 18px;
     padding: 10px;
     border: 1px solid #dbdbdb;
-  }
-  
-  table.tabela th {
+}
+
+table.tabela th {
     background-color: #004AAD;
     color: white;
     text-align: center;
     padding: 15px;
-  }
-  
-  
-  input,
-  select,
-  textarea {
+}
+
+
+input,
+select,
+textarea {
     font-size: 18px;
-  }
+}
+
+@media (max-width:360px) {
+    .content {
+        padding: 0px;
+    }
+}
