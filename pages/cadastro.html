@@ -43,10 +43,10 @@
                 <input type="email" name="email" class="form-control" id="input-email" aria-describedby="emailHelp" placeholder="E-mail:" required>
             </div>
             <div class="mb-4">
-              <input type="password" name="senha" class="form-control" id="input-senha" placeholder="Senha:" required>
+              <input type="password" pattern="^[0-9a-zA-Z]+$" minlength="8" maxlength="12" title="Senha precisa ter entre 8 a 12 caracteres e possui ao menos uma letra e um numero"  name="senha" class="form-control" id="input-senha" placeholder="Senha:" required>
             </div>
             <div class="mb-4">
-                <input type="password" class="form-control" id="input-confirma-senha" placeholder="Confirmação de senha:" required>
+                <input type="password" pattern="^[0-9a-zA-Z]+$" minlength="8" maxlength="12" title="Senha precisa ter entre 8 a 12 caracteres e possui ao menos uma letra e um numero" class="form-control" id="input-confirma-senha" placeholder="Confirmação de senha:" required>
             </div>
             <div class="mb-4 tipo-conta">Selecione o tipo de conta:</div>
             <div class="d-grid gap-2 d-md-flex justify-content-md-center custom-buttons" id="type-buttons">

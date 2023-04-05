@@ -19,7 +19,7 @@
     <nav id="custom-navbar" class="navbar navbar-expand-lg" style="background-color: #004AAD;">
         <div class="container-fluid"> 
             <div class="container">
-                <a class="navbar-brand" href="#">
+                <a class="navbar-brand" href="index.html">
                     <img src="../images/bora_logo.png"  width="105" height="65">
                 </a>
             </div>
@@ -29,12 +29,25 @@
                     <button class="btn btn1">Entrar</button>
                 </div>
                 <div class="d-flex">
-                    <button class="btn btn-primary btn2">Cadastre-se</button>
+                    <button disabled class="btn btn-primary btn2">Cadastre-se</button>
                 </div>
             </div>
         </div>
     </nav>
-    <div>Você está mais perto de marcar um rolê! Vou ver e te aviso...</div>
+    <script src="../scripts/cadastro.js"></script> 
+    <div class="content">
+        <h3>RECEBIMENTO DADOS DE FORMULÁRIOS</h3>
+        <table class="tabela">
+            <tr><th>Chave</th><th>Valor</th></tr>
+            <script language=javascript>
+                var params = new Array();
+                params = getParameters();
+                for (let [key, value] of Object.entries(params)) {
+                    document.write("<tr><td><b>" + key + "</b></td><td>" + value + "</td></tr>");
+                }
+            </script>
+        </table>
+    </div>
    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
 </body>
