@@ -17,8 +17,8 @@ app.use(bodyparser.json());
 
 app
   .get('/pessoas' , usersController.getUsers)
-  .post('/pessoas',usersController.signUpOrEditUser)
-  .put('/pessoas/:id', usersController.signUpOrEditUser)
+  .post('/pessoas',usersController.signUpUser)
+  // .put('/pessoas/:id', usersController.signUpOrEditUser)
   .delete('/pessoas/:id',usersController.removeUser);
 
 app
