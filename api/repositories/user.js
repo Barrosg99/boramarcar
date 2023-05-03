@@ -20,15 +20,26 @@ async function findUsers() {
 }
 
 async function findUserByEmail(email) {
-  const [rows] = await pool.query('SELECT * FROM pessoa WHERE email = ?', [ email ]);
+  const [rows] = await pool.query('SELECT * FROM usuario WHERE Email = ?', [ email ]);
   return rows[0];
 }
 
-async function createOrUpdateUser({id = 0, nome, email, senha, cpf, data_nasc, telefone, estado, cep, cidade,endereco }) {
+async function createUser({nome, email, senha, telefone}) {
   const senha_encript = bcrypt.hashSync(senha, 10);
-  const sql = `CALL pessoaAddOrEdit(?,?,?,?,?,?,?,?,?,?,?);`;
-  const [row] = await pool.query(sql,[id,nome,cpf,email,senha_encript,endereco,cep,estado,cidade,telefone,data_nasc])
-  return row[0];
+  const insertUserSql = `INSERT INTO usuario (Nome_Razao_Social, Telefone, Email, Senha) 
+  VALUES (?, ?, ?, ?); SELECT LAST_INSERT_ID();`
+  const [row] = await pool.query(insertUserSql,[nome,telefone,email,senha_encript,]);
+  return {userId: row[1][0]['LAST_INSERT_ID()']};
+}
+
+async function createPerson({userId, cpf, data_nasc}) {
+  const insertPersonSql = `INSERT INTO pessoa (CPF, Data_nascimento, fk_Usuario_id)
+  VALUES (?,?,?);
+  SELECT Nome_Razao_Social, Telefone, Email, CPF FROM boramarcar.usuario 
+  JOIN boramarcar.pessoa 
+  ON usuario.id = pessoa.fk_Usuario_id`;
+  const [row] = await pool.query(insertPersonSql, [cpf, data_nasc, userId])
+  return row[1][0];
 }
 
 async function deleteUser({id}) {
@@ -39,6 +50,7 @@ async function deleteUser({id}) {
 module.exports = {
   findUsers,
   findUserByEmail,
-  createOrUpdateUser,
+  createUser,
+  createPerson,
   deleteUser
 }
