@@ -6,6 +6,7 @@
     border-radius: 5px;
     font-weight: bold;
     white-space: nowrap;
+    font-family: 'Fredoka', sans-serif;
 }
 
 #custom-navbar .container-fluid {
@@ -28,4 +29,16 @@
 
 #custom-navba .btn2 {
     margin-left: 5px; 
+}
+
+@media (max-width:360px)
+{
+    #custom-style .botoes {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #custom-style .botoes .btn1 {
+        margin-bottom: 5px;
+    }
 }
