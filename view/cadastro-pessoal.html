@@ -50,46 +50,6 @@
                 <input type="date" class="form-control" id="input-nascimento" name="dataDeNascimento" aria-describedby="nomeHelp" placeholder="Data de Nascimento:" min="1923-01-01" onfocus="this.max=new Date().toISOString().split('T')[0]" required>
                 <input type="text" class="form-control cel-sp-mask" id="input-telefone" name="telefone" aria-describedby="nomeHelp" placeholder="Telefone:" required>
             </div>
-            <div class="mb-4 d-flex justify-content-between">
-                <select class="form-select" id="estado" name="uf" required>
-                    <option value="" selected hidden>Estado</option>
-                    <option value="AC">Acre</option>
-                    <option value="AL">Alagoas</option>
-                    <option value="AP">Amapá</option>
-                    <option value="AM">Amazonas</option>
-                    <option value="BA">Bahia</option>
-                    <option value="CE">Ceará</option>
-                    <option value="DF">Distrito Federal</option>
-                    <option value="ES">Espírito Santo</option>
-                    <option value="GO">Goiás</option>
-                    <option value="MA">Maranhão</option>
-                    <option value="MT">Mato Grosso</option>
-                    <option value="MS">Mato Grosso do Sul</option>
-                    <option value="MG">Minas Gerais</option>
-                    <option value="PA">Pará</option>
-                    <option value="PB">Paraíba</option>
-                    <option value="PR">Paraná</option>
-                    <option value="PE">Pernambuco</option>
-                    <option value="PI">Piauí</option>
-                    <option value="RJ">Rio de Janeiro</option>
-                    <option value="RN">Rio Grande do Norte</option>
-                    <option value="RS">Rio Grande do Sul</option>
-                    <option value="RO">Rondônia</option>
-                    <option value="RR">Roraima</option>
-                    <option value="SC">Santa Catarina</option>
-                    <option value="SP">São Paulo</option>
-                    <option value="SE">Sergipe</option>
-                    <option value="TO">Tocantins</option>
-                    <option value="EX">Estrangeiro</option>
-                </select>
-                <input type="text" class="form-control cep-mask" id="input-cep" name="cep" aria-describedby="nomeHelp" placeholder="CEP:" required>
-            </div>
-            <div class="mb-4">
-              <input type="text" class="form-control" name="municipio" placeholder="Municipio:" minlength="8" required>
-            </div>
-            <div class="mb-4">
-                <input type="text" class="form-control" name="endereco" placeholder="Endereço:" minlength="8" required>
-            </div>
             <div class="d-flex justify-content-center custom-buttons" id="type-buttons">
                 <button class="btn btn-primary cadastro" id="btn-pessoal" type="submit">CADASTRE-SE</button>
               </div>
