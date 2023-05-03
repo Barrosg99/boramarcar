@@ -14,6 +14,12 @@
     justify-content: center;
 }
 
+.rodape {
+    display: flex;
+    justify-content: center;
+    font-family: 'Fredoka', sans-serif;
+}
+
 .form-cadastro {
     width: 35%;
     min-width: 340px;
