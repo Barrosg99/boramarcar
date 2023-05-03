@@ -23,15 +23,16 @@
                     <img src="images/bora_logo.png"  width="105" height="65">
                 </a>
             </div>
-            <div class="d-flex botoes" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
-                <div class="d-flex">
-                    <button class="btn btn1">Entrar</button>
-                </div>
-                <div class="d-flex">
-                    <button class="btn btn-primary btn2 disabled">Cadastre-se</button>
-                </div>
-            </div>
+            <div class="btn-group">
+                <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                  Minha conta
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="#">Meus eventos</a></li>
+                  <li><a class="dropdown-item" href="#">Configurações</a></li>
+                  <li><a class="dropdown-item" href="index.html">Sair</a></li>
+                </ul>
+              </div>
         </div>
     </nav>
     <script src="scripts/cadastro.js"></script> 
