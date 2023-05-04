@@ -47,7 +47,7 @@ async function signInUser(req, res) {
 
     // const { token } = await sessionsRepositories.createByUserId(user.id);
     // const userData = getUser(user);
-    res.send("Autenticado");
+    res.send(user);
 
   } catch(e) {
     console.log(e);

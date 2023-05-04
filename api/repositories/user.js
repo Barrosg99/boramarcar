@@ -20,7 +20,7 @@ async function findUsers() {
 }
 
 async function findUserByEmail(email) {
-  const [rows] = await pool.query('SELECT * FROM usuario WHERE Email = ?', [ email ]);
+  const [rows] = await pool.query('SELECT * FROM usuario JOIN pessoa ON id = fk_Usuario_id WHERE Email = ?', [ email ]);
   return rows[0];
 }
 
