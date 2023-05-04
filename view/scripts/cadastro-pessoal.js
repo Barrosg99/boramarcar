@@ -10,9 +10,9 @@ form.onsubmit = function(event){
   //send the form data
   xhr.send(JSON.stringify(Object.fromEntries(formData)));
 
-  xhr.onreadystatechange = function() {
+  xhr.onreadystatechange = function(req) {
       if (xhr.readyState == XMLHttpRequest.DONE) {
-          window.location.href = "index.html"
+          window.location.href = "login.html"
       }
   }
   //Fail the onsubmit to avoid page refresh.
