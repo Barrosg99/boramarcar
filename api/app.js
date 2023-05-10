@@ -3,8 +3,7 @@ const bodyparser = require('body-parser');
 const cors = require('cors');
 
 const usersController = require("./controllers/user");
-
-
+const authenticate = require('./middleware/authenticate');
 
 const app = express();
 //Configuring express server
@@ -22,7 +21,8 @@ app
   .delete('/pessoas/:id',usersController.removeUser);
 
 app
-  .post('/login',usersController.signInUser);
+  .post('/login',usersController.signInUser)
+  .post('/sign-out',authenticate,usersController.signOut);
   
 
 module.exports = app;

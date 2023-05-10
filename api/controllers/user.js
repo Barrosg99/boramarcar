@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const usersRepositories = require('../repositories/user');
+const sessionsRepositories = require('../repositories/session');
 
 
 async function getUsers(req, res) {
@@ -45,13 +46,35 @@ async function signInUser(req, res) {
     const checkPassword = bcrypt.compareSync( userInfo.senha, user.Senha);
     if(!checkPassword) return res.status(401).send({ error: "Email ou senha incorretos" });
 
-    // const { token } = await sessionsRepositories.createByUserId(user.id);
-    // const userData = getUser(user);
-    res.send(user);
+    const { token } = await sessionsRepositories.createByUserId(user.id);
+    const userData = getUser(user);
+  
+    res.send({ ...userData, token });
 
   } catch(e) {
     console.log(e);
     res.sendStatus(500);
+  }
+}
+
+async function signOut(req, res) {
+  try {
+      const userId = `${req.user.id}`
+      await sessionsRepositories.destroyByUserId(userId);
+      res.sendStatus(200)
+  } catch(e) {
+      console.log(e);
+      res.sendStatus(500);
+  }
+}
+
+function getUser(userData) {
+  const { id, Nome_Razao_Social, Email } = userData;
+  
+  return {
+      id,
+      Nome_Razao_Social,
+      Email
   }
 }
 
@@ -69,5 +92,6 @@ module.exports = {
   getUsers,
   signUpUser,
   signInUser,
-  removeUser
+  removeUser,
+  signOut
 }
