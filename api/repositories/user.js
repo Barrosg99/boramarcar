@@ -19,6 +19,11 @@ async function findUsers() {
   return rows;
 }
 
+async function findUserById(id) {
+  const [rows] = await pool.query('SELECT * FROM usuario JOIN pessoa ON id = fk_Usuario_id WHERE id = ?', [ id ]);
+  return rows[0];
+}
+
 async function findUserByEmail(email) {
   const [rows] = await pool.query('SELECT * FROM usuario JOIN pessoa ON id = fk_Usuario_id WHERE Email = ?', [ email ]);
   return rows[0];
@@ -52,5 +57,6 @@ module.exports = {
   findUserByEmail,
   createUser,
   createPerson,
-  deleteUser
+  deleteUser,
+  findUserById
 }
