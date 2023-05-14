@@ -5,7 +5,28 @@ if(token) {
     const userHeader = document.querySelector("#navbarSupportedContent");
     console.log(userHeader);
     userHeader.innerHTML = "";
-    const p = document.createElement("p");
-    p.innerText = `Ola ${userInfo.Nome_Razao_Social}`;
-    userHeader.appendChild(p);
+    userHeader.className = "btn-group"
+    const button = document.createElement("button");
+    button.className = "btn btn-danger dropdown-toggle";
+    button.setAttribute("data-bs-toggle","dropdown");
+    button.setAttribute("aria-expanded","false");
+    button.innerText = "Minha conta";
+    const ul = document.createElement("ul");
+    ul.className = "dropdown-menu";
+    const opcoes = [ 
+        { href: "#", text: "Meus eventos" },
+        { href: "#", text: "Configurações" },
+        { href: "#", text: "Sair" }
+    ];
+    for (const opcao of opcoes) {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.className = "dropdown-item";
+        a.setAttribute("href", opcao.href);
+        a.innerText = opcao.text;
+        li.appendChild(a);
+        ul.appendChild(li);
+    }
+    userHeader.appendChild(button);
+    userHeader.appendChild(ul);
 }
