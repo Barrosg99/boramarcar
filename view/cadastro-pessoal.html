@@ -44,10 +44,10 @@
                 <input type="text" class="form-control" id="input-nome" name="nome" aria-describedby="nomeHelp" placeholder="Nome:" pattern="[A-Za-záàâãéèêíóôõúç\s]{8,50}" title="Nome com 8 a 50 letras" required>
                 </div>
                 <div class="mb-4">
-                    <input type="text" class="form-control cpf-mask" id="input-cpf-cnpj" name="cpf" placeholder="CPF:">
+                    <input type="text" class="form-control cpf-mask" id="input-cpf" name="cpf" placeholder="CPF:">
                 </div>
                 <div class="mb-4 d-flex justify-content-between">
-                    <input type="date" class="form-control" id="input-nascimento" name="data_nasc" aria-describedby="nomeHelp" placeholder="Data de Nascimento:" min="1923-01-01" onfocus="this.max=new Date().toISOString().split('T')[0]" required>
+                    <input type="text" placeholder="Data de nascimento:" class="form-control" type="text" onfocus="this.max=new Date().toISOString().split('T')[0]; this.type='date'" onblur="(this.type='text')" id="input-nascimento" name="dataDeNascimento" required>
 
                     <input type="text" class="form-control cel-sp-mask" id="input-telefone" name="telefone" aria-describedby="nomeHelp" placeholder="Telefone:" >
                 </div>

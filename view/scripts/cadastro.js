@@ -80,19 +80,15 @@ function getParameters() {
 
 const password = document.getElementById("input-senha")
 const confirm_password = document.getElementById("input-confirma-senha");
-
-function validatePassword(){
-  if(password.value != confirm_password.value) {
-    confirm_password.setCustomValidity("Senhas não se coincidem.");
-  } else {
-    confirm_password.setCustomValidity('');
-  }
-}
+const email = document.getElementById("input-email");
+const cpf = document.getElementById("input-cpf");
 
 if(password) 
-  password.onchange = validatePassword;
+  password.onchange = verificaSenha;
 if(confirm_password) 
-  confirm_password.onkeyup = validatePassword;
+  confirm_password.onkeyup = verificaSenha;
+if (email)
+  email.onchange = () => verificaEmail(email)
 
 var params = new Array();
 params = getParameters();
