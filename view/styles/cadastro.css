@@ -21,7 +21,7 @@
 }
 
 .form-cadastro {
-    width: 35%;
+    width: 40%;
     min-width: 340px;
     padding: 24px;
     margin: 24px;
@@ -125,6 +125,16 @@ table.tabela th {
     padding: 15px;
 }
 
+.titulo-evento {
+  font-family: Fredoka, sans-serif;
+  font-weight: bold;
+  color: #004AAD;
+  padding: 15px 0px 0px 23px;
+}
+
+.evento-form {
+  margin:0px;
+}
 
 input,
 select,
