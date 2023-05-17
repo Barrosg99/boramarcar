@@ -19,7 +19,7 @@ if(token) {
     ul.appendChild(li);
 
     const opcoes = [ 
-        { href: "#", text: "Criar evento" },
+        { href: "cadastro-evento.html", text: "Criar evento" },
         { href: "#", text: "Meus eventos" },
         { href: "#", text: "Configurações" },
         { href: "#", text: "Sair" }
