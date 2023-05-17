@@ -5,6 +5,9 @@ const cors = require('cors');
 const usersController = require("./controllers/user");
 const authenticate = require('./middleware/authenticate');
 
+const eventsController = require("./controllers/event");
+
+
 const app = express();
 //Configuring express server
 
@@ -23,6 +26,12 @@ app
 app
   .post('/login',usersController.signInUser)
   .post('/sign-out',authenticate,usersController.signOut);
-  
+
+app
+  .post('/eventos', authenticate, eventsController.createEvent)
+  .get('/eventos',eventsController.getEvents)
+  .delete('/eventos/:id',eventsController.removeEvent)
+  .put('eventos/:id', eventsController.updateEvent);
+
 
 module.exports = app;
