@@ -40,6 +40,11 @@
     color: white;
 }
 
+#custom-navbar .dropdown-menu {
+  right: 0;
+  left: inherit;
+}
+
 @media (max-width:360px)
 {
     #custom-style .botoes {
