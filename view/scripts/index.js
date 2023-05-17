@@ -1,7 +1,25 @@
 const token = localStorage.getItem("token");
-console.log(JSON.parse(token));
+const userInfo = JSON.parse(token)
+
+const signOut = () => {
+  const xhr = new XMLHttpRequest();
+  //open the request
+  xhr.open('POST','http://localhost:8080/sign-out')
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.setRequestHeader("Authorization",`Bearer ${userInfo.token}`)
+
+  //send the form data
+  xhr.send();
+
+  xhr.onreadystatechange = function() {
+      if (xhr.readyState == XMLHttpRequest.DONE) {
+          localStorage.removeItem("token");
+          location.reload()
+      }
+  }
+}
+
 if(token) {
-    userInfo = JSON.parse(token)
     const userHeader = document.querySelector("#navbarSupportedContent");
     console.log(userHeader);
     userHeader.innerHTML = "";
@@ -22,12 +40,17 @@ if(token) {
         { href: "#", text: "Criar evento" },
         { href: "#", text: "Meus eventos" },
         { href: "#", text: "Configurações" },
-        { href: "#", text: "Sair" }
+        { href: "#", text: "Sair", onclick: "signOut()" }
     ];
 
     for (const opcao of opcoes) {
         const li = document.createElement("li");
         const a = document.createElement("a");
+
+        if(opcao.onclick) {
+          li.setAttribute("onclick",opcao.onclick)
+        }
+
         a.className = "dropdown-item";
         a.setAttribute("href", opcao.href);
         a.innerText = opcao.text;

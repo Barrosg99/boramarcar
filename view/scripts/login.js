@@ -1,5 +1,3 @@
-
-
 form.onsubmit = function(event){
   const xhr = new XMLHttpRequest();
   const formData = new FormData(form);
