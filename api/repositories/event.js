@@ -23,13 +23,13 @@ async function createEvent({horario, nome, publico, url_imagem, userId, addressI
   return row[1][0];
 }
 
-async function updateEvent({id}) {
-  const row = await pool.query('UPDATE Evento SET Horario = ?, Nome = ?, Publico = ?, url_imagem = ?, fk_Usuario_id = ?, fk_Endereco_id = ? WHERE id = ?', [id])
+async function updateEvent({id, horario, nome, publico, url_imagem}) {
+  const row = await pool.query('UPDATE evento SET Horario = ?, Nome = ?, Publico = ?, url_imagem = ? WHERE id = ?', [horario, nome, publico, url_imagem, id])
   return row;
 }
 
 async function deleteEvent({id}) {
-  const row = await pool.query('DELETE FROM evento WHERE idEvento = ?', [id])
+  const row = await pool.query('DELETE FROM evento WHERE id = ?', [id])
   return row;
 }
 
