@@ -24,23 +24,19 @@ async function getEvents(req, res) {
   async function updateEvent(req, res) {
     try {
       const eventId = req.params.id;
-      const { Horario, Nome, Publico, url_imagem, fk_Usuario_id, fk_Endereco_id } = req.body;
+      const { horario, nome, publico, url_imagem} = req.body;
   
-      // Check if the event exists
-      const existingEvent = await eventsRepositories.getEventById(eventId);
-      if (!existingEvent) {
-        return res.status(404).send(`Event with ID ${eventId} not found`);
-      }
+      // const existingEvent = await eventsRepositories.getEventById(eventId);
+      // if (!existingEvent) {
+      //   return res.status(404).send(`Event with ID ${eventId} not found`);
+      // }
   
-      // Update the event
       const updatedEvent = await eventsRepositories.updateEvent({
         id: eventId,
-        Horario,
-        Nome,
-        Publico,
-        url_imagem,
-        fk_Usuario_id,
-        fk_Endereco_id,
+        horario,
+        nome,
+        publico,
+        url_imagem
       });
   
       res.status(200).json(updatedEvent);
@@ -52,10 +48,10 @@ async function getEvents(req, res) {
 
   async function removeEvent(req,res) {
     try {
-      const user = await eventsRepositories.deleteEvent({id:req.params.id});
+      const events = await eventsRepositories.deleteEvent({id:req.params.id});
       res.status(200).send(events);
     } catch (error) {
-      console.log(e);
+      console.log(error);
       res.sendStatus(500);
     }
   }

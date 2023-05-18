@@ -30,8 +30,8 @@ app
 app
   .post('/eventos', authenticate, eventsController.createEvent)
   .get('/eventos',eventsController.getEvents)
-  .delete('/eventos/:id',eventsController.removeEvent)
-  .put('eventos/:id', eventsController.updateEvent);
+  .delete('/eventos/:id', authenticate, eventsController.removeEvent)
+  .put('/eventos/:id', authenticate, eventsController.updateEvent);
 
 
 module.exports = app;
