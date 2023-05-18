@@ -21,7 +21,7 @@ const signOut = () => {
 
 if(token) {
     const userHeader = document.querySelector("#navbarSupportedContent");
-    console.log(userHeader);
+
     userHeader.innerHTML = "";
     userHeader.className = "btn-group"
     const button = document.createElement("button");
@@ -59,4 +59,22 @@ if(token) {
     }
     userHeader.appendChild(button);
     userHeader.appendChild(ul);
+}
+
+const xhr = new XMLHttpRequest();
+//open the request
+xhr.open('GET','http://localhost:8080/eventos')
+xhr.setRequestHeader("Content-Type", "application/json");
+
+//send the form data
+xhr.send();
+
+xhr.onreadystatechange = function(e) {
+  
+    if (xhr.readyState == XMLHttpRequest.DONE) {
+      const eventos = JSON.parse(e.target.response)
+      console.log(eventos);
+      const container = document.querySelector("#lista-eventos")
+      console.log(container);
+    }
 }
