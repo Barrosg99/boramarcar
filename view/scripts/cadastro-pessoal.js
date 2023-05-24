@@ -1,20 +1,51 @@
-// const form = document.querySelector("form.form-cadastro");
+/* global axios */
+import * as utils from "./utils.js";
 
-form.onsubmit = function(event){
-  const xhr = new XMLHttpRequest();
-  const formData = new FormData(form);
-  //open the request
-  xhr.open('POST','http://localhost:8080/pessoas')
-  xhr.setRequestHeader("Content-Type", "application/json");
+const data = document.getElementById("input-nascimento");
 
-  //send the form data
-  xhr.send(JSON.stringify(Object.fromEntries(formData)));
+function verificaData() {
+  const hoje = new Date();
 
-  xhr.onreadystatechange = function(req) {
-      if (xhr.readyState == XMLHttpRequest.DONE) {
-          window.location.href = "login.html"
-      }
+  if (new Date(data.value) > hoje) {
+    data.setCustomValidity("Data não aceita.");
+  } else {
+    data.setCustomValidity("");
   }
-  //Fail the onsubmit to avoid page refresh.
-  return false; 
 }
+
+data.onchange = verificaData;
+
+const params = utils.getParameters();
+const form = document.querySelector("form.form-cadastro");
+
+if (form && params) {
+  const urlParams = Object.entries(params);
+  for (const [key, value] of urlParams) {
+    const input = document.createElement("input");
+    input.setAttribute("name", key);
+    input.hidden = true;
+    input.setAttribute("value", value);
+    form.appendChild(input);
+  }
+}
+
+form.onsubmit = function () {
+  const submitButton = document.getElementById("btn-pessoal");
+  const formData = new FormData(form);
+  submitButton.disabled = true;
+  const requisicao = axios.post("http://localhost:8080/pessoas", Object.fromEntries(formData));
+  requisicao
+    .then(() => {
+      utils.goTo("login.html");
+    })
+    .catch((e) => {
+      const errorMsg = e.response ? e.response.data.error : e;
+      const errorDiv = document.querySelector(".error-container");
+      errorDiv.innerText = `Algo deu errado, tente novamente\n${errorMsg}`;
+    })
+    .finally(() => {
+      submitButton.disabled = false;
+    });
+
+  return false;
+};
