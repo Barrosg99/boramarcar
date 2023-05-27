@@ -1,50 +1,77 @@
+#custom-style {
+  padding-top: 80px;
+}
+
+#custom-style .card-text {
+  margin-bottom: 3rem;
+}
+
+#custom-style a.btn.btn-primary {
+  position: absolute;
+  bottom: 15px;
+  right: 55px;
+}
+
+#custom-style .card-body {
+  position: relative;
+}
+
 #custom-style .h1 {
-    color: #004AAD;
-    font-weight: bold;
-    margin-top: 64px;
-    padding-left: 40px;
-    margin-bottom: 50px;
+  color: #004aad;
+  font-weight: bold;
+  margin-top: 15px;
+  padding-left: 40px;
+  margin-bottom: 50px;
 }
 
 #custom-style .card-img-top {
-    height: 180px;
+  height: 180px;
 }
 
 #custom-style .card:first-child {
-    margin-left: 15px;
+  margin-left: 15px;
 }
 
 #custom-style .card {
-    flex-shrink: 0;
-    margin-right: 15px;
+  flex-shrink: 0;
+  margin-right: 15px;
+  min-width: 225px;
+  max-width: 225px;
+}
+
+#custom-style .card-text {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 #custom-style .list-cards {
-    overflow-x: scroll;
+  overflow-x: scroll;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
 #custom-style .list-cards::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
 #custom-style .list-cards {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
-@media (max-width:900px)
-{
-    #custom-style .card-img-top {
-        height: 130px;
-    }
+@media (max-width: 900px) {
+  #custom-style .card-img-top {
+    height: 130px;
+  }
 }
 
 #custom-style .h2 {
-    color: #004AAD;
-    margin-top: 30px;
-    margin-bottom: 30px;
-    padding-left: 40px;
-    font-size: 40;
+  color: #004aad;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding-left: 40px;
+  font-size: 40;
 }

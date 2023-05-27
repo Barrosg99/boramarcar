@@ -1,0 +1,29 @@
+{
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnType": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  },
+  "editor.wordWrap": "on",
+  "files.autoSave": "onFocusChange",
+  "git.confirmSync": false,
+  "git.autofetch": true,
+  "explorer.confirmDelete": false,
+  "redhat.telemetry.enabled": false,
+  "explorer.confirmDragAndDrop": false,
+  "liveServer.settings.donotShowInfoMsg": true,
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.validate": ["javascript"],
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "prettier.trailingComma": "all",
+  "prettier.bracketSameLine": true
+}

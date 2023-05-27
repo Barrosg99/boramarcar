@@ -1,149 +1,137 @@
 .titulo h1 {
-    display: flex;
-    color: #004AAD;
-    font-family: 'Fredoka', sans-serif;
-    font-size: x-large;
-    justify-content: center;
-    font-weight: 400;
+  display: flex;
+  color: #004aad;
+  font-family: "Fredoka", sans-serif;
+  font-size: x-large;
+  justify-content: center;
+  font-weight: 400;
 }
 
 .container-form {
-    margin-top: 64px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 }
 
 .rodape {
-    display: flex;
-    justify-content: center;
-    font-family: 'Fredoka', sans-serif;
+  display: flex;
+  justify-content: center;
+  font-family: "Fredoka", sans-serif;
 }
 
 .form-cadastro {
-    width: 40%;
-    min-width: 340px;
-    padding: 24px;
-    margin: 24px;
+  width: 40%;
+  min-width: 450px;
+  padding: 24px;
+  margin: 24px;
 }
 
-#custom-style input, #custom-style select {
-    color: #004AAD;
-    height: 64px;
-    background-color: #A9BFDD;
-    font-family: 'Fredoka', sans-serif;
+#custom-style input,
+#custom-style select {
+  color: #004aad;
+  height: 64px;
+  background-color: #a9bfdd;
+  font-family: "Fredoka", sans-serif;
 }
 
 #custom-style input::placeholder {
-    color: #FFFF;
+  color: #ffff;
 }
 
-#input-nascimento, #input-telefone,#input-uf, #input-cep, #custom-style select {
-    width: 44%;
-    font-family: 'Fredoka', sans-serif;
+#custom-style .same-line-input {
+  width: 44%;
+  font-family: "Fredoka", sans-serif;
 }
 
 ::placeholder {
-    font-family: 'Fredoka', sans-serif;
-    font-weight: bold;
+  font-family: "Fredoka", sans-serif;
+  font-weight: bold;
 }
 
 .tipo-conta {
-    display: flex;
-    color: #004AAD;
-    font-family: 'Fredoka', sans-serif;
-    font-size: large;
-    justify-content: center;
-    font-weight: 400;
+  display: flex;
+  color: #004aad;
+  font-family: "Fredoka", sans-serif;
+  font-size: large;
+  justify-content: center;
+  font-weight: 400;
 }
 
 .custom-buttons button {
-    background-color: #004AAD;
-    font-family: 'Fredoka', sans-serif;
-    width: 45%;
-    height: 50px;
+  background-color: #004aad;
+  font-family: "Fredoka", sans-serif;
+  width: 45%;
+  height: 50px;
 }
 
 .custom-buttons .cadastro {
-    width: 45%;
-    min-width: 200px;
+  width: 45%;
+  min-width: 200px;
 }
 
-.custom-buttons button:hover {
-    background-color: #A9BFDD;
-    border-color: #A9BFDD;
-    color: #5C5C5C;
-    font-weight: bold;
+#custom-style .custom-buttons button:hover,
+#custom-style button:disabled {
+  background-color: #a9bfdd;
+  border-color: #a9bfdd;
+  color: #5c5c5c;
+  font-weight: bold;
 }
 
 #type-buttons button:active {
-    background-color: #012758;
-    border-color: #012758;
-    color: #A9BFDD;
-    font-weight: bold;
+  background-color: #012758;
+  border-color: #012758;
+  color: #a9bfdd;
+  font-weight: bold;
 }
 
 .content {
-    padding: 5px;
-    font-family: 'Fredoka', sans-serif;
-    font-size: 20px;
+  padding: 5px;
+  font-family: "Fredoka", sans-serif;
+  font-size: 20px;
 }
-  
+
 #custom-style h3 {
-    margin-top: 5px;
-    border-radius: 20px;
-    background: #004AAD;
-    color: white;
-    padding: 20px;
-    width: 80%;
-    text-align: center;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-table.tabela {
-    background-color: white;
-    text-align: left;
-    padding: 10px;
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-table.tabela td {
-    text-align: center;
-    border: 5px;
-    font-size: 18px;
-    padding: 10px;
-    border: 1px solid #dbdbdb;
-}
-
-table.tabela th {
-    background-color: #004AAD;
-    color: white;
-    text-align: center;
-    padding: 15px;
+  margin-top: 5px;
+  border-radius: 20px;
+  background: #004aad;
+  color: white;
+  padding: 20px;
+  width: 80%;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .titulo-evento {
   font-family: Fredoka, sans-serif;
   font-weight: bold;
-  color: #004AAD;
+  color: #004aad;
   padding: 15px 0px 0px 23px;
 }
 
 .evento-form {
-  margin:0px;
+  margin: 0px;
 }
 
 input,
 select,
 textarea {
-    font-size: 18px;
+  font-size: 18px;
 }
 
-@media (max-width:360px) {
-    .content {
-        padding: 0px;
-    }
+.error-container {
+  color: red;
+  font-weight: bold;
+}
+
+@media (max-width: 410px) {
+  .form-cadastro {
+    min-width: 100%;
+  }
+}
+
+@media (max-width: 360px) {
+  .content {
+    padding: 0px;
+  }
 }
