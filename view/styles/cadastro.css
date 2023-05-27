@@ -38,11 +38,7 @@
   color: #ffff;
 }
 
-#input-nascimento,
-#input-telefone,
-#input-uf,
-#input-cep,
-#custom-style select {
+#custom-style .same-line-input {
   width: 44%;
   font-family: "Fredoka", sans-serif;
 }

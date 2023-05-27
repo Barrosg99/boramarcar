@@ -35,6 +35,34 @@ export function getParameters() {
   return null;
 }
 
+export function getUserInfo() {
+  return JSON.parse(localStorage.getItem("token"));
+}
+
 export function goTo(url) {
   window.location.href = url;
 }
+
+export const signOut = (userInfo, axios) => {
+  const requisicao = axios.post("http://localhost:8080/sign-out", null, {
+    headers: { Authorization: `Bearer ${userInfo.token}` },
+  });
+  requisicao
+    .then(() => {
+      localStorage.removeItem("token");
+      location.reload();
+    })
+    .catch((e) => {
+      const errorMsg = e.response.data.error ? e.response.data.error : e;
+      const msg = `Algo deu errado, tente novamente\n${errorMsg}`;
+      // eslint-disable-next-line no-alert
+      alert(msg);
+    });
+};
+
+// chamar getUserInfo
+// se tiver faz nada
+// se n tiver tem empurrar o usuario para Login;
+// faça o login para visualizar
+
+// dps do login redirecionar ele de volta para pagina inicial

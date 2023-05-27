@@ -1,65 +1,56 @@
 /* global axios */
 
-const userInfo = JSON.parse(localStorage.getItem("token"));
+const requisicao = axios.get("http://localhost:8080/eventos");
+requisicao
+  .then((res) => {
+    // <div class="card">
+    //   <img src="../images/cervejada.png" class="card-img-top" alt="">
+    //   <div class="card-body">
+    //     <h5 class="card-title">Cervejada</h5>
+    //     <p class="card-text">Breve descrição do evento.</p>
+    //     <a href="#" class="btn btn-primary">bora marcar </a>
+    //   </div>
+    const { data } = res;
+    const container = document.querySelector("#lista-eventos");
+    container.innerHTML = "";
+    for (const evento of data) {
+      const card = document.createElement("div");
+      card.className = "card";
 
-const signOut = () => {
-  const requisicao = axios.post("http://localhost:8080/sign-out", null, {
-    headers: { Authorization: `Bearer ${userInfo.token}` },
-  });
-  requisicao
-    .then(() => {
-      localStorage.removeItem("token");
-      location.reload();
-    })
-    .catch((e) => {
-      const errorMsg = e.response.data.error ? e.response.data.error : e;
-      const msg = `Algo deu errado, tente novamente\n${errorMsg}`;
-      // eslint-disable-next-line no-alert
-      alert(msg);
-    });
-};
+      const img = document.createElement("img");
+      img.src = evento.url_imagem;
+      img.className = "card-img-top";
 
-if (userInfo) {
-  const userHeader = document.querySelector("#navbarSupportedContent");
+      const cardBody = document.createElement("div");
+      cardBody.className = "card-body";
 
-  userHeader.innerHTML = "";
-  userHeader.className = "btn-group";
-  const button = document.createElement("button");
-  button.className = "btn btn-danger dropdown-toggle";
-  button.setAttribute("data-bs-toggle", "dropdown");
-  button.setAttribute("aria-expanded", "false");
-  button.innerText = "Minha conta";
-  const ul = document.createElement("ul");
-  ul.className = "dropdown-menu";
-  const li = document.createElement("li");
-  li.className = "dropdown-item";
-  li.innerText = `Olá, ${userInfo.nome}`;
-  ul.appendChild(li);
+      const title = document.createElement("h5");
+      title.className = "card-title";
+      title.innerText = evento.nome;
 
-  const opcoes = [
-    { href: "cadastro-evento.html", text: "Criar evento" },
-    { href: "#", text: "Meus eventos" },
-    { href: "#", text: "Configurações" },
-    { href: "#", text: "Sair", onclick: "signOut()" },
-  ];
+      const subTitle = document.createElement("p");
+      subTitle.className = "card-text";
+      subTitle.innerText = evento.nome;
 
-  for (const opcao of opcoes) {
-    const li = document.createElement("li");
-    const a = document.createElement("a");
+      const link = document.createElement("a");
+      link.href = "#";
+      link.className = "btn btn-primary";
+      link.innerText = "bora marcar";
 
-    if (opcao.onclick) {
-      li.setAttribute("onclick", opcao.onclick);
+      cardBody.appendChild(title);
+      cardBody.appendChild(subTitle);
+      cardBody.appendChild(link);
+      card.appendChild(img);
+      card.appendChild(cardBody);
+      container.appendChild(card);
     }
-
-    a.className = "dropdown-item";
-    a.setAttribute("href", opcao.href);
-    a.innerText = opcao.text;
-    li.appendChild(a);
-    ul.appendChild(li);
-  }
-  userHeader.appendChild(button);
-  userHeader.appendChild(ul);
-}
+  })
+  .catch((e) => {
+    const errorMsg = e.response.data.error ? e.response.data.error : e;
+    const msg = `Algo deu errado, tente novamente\n${errorMsg}`;
+    // eslint-disable-next-line no-alert
+    alert(msg);
+  });
 
 // const xhr = new XMLHttpRequest();
 // // open the request
