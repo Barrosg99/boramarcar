@@ -7,24 +7,24 @@
     {
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
-      "name": "nodemon",
+      "name": "api",
       "program": "${workspaceFolder}/api/server.js",
       "request": "launch",
       "restart": true,
       "runtimeExecutable": "nodemon",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
+      "skipFiles": ["<node_internals>/**"],
       "type": "node"
     },
     {
-      "type": "node",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "name": "web",
+      "program": "${workspaceFolder}/view/site.js",
       "request": "launch",
-      "name": "Launch Program",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "program": "${workspaceFolder}\\server.js"
+      "restart": true,
+      "runtimeExecutable": "nodemon",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node"
     }
   ]
 }

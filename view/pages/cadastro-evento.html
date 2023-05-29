@@ -39,7 +39,7 @@
   </nav>
   <h1 class="titulo-evento">Criar Evento:</h1>
   <div class="container-form evento-form">
-    <form class="form-cadastro" method="GET">
+    <form class="form-cadastro" enctype="multipart/form-data">
       <div class="mb-4 titulo">
         <h1>Informe os dados do seu evento:</h1>
       </div>
@@ -50,8 +50,11 @@
       </div>
 
       <div class="mb-4 d-flex justify-content-between">
-        <input type="url" class="form-control same-line-input" id="input-url" name="imageUrl"
-          placeholder="Imagem do Evento(URL) :" pattern="https://.*" required>
+        <label for="file-upload" class="custom-file-upload">
+          <i class="fa fa-cloud-upload">Upload da Imagem</i>
+          <input id="file-upload" type="file" name="file" required />
+        </label>
+
         <select class="form-select same-line-input" id="tipo" name="publico" required>
           <option value="" selected hidden>Tipo</option>
           <option value="true">Público</option>
