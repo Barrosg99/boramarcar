@@ -1,7 +1,7 @@
 /* global axios */
 import * as utils from "./utils.js";
 
-const userInfo = utils.getUserInfo();
+const userInfo = utils.verifyLogin();
 
 const dateInput = document.getElementById("input-data-evento");
 

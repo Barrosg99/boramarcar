@@ -62,9 +62,14 @@ export const signOut = (userInfo, axios) => {
     });
 };
 
-// chamar getUserInfo
-// se tiver faz nada
-// se n tiver tem empurrar o usuario para Login;
-// faça o login para visualizar
+export const verifyLogin = () => {
+  const userInfo = getUserInfo();
 
-// dps do login redirecionar ele de volta para pagina inicial
+  if (!userInfo) {
+    const beforeLoginRoute = window.location.pathname;
+    localStorage.setItem("beforeLoginRoute", beforeLoginRoute);
+    goTo("login.html");
+  }
+
+  return userInfo;
+};
