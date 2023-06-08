@@ -1,20 +1,18 @@
 const express = require("express");
-const bodyparser = require("body-parser");
 const cors = require("cors");
 
 const usersController = require("./controllers/user");
-const authenticate = require("./middleware/authenticate");
-
 const eventsController = require("./controllers/event");
+const imagesController = require("./controllers/image");
+
+const authenticate = require("./middleware/authenticate");
+const upload = require("./middleware/upload");
 
 const app = express();
-// Configuring express server
 
 app.use(cors());
-app.use(bodyparser.json());
-
-// Establish the server connection
-// PORT ENVIRONMENT VARIABLE
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app
   .get("/pessoas", usersController.getUsers)
@@ -24,8 +22,10 @@ app
 
 app.post("/login", usersController.signInUser).post("/sign-out", authenticate, usersController.signOut);
 
+app.get("/imagens/:id", imagesController.getImage);
+
 app
-  .post("/eventos", authenticate, eventsController.createEvent)
+  .post("/eventos", authenticate, upload.single("file"), eventsController.createEvent)
   .get("/eventos", eventsController.getEvents)
   .delete("/eventos/:id", authenticate, eventsController.removeEvent)
   .put("/eventos/:id", authenticate, eventsController.updateEvent);

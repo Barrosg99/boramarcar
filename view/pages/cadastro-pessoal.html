@@ -50,11 +50,11 @@
         <input type="text" class="form-control cpf-mask" id="input-cpf" name="cpf" placeholder="CPF:" required>
       </div>
       <div class="mb-4 d-flex justify-content-between">
-        <input type="text" placeholder="Data de nascimento:" class="form-control" type="text"
+        <input type="text" placeholder="Data de nascimento:" class="form-control same-line-input" type="text"
           onfocus="this.max=new Date().toISOString().split('T')[0]; this.type='date'" onblur="(this.type='text')"
           id="input-nascimento" name="dataNascimento" required>
 
-        <input type="text" class="form-control cel-sp-mask" id="input-telefone" name="telefone"
+        <input type="text" class="form-control cel-sp-mask same-line-input" id="input-telefone" name="telefone"
           aria-describedby="nomeHelp" placeholder="Telefone:" required>
       </div>
       <div class="d-md-flex flex-column align-items-center justify-content-md-center custom-buttons" id="type-buttons">

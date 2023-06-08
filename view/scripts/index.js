@@ -3,13 +3,6 @@
 const requisicao = axios.get("http://localhost:8080/eventos");
 requisicao
   .then((res) => {
-    // <div class="card">
-    //   <img src="../images/cervejada.png" class="card-img-top" alt="">
-    //   <div class="card-body">
-    //     <h5 class="card-title">Cervejada</h5>
-    //     <p class="card-text">Breve descrição do evento.</p>
-    //     <a href="#" class="btn btn-primary">bora marcar </a>
-    //   </div>
     const { data } = res;
     const container = document.querySelector("#lista-eventos");
     container.innerHTML = "";
@@ -18,7 +11,7 @@ requisicao
       card.className = "card";
 
       const img = document.createElement("img");
-      img.src = evento.url_imagem;
+      img.src = `http://localhost:8080/imagens/${evento.fk_Imagem_Id}`;
       img.className = "card-img-top";
 
       const cardBody = document.createElement("div");
