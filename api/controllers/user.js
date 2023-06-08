@@ -45,9 +45,38 @@ async function signUpUser(req, res) {
       return res.status(409).send({ error: "CPF já está em uso" });
     }
 
+    if (await usersRepositories.findEstablishmentByCnpj(req.body.cnpj)) {
+      return res.status(409).send({ error: "CNPJ já está em uso" });
+    }
+
     const { userId } = await usersRepositories.createUser({ id: req.params.id, ...req.body });
     const person = await usersRepositories.createPerson({ userId, ...req.body });
+
     return res.status(200).send(person);
+  } catch (e) {
+    console.error(e);
+    return res.sendStatus(500);
+  }
+}
+
+async function signUpUserEstablishment(req, res) {
+  try {
+    if (await usersRepositories.findUserBy("email", req.body.email)) {
+      return res.status(409).send({ error: "Email já está em uso" });
+    }
+
+    if (await usersRepositories.findUserBy("telefone", req.body.telefone)) {
+      return res.status(409).send({ error: "Telefone já está em uso" });
+    }
+
+    if (await usersRepositories.findEstablishmentByCnpj(req.body.cnpj)) {
+      return res.status(409).send({ error: "CNPJ já está em uso" });
+    }
+
+    const { userId } = await usersRepositories.createUser({ id: req.params.id, ...req.body });
+    const establishment = await usersRepositories.createEstablishment({ userId, ...req.body });
+
+    return res.status(200).send(establishment);
   } catch (e) {
     console.error(e);
     return res.sendStatus(500);
@@ -102,4 +131,5 @@ module.exports = {
   signInUser,
   removeUser,
   signOut,
+  signUpUserEstablishment,
 };
