@@ -3,7 +3,7 @@ const fs = require("fs");
 const pool = require("../database/DB_config");
 
 async function findEvents() {
-  const getEventsSql = `SELECT ev.horario, ev.nome, ev.publico, logradouro, complemento, cep, municipio, estado, fk_Imagem_Id 
+  const getEventsSql = `SELECT ev.horario, ev.nome, ev.descricao, ev.publico, logradouro, complemento, cep, municipio, estado, fk_Imagem_Id 
   FROM evento AS ev
   join endereco ON endereco.id = fk_Endereco_id;`;
   const [rows] = await pool.query(getEventsSql);
@@ -21,10 +21,10 @@ async function findEventById(id) {
   return rows[0];
 }
 
-async function createEvent({ horario, nome, publico, imageId, userId, addressId }) {
-  const insertEventSql = `INSERT INTO evento (Horario, nome, publico, fk_Imagem_id, fk_Usuario_id, fk_Endereco_id) 
-  VALUES (?, ?, ?, ?, ?, ?); SELECT LAST_INSERT_ID();`;
-  const variables = [horario, nome, publico === "true", imageId, userId, addressId];
+async function createEvent({ horario, nome, descricao, publico, imageId, userId, addressId }) {
+  const insertEventSql = `INSERT INTO evento (Horario, nome, descricao, publico, fk_Imagem_id, fk_Usuario_id, fk_Endereco_id) 
+  VALUES (?, ?, ?, ?, ?, ?, ?); SELECT LAST_INSERT_ID();`;
+  const variables = [horario, nome, descricao, publico === "true", imageId, userId, addressId];
   const [row] = await pool.query(insertEventSql, variables);
   return row[1][0];
 }

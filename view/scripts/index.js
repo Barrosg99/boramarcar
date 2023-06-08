@@ -23,7 +23,7 @@ requisicao
 
       const subTitle = document.createElement("p");
       subTitle.className = "card-text";
-      subTitle.innerText = evento.nome;
+      subTitle.innerText = evento.descricao;
 
       const link = document.createElement("a");
       link.href = "#";
