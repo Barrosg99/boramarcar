@@ -124,6 +124,29 @@ textarea {
   font-weight: bold;
 }
 
+input[type="file"] {
+  position: absolute;
+  z-index: -99999999;
+  left: 0;
+  top: 0;
+  width: 100%;
+}
+.custom-file-upload {
+  position: relative;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: Fredoka, sans-serif;
+  font-size: 16px;
+  border: 1px solid #dee2e6;
+  font-weight: bold;
+  color: white;
+  border-radius: 6px;
+  padding: 19px 20px;
+  cursor: pointer;
+  width: 44%;
+  background-color: #a9bfdd;
+}
+
 @media (max-width: 410px) {
   .form-cadastro {
     min-width: 100%;
