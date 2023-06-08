@@ -1,6 +1,9 @@
 const bcrypt = require("bcrypt");
+const fs = require("fs");
+
 const usersRepositories = require("../repositories/user");
 const sessionsRepositories = require("../repositories/session");
+const imageRepositories = require("../repositories/image");
 
 function getUser(userData) {
   const { id, nome, email } = userData;
@@ -45,12 +48,18 @@ async function signUpUser(req, res) {
       return res.status(409).send({ error: "CPF já está em uso" });
     }
 
-    const { userId } = await usersRepositories.createUser({ id: req.params.id, ...req.body });
+    const { file } = req;
+    const { imageId } = await imageRepositories.createImage({ file });
+    const { userId } = await usersRepositories.createUser({
+      imageId,
+      ...req.body,
+    });
     const person = await usersRepositories.createPerson({ userId, ...req.body });
+    fs.rmSync(`${__dirname}/../static/temp/${file.filename}`);
     return res.status(200).send(person);
   } catch (e) {
     console.error(e);
-    return res.sendStatus(500);
+    return res.status(500).send({ error: e.message });
   }
 }
 

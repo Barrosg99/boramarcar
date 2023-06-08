@@ -29,11 +29,11 @@ async function findPersonByCpf(cpf) {
   return rows[0];
 }
 
-async function createUser({ nome, email, senha, telefone }) {
+async function createUser({ nome, email, senha, telefone, imageId }) {
   const encrypPassword = bcrypt.hashSync(senha, 10);
-  const insertUserSql = `INSERT INTO usuario (nome, telefone, email, senha) 
-  VALUES (?, ?, ?, ?); SELECT LAST_INSERT_ID();`;
-  const [row] = await pool.query(insertUserSql, [nome, telefone, email, encrypPassword]);
+  const insertUserSql = `INSERT INTO usuario (nome, telefone, email, senha, fk_Imagem_id) 
+  VALUES (?, ?, ?, ?, ?); SELECT LAST_INSERT_ID();`;
+  const [row] = await pool.query(insertUserSql, [nome, telefone, email, encrypPassword, imageId]);
   return { userId: row[1][0]["LAST_INSERT_ID()"] };
 }
 

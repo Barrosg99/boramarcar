@@ -33,8 +33,8 @@ form.onsubmit = function () {
   formData.append("file", fileInput.files[0]);
   const body = Object.fromEntries(formData);
   body.publico = body.publico === "true";
-
   submitButton.disabled = true;
+
   const requisicao = axios.post("http://localhost:8080/eventos", body, {
     headers: {
       Authorization: `Bearer ${userInfo.token}`,

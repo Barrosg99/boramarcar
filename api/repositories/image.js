@@ -3,6 +3,7 @@ const fs = require("fs");
 const pool = require("../database/DB_config");
 
 async function createImage({ file }) {
+  if (!file) throw new Error("Error ao receber arquivo, verifique o envio");
   const tipo = file.mimetype;
   const nome = file.originalname;
   const arquivo = fs.readFileSync(`${__dirname}/../static/temp/${file.filename}`);
