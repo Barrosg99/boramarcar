@@ -1,5 +1,4 @@
 const express = require("express");
-// const bodyparser = require("body-parser");
 const cors = require("cors");
 
 const usersController = require("./controllers/user");
@@ -10,14 +9,10 @@ const authenticate = require("./middleware/authenticate");
 const upload = require("./middleware/upload");
 
 const app = express();
-// Configuring express server
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Establish the server connection
-// PORT ENVIRONMENT VARIABLE
 
 app
   .get("/pessoas", usersController.getUsers)

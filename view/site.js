@@ -10,12 +10,10 @@ app.use(cors());
 app.use(express.static(__dirname));
 
 app.get("/", (req, res) => {
-  // console.log(req);
   res.sendFile(`${__dirname}/pages/index.html`);
 });
 
 app.get("/:page", (req, res) => {
-  // console.log(req);
   const { page } = req.params;
   const fileExists = fs.existsSync(`${__dirname}/pages/${page}`);
   if (!fileExists) throw new Error("Página não encontrada");
