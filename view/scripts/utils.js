@@ -57,8 +57,10 @@ export const signOut = (userInfo, axios) => {
       const msg = `Algo deu errado, tente novamente\n${errorMsg}`;
       // eslint-disable-next-line no-alert
       alert(msg);
-      localStorage.removeItem("token");
-      location.reload();
+      if (e.response && e.response.status === 401) {
+        localStorage.removeItem("token");
+        location.reload();
+      }
     });
 };
 
