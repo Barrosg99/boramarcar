@@ -3,6 +3,29 @@ import * as utils from "./utils.js";
 
 const userInfo = utils.getUserInfo();
 
+const dateInput = document.getElementById("input-data-evento");
+
+dateInput.onblur = () => {
+  dateInput.type = "text";
+};
+
+dateInput.onfocus = () => {
+  const [datetime, min] = new Date().toISOString().split(":");
+
+  dateInput.min = [datetime, min].join(":");
+  dateInput.type = "datetime-local";
+};
+
+dateInput.onchange = () => {
+  const hoje = new Date();
+
+  if (new Date(dateInput.value) < hoje) {
+    dateInput.setCustomValidity("Data não aceita.");
+  } else {
+    dateInput.setCustomValidity("");
+  }
+};
+
 const fileInput = document.getElementById("file-upload");
 const label = document.querySelector("label.custom-file-upload");
 
@@ -21,7 +44,6 @@ fileInput.onchange = () => {
     label.innerText = "Upload da Imagem";
     label.style.color = "white";
     label.style.fontWeight = "bold";
-    label.setCustomValidity("A imagem é obrigatória");
   }
 };
 
