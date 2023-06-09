@@ -34,6 +34,12 @@ async function getUsers(req, res) {
   }
 }
 
+async function getPerson(req, res) {
+  const person = await usersRepositories.findPersonByKey("fk_Usuario_id", req.user.id);
+  delete person.senha;
+  return res.status(200).send(person);
+}
+
 async function signUpUser(req, res) {
   try {
     if (await usersRepositories.findUserBy("email", req.body.email)) {
@@ -44,7 +50,7 @@ async function signUpUser(req, res) {
       return res.status(409).send({ error: "Telefone já está em uso" });
     }
 
-    if (await usersRepositories.findPersonByCpf(req.body.cpf)) {
+    if (await usersRepositories.findPersonByKey("cpf", req.body.cpf)) {
       return res.status(409).send({ error: "CPF já está em uso" });
     }
 
@@ -107,6 +113,7 @@ async function removeUser(req, res) {
 
 module.exports = {
   getUsers,
+  getPerson,
   signUpUser,
   signInUser,
   removeUser,

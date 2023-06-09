@@ -19,5 +19,6 @@ module.exports = {
     "no-console": ["error", { allow: ["error"] }],
     "no-shadow": ["off"],
     "no-restricted-globals": "off",
+    "no-continue": "off",
   },
 };

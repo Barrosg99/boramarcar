@@ -6,6 +6,12 @@ requisicao
     const { data } = res;
     const container = document.querySelector("#lista-eventos");
     container.innerHTML = "";
+    if (!data.length) {
+      const h1 = document.createElement("h1");
+      h1.className = "h1";
+      h1.innerText = "Não há eventos no momento :(\nCrie o seu !!!";
+      container.appendChild(h1);
+    }
     for (const evento of data) {
       const card = document.createElement("div");
       card.className = "card";

@@ -16,6 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app
   .get("/pessoas", usersController.getUsers)
+  .get("/pessoas/eu", authenticate, usersController.getPerson)
   .post("/pessoas", upload.single("file"), usersController.signUpUser)
   // .put('/pessoas/:id', usersController.signUpOrEditUser)
   .delete("/pessoas/:id", usersController.removeUser);

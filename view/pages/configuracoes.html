@@ -39,48 +39,72 @@
       </div>
     </div>
   </nav>
-  <h1 class="h1">Configurações:</h1>
-  <div class="d-flex justify-content-center">
+  <h1 class="h1" style="margin:5px ;">Configurações:</h1>
+  <form class="d-flex justify-content-around flex-wrap-reverse" style="padding: 0px 40px;">
     <div>
-      <img src="../images/gato.jpg" class="img-fluid"
-        style="border-radius: 100%; max-width: 315px; max-height: 315px; width: 100%;">
+      <div style="border-radius: 100%; width: 315px; height: 315px; position: relative;">
+        <div>
+          <label for="file-upload" class="custom-file-upload troca-avatar"
+            style="background: transparent; display: none;">
+            <i class="cloud-upload">Subir
+              arquivo</i>
+            <input disabled id="file-upload" type="file" name="file" accept="image/*" required
+              style="background: transparent; font-size: 0; cursor: pointer;" />
+          </label>
+        </div>
+        <img src="" class="img-fluid"
+          style="border-radius: 100%; width: 315px; height: 315px; width: 100%; position: absolute;">
+
+      </div>
       <h2 style="color: #004AAD; font-weight: bold; margin-top: 25px; margin-bottom: 25px; text-align: center;">
-        Gatinho
-        Fofo</h2>
-      <button class=" btn btn-primary" type="button" style="max-width: 315px; width: 100%; margin-bottom: 25px;">Editar
+        Trocar avatar
+      </h2>
+      <button id="editar" class="btn btn-primary" type="button"
+        style="max-width: 315px; width: 100%; margin-bottom: 25px;">Editar
         perfil</button>
     </div>
-    <div style="margin-left: 40px; max-height: 300px; height: 100%;">
-      <form class="form-cadastro" style="padding: 0; padding-bottom: 30px; ">
-        <div>
-          <h1 style="color: #004AAD; font-weight: bold; font-size: 30px; margin-top: 25px; margin-bottom: 25px; ">
-            Meus
-            dados:</h1>
-        </div>
-        <div class="mb-4" style="margin-bottom: 0.5rem!important;">
-          <input type="text" class="form-control" id="input-nome" name="nome" placeholder="Nome:">
-        </div>
-        <div class="mb-4" style="margin-bottom: 0.5rem!important;">
-          <input type="text" class="form-control cpf-mask" id="input-cpf" name="cpf" placeholder="CPF:">
-        </div>
-        <div class="mb-4 d-flex justify-content-between" style="margin-bottom: 0.5rem!important;">
-          <input type="text" placeholder="Data de nascimento:" class="form-control" type="text" id="input-nascimento"
-            name="dataNascimento" style="width: 49%">
+    <!-- <div style="margin-left: 40px;"> -->
+    <div class="form-cadastro" style="padding: 0;padding-bottom: 30px;margin: 0px 24px;">
+      <!-- <div>
+        <h1 style="color: #004AAD; font-weight: bold; font-size: 30px; margin-bottom: 25px; ">
+          Meus
+          dados:</h1>
+      </div> -->
+      <div class="mb-4" style="margin-bottom: 0.5rem!important;">
+        <input disabled type="text" class="form-control" id="input-nome" name="nome" placeholder="Nome:">
+      </div>
+      <div class="mb-4" style="margin-bottom: 0.5rem!important;">
+        <input disabled type="text" class="form-control cpf-mask" id="input-cpf" name="cpf" placeholder="CPF:">
+      </div>
+      <div class="mb-4 d-flex justify-content-between" style="margin-bottom: 0.5rem!important;">
+        <input disabled type="text" placeholder="Data de nascimento:" class="form-control same-line-input" type="text"
+          onfocus="this.max=new Date().toISOString().split('T')[0]; this.type='date'" onblur="(this.type='text')"
+          id="input-nascimento" name="data_nascimento" style="width: 49%">
+        <!-- <input disabled type="text" placeholder="Data de nascimento:" class="form-control" type="text"
+          id="input-nascimento" name="data_nascimento" style="width: 49%"> -->
 
-          <input type="text" class="form-control cel-sp-mask" id="input-telefone" name="telefone"
-            placeholder="Telefone:" style="width: 49%">
-        </div>
-        <div class="mb-4" style="margin-bottom: 0.5rem!important;">
-          <input type="text" class="form-control" placeholder="Email:">
-        </div>
-        <div class="mb-4" style="margin-bottom: 0.5rem!important;">
-          <input type="text" class="form-control" placeholder="Senha:">
-        </div>
-      </form>
+        <input disabled type="text" class="form-control cel-sp-mask" id="input-telefone" name="telefone"
+          placeholder="Telefone:" style="width: 49%">
+      </div>
+      <div class="mb-4" style="margin-bottom: 0.5rem!important;">
+        <input disabled type="text" class="form-control" placeholder="Email:" name="email">
+      </div>
+      <div class="mb-4" style="margin-bottom: 0.5rem!important;">
+        <input disabled type="text" class="form-control" placeholder="Senha:" name="senha">
+      </div>
+      <div class="mb-4" style="margin-bottom: 0.5rem!important;">
+        <input disabled type="text" class="form-control" placeholder="Confirmar senha:">
+      </div>
     </div>
+  </form>
   </div>
-
-
+  </div>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script type="module" src="../scripts/navbar.js"></script>
+  <script type="module" src="../scripts/configuracoes.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
+    crossorigin="anonymous"></script>
 </body>
 
 </html>

@@ -24,8 +24,8 @@ async function findUserBy(key, value) {
   return rows[0];
 }
 
-async function findPersonByCpf(cpf) {
-  const [rows] = await pool.query("SELECT * FROM pessoa WHERE cpf = ?", [cpf]);
+async function findPersonByKey(key, value) {
+  const [rows] = await pool.query(`SELECT * FROM pessoa JOIN usuario ON id = fk_Usuario_id WHERE ${key} = ?`, [value]);
   return rows[0];
 }
 
@@ -55,7 +55,7 @@ async function deleteUser({ id }) {
 module.exports = {
   findUsers,
   findUserBy,
-  findPersonByCpf,
+  findPersonByKey,
   createUser,
   createPerson,
   deleteUser,

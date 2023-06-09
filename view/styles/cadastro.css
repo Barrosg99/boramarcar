@@ -34,6 +34,11 @@
   font-family: "Fredoka", sans-serif;
 }
 
+#custom-style input:disabled,
+#custom-style select:disabled {
+  background-color: #a3a3a3;
+}
+
 #custom-style input::placeholder {
   color: #ffff;
 }
@@ -147,13 +152,42 @@ input[type="file"] {
   background-color: #a9bfdd;
 }
 
-@media (max-width: 410px) {
+#custom-style .cloud-upload {
+  font-size: inherit;
+  text-align: center;
+  display: block;
+  margin-top: 115px;
+}
+
+#custom-style .troca-avatar {
+  border-radius: 100%;
+  width: 315px;
+  height: 315px;
+  position: absolute;
+  z-index: 1;
+  font-size: 0;
+}
+
+#custom-style .troca-avatar:hover {
+  cursor: pointer;
+  background: #000000b5 !important;
+  /* line-height: 315px; */
+  text-align: center;
+  font-size: 35px;
+  color: white;
+}
+
+@media (max-width: 425px) {
   .form-cadastro {
     min-width: 100%;
   }
 }
 
 @media (max-width: 360px) {
+  .form-cadastro {
+    padding-top: 50px;
+  }
+
   .content {
     padding: 0px;
   }
