@@ -1,7 +1,7 @@
-/* global axios */
 import * as utils from "./utils.js";
 
 const userInfo = utils.verifyLogin();
+const api = utils.api();
 
 const dateInput = document.getElementById("input-data-evento");
 
@@ -57,20 +57,24 @@ form.onsubmit = function () {
   body.publico = body.publico === "true";
   submitButton.disabled = true;
 
-  const requisicao = axios.post("http://localhost:8080/eventos", body, {
-    headers: {
-      Authorization: `Bearer ${userInfo.token}`,
-      "Content-Type": "multipart/form-data",
-    },
-  });
-  requisicao
+  api
+    .post("/eventos", body, {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    })
     .then(() => {
       utils.goTo("index.html");
     })
     .catch((e) => {
-      const errorMsg = e.response ? e.response.data.error : e;
+      const errorMsg = e.response ? e.response.data.error || e.message : e;
       const errorDiv = document.querySelector(".error-container");
       errorDiv.innerText = `Algo deu errado, tente novamente\n${errorMsg}`;
+      if (e.response && e.response.status === 401) {
+        errorDiv.innerText = "Algo deu errado, tente novamente\nLogue novamente";
+        localStorage.removeItem("token");
+      }
     })
     .finally(() => {
       submitButton.disabled = false;
