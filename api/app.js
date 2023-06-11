@@ -18,7 +18,7 @@ app
   .get("/pessoas", usersController.getUsers)
   .get("/pessoas/eu", authenticate, usersController.getPerson)
   .post("/pessoas", upload.single("file"), usersController.signUpUser)
-  // .put('/pessoas/:id', usersController.signUpOrEditUser)
+  .put("/pessoas/eu", authenticate, upload.single("file"), usersController.editUser)
   .delete("/pessoas/:id", usersController.removeUser);
 
 app.post("/login", usersController.signInUser).post("/sign-out", authenticate, usersController.signOut);

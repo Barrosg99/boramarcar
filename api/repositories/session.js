@@ -2,7 +2,7 @@ const { v4: uuidv4 } = require("uuid");
 const pool = require("../database/DB_config");
 
 async function createByUserId(userId) {
-  const insertSessionSql = `INSERT INTO sessao (fk_Usuario_id, token) 
+  const insertSessionSql = `INSERT INTO sessao (usuarioId, token) 
   VALUES (?,?);
   SELECT * FROM sessao WHERE id = LAST_INSERT_ID();
   `;
@@ -19,7 +19,7 @@ async function findByToken(token) {
 }
 
 async function destroyByUserId(userId) {
-  const querySessionSql = "DELETE FROM sessao WHERE fk_Usuario_id = ?";
+  const querySessionSql = "DELETE FROM sessao WHERE usuarioId = ?";
   const row = await pool.query(querySessionSql, [userId]);
 
   return row;

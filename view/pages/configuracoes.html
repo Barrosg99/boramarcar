@@ -40,7 +40,8 @@
     </div>
   </nav>
   <h1 class="h1" style="margin:5px ;">Configurações:</h1>
-  <form class="d-flex justify-content-around flex-wrap-reverse" style="padding: 0px 40px;">
+  <form class="d-flex justify-content-around flex-wrap-reverse" style="padding: 0px 40px;"
+    enctype="multipart/form-data">
     <div>
       <div style="border-radius: 100%; width: 315px; height: 315px; position: relative;">
         <div>
@@ -79,7 +80,7 @@
       <div class="mb-4 d-flex justify-content-between" style="margin-bottom: 0.5rem!important;">
         <input disabled required type="text" placeholder="Data de nascimento:" class="form-control same-line-input"
           type="text" onfocus="this.max=new Date().toISOString().split('T')[0]; this.type='date'"
-          onblur="(this.type='text')" id="input-nascimento" name="data_nascimento" style="width: 49%">
+          onblur="(this.type='text')" id="input-nascimento" name="dataNascimento" style="width: 49%">
 
 
         <input type="text" minlength="15" class=" form-control cel-sp-mask same-line-input" id="input-telefone"

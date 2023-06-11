@@ -1,4 +1,3 @@
-const bcrypt = require("bcrypt");
 const pool = require("../database/DB_config");
 
 // {
@@ -25,30 +24,53 @@ async function findUserBy(key, value) {
 }
 
 async function findPersonByKey(key, value) {
-  const [rows] = await pool.query(`SELECT * FROM pessoa JOIN usuario ON id = fk_Usuario_id WHERE ${key} = ?`, [value]);
+  const [rows] = await pool.query(`SELECT * FROM pessoa JOIN usuario ON id = usuarioId WHERE ${key} = ?`, [value]);
   return rows[0];
 }
 
 async function createUser({ nome, email, senha, telefone, imageId }) {
-  const encrypPassword = bcrypt.hashSync(senha, 10);
-  const insertUserSql = `INSERT INTO usuario (nome, telefone, email, senha, fk_Imagem_id) 
+  const insertUserSql = `INSERT INTO usuario (nome, telefone, email, senha, imagemId) 
   VALUES (?, ?, ?, ?, ?); SELECT LAST_INSERT_ID();`;
-  const [row] = await pool.query(insertUserSql, [nome, telefone, email, encrypPassword, imageId]);
+  const [row] = await pool.query(insertUserSql, [nome, telefone, email, senha, imageId]);
   return { userId: row[1][0]["LAST_INSERT_ID()"] };
 }
 
 async function createPerson({ userId, cpf, dataNascimento }) {
-  const insertPersonSql = `INSERT INTO pessoa (cpf, data_nascimento, fk_Usuario_id)
+  const insertPersonSql = `INSERT INTO pessoa (cpf, dataNascimento, usuarioId)
   VALUES (?,?,?);
   SELECT nome, telefone, email, cpf FROM boramarcar.usuario 
   JOIN boramarcar.pessoa 
-  ON usuario.id = pessoa.fk_Usuario_id`;
+  ON usuario.id = pessoa.usuarioId`;
   const [row] = await pool.query(insertPersonSql, [cpf, dataNascimento, userId]);
   return row[1][0];
 }
 
-async function deleteUser({ id }) {
-  const row = await pool.query("DELETE FROM pessoa WHERE idPessoa = ?", [id]);
+async function editUser({ userId, nome, email, telefone, senha, imageId, removeImageId }) {
+  let fields = "nome = ?, telefone = ?, email = ?";
+  const variables = [nome, telefone, email, userId];
+  if (senha) {
+    fields += ", senha = ?";
+    variables.splice(variables.length - 1, 0, senha);
+  }
+  if (imageId) {
+    fields += ", imagemId = ?";
+    variables.splice(variables.length - 1, 0, imageId);
+  }
+  const editUserSql = `UPDATE usuario SET ${fields} WHERE id = ?;`;
+  const [row] = await pool.query(editUserSql, variables);
+  if (removeImageId) pool.query("DELETE FROM imagem WHERE id = ?", [removeImageId]);
+  return row;
+}
+
+async function editPerson({ id, cpf, dataNascimento }) {
+  const editPersonSql = "UPDATE pessoa SET cpf = ?, dataNascimento = ? WHERE usuarioId = ?;";
+
+  const [row] = await pool.query(editPersonSql, [cpf, dataNascimento, id]);
+  return row;
+}
+
+async function deleteUser(id) {
+  const [row] = await pool.query("DELETE FROM usuario WHERE id = ?", [id]);
   return row;
 }
 
@@ -58,6 +80,8 @@ module.exports = {
   findPersonByKey,
   createUser,
   createPerson,
+  editUser,
+  editPerson,
   deleteUser,
   // findUserById,
 };

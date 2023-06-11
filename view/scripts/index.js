@@ -18,7 +18,7 @@ try {
     card.className = "card";
 
     const img = document.createElement("img");
-    img.src = `http://localhost:8080/imagens/${evento.fk_Imagem_Id}`;
+    img.src = `http://localhost:8080/imagens/${evento.imagemId}`;
     img.className = "card-img-top";
 
     const cardBody = document.createElement("div");

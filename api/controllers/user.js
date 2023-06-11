@@ -35,7 +35,7 @@ async function getUsers(req, res) {
 }
 
 async function getPerson(req, res) {
-  const person = await usersRepositories.findPersonByKey("fk_Usuario_id", req.user.id);
+  const person = await usersRepositories.findPersonByKey("usuarioId", req.user.id);
   delete person.senha;
   return res.status(200).send(person);
 }
@@ -54,14 +54,24 @@ async function signUpUser(req, res) {
       return res.status(409).send({ error: "CPF já está em uso" });
     }
 
+    req.body.senha = bcrypt.hashSync(req.body.senha, 10);
+    let person;
     const { file } = req;
     const { imageId } = await imageRepositories.createImage({ file });
     const { userId } = await usersRepositories.createUser({
       imageId,
       ...req.body,
     });
-    const person = await usersRepositories.createPerson({ userId, ...req.body });
-    fs.rmSync(`${__dirname}/../static/temp/${file.filename}`);
+    try {
+      person = await usersRepositories.createPerson({ userId, ...req.body });
+    } catch (error) {
+      usersRepositories.deleteUser(userId);
+      imageRepositories.deleteImage(imageId);
+      throw error;
+    } finally {
+      fs.rmSync(`${__dirname}/../static/temp/${file.filename}`);
+    }
+
     return res.status(200).send(person);
   } catch (e) {
     console.error(e);
@@ -101,6 +111,39 @@ async function signOut(req, res) {
   }
 }
 
+async function editUser(req, res) {
+  if (req.user.email !== req.body.email && (await usersRepositories.findUserBy("email", req.body.email))) {
+    return res.status(409).send({ error: "Email já está em uso" });
+  }
+
+  if (req.user.telefone !== req.body.telefone && (await usersRepositories.findUserBy("telefone", req.body.telefone))) {
+    return res.status(409).send({ error: "Telefone já está em uso" });
+  }
+
+  if (req.user.cpf !== req.body.cpf && (await usersRepositories.findPersonByKey("cpf", req.body.cpf))) {
+    return res.status(409).send({ error: "CPF já está em uso" });
+  }
+
+  if (req.body.senha) req.body.senha = bcrypt.hashSync(req.body.senha, 10);
+
+  const { file } = req;
+
+  if (file) {
+    const { imageId } = await imageRepositories.createImage({ file });
+    req.body.imageId = imageId;
+    req.body.removeImageId = req.user.imagemId;
+    fs.rmSync(`${__dirname}/../static/temp/${file.filename}`);
+  }
+
+  await usersRepositories.editUser({
+    userId: req.user.usuarioId,
+    ...req.body,
+  });
+  await usersRepositories.editPerson({ id: req.user.id, ...req.body });
+
+  return res.status(200).send(req.user);
+}
+
 async function removeUser(req, res) {
   try {
     const user = await usersRepositories.deleteUser({ id: req.params.id });
@@ -116,6 +159,7 @@ module.exports = {
   getPerson,
   signUpUser,
   signInUser,
+  editUser,
   removeUser,
   signOut,
 };

@@ -31,14 +31,14 @@ try {
     },
   });
 
-  avatar = `http://localhost:8080/imagens/${dadosUsuario.fk_Imagem_id}`;
+  avatar = `http://localhost:8080/imagens/${dadosUsuario.imagemId}`;
   img.src = avatar;
 
   for (const input of allInputs) {
     if (!input.name) continue;
     if (input.name === "file") continue;
     if (input.name === "senha") continue;
-    if (input.name === "data_nascimento") {
+    if (input.name === "dataNascimento") {
       input.value = dadosUsuario[input.name].split("T")[0];
       continue;
     }
@@ -68,37 +68,36 @@ const fileLabel = document.querySelector("label");
 const form = document.querySelector("form");
 
 form.onsubmit = function () {
-  try {
-    const formData = new FormData(form);
-    if (fileInput.files[0]) formData.append("file", fileInput.files[0]);
-    const body = Object.fromEntries(formData);
-    if (!body.file.size) delete body.file;
-    if (!body.senha?.length) delete body.senha;
-    api
-      .get("/pessoas/eu", {
-        headers: {
-          Authorization: `Bearer ${userInfo.token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((res) => {
-        alert(res);
-      })
-      .finally(() => {
-        fileLabel.style.display = "none";
-        editButton.innerText = "Editar perfil";
-        editButton.className = "btn btn-primary";
-        editButton.type = "button";
-        toggleAllInputs();
-      });
-
-    console.log(body);
-  } catch (error) {
-    console.log(error);
-  }
+  const formData = new FormData(form);
+  if (fileInput.files[0]) formData.append("file", fileInput.files[0]);
+  const body = Object.fromEntries(formData);
+  if (!body.file.size) delete body.file;
+  if (!body.senha?.length) delete body.senha;
+  api
+    .put("/pessoas/eu", body, {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then(() => {
+      location.reload();
+    })
+    .catch((e) => {
+      let errorMsg = e.response ? e.response.data.error || e.message : e;
+      if (e.response && e.response.status === 401) {
+        errorMsg = "Algo deu errado, tente novamente\nLogue novamente";
+        localStorage.removeItem("token");
+      }
+      alert(errorMsg);
+    })
+    .finally(() => {
+      fileLabel.style.display = "none";
+      editButton.innerText = "Editar perfil";
+      editButton.className = "btn btn-primary";
+      editButton.type = "button";
+      toggleAllInputs();
+    });
   return false;
   // editButton.disabled = true;
 };

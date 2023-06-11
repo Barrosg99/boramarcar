@@ -15,15 +15,16 @@ async function authenticate(req, res, next) {
     const sessionDate = new Date(session.criado_em);
 
     if (new Date() - sessionDate > FIVE_HOURS) {
-      await sessionsRepositories.destroyByUserId(session.fk_Usuario_id);
+      await sessionsRepositories.destroyByUserId(session.usuarioId);
       return res.status(401).send({ error: "Token expirado" });
     }
 
-    const user = await usersRepositories.findUserBy("id", session.fk_Usuario_id);
+    const person = await usersRepositories.findPersonByKey("usuarioId", session.usuarioId);
+    // const user = await usersRepositories.findUserBy("id", session.usuarioId);
 
-    if (!user) return res.status(401).send({ error: "Usuário não existe" });
+    if (!person) return res.status(401).send({ error: "Usuário não existe" });
 
-    req.user = user;
+    req.user = person;
     return next();
   } catch (e) {
     console.error(e);

@@ -19,7 +19,13 @@ async function findImageById(id) {
   return rows[0];
 }
 
+async function deleteImage(id) {
+  const row = await pool.query("DELETE FROM imagem WHERE id = ?", [id]);
+  return row;
+}
+
 module.exports = {
   createImage,
   findImageById,
+  deleteImage,
 };

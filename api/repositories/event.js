@@ -3,16 +3,16 @@ const fs = require("fs");
 const pool = require("../database/DB_config");
 
 async function findEvents() {
-  const getEventsSql = `SELECT ev.horario, ev.nome, ev.descricao, ev.publico, logradouro, complemento, cep, municipio, estado, fk_Imagem_Id 
+  const getEventsSql = `SELECT ev.horario, ev.nome, ev.descricao, ev.publico, logradouro, complemento, cep, municipio, estado, imagemId 
   FROM evento AS ev
-  join endereco ON endereco.id = fk_Endereco_id;`;
+  join endereco ON endereco.id = enderecoId;`;
   const [rows] = await pool.query(getEventsSql);
   return rows;
 }
 
-// const insertPersonSql = `SELECT Horario, Nome, Publico, url_imagem, fk_Usuario_id, fk_Endereco_id
+// const insertPersonSql = `SELECT Horario, Nome, Publico, url_imagem, usuarioId, enderecoId
 //   JOIN boramarcar.evento
-//   ON endereco.id = evento.fk_Endereco_id`;
+//   ON endereco.id = evento.enderecoId`;
 //   const [row] = await pool.query(insert, [cpf, data_nasc, addressId])
 //   return row[1][0];
 
@@ -22,7 +22,7 @@ async function findEventById(id) {
 }
 
 async function createEvent({ horario, nome, descricao, publico, imageId, userId, addressId }) {
-  const insertEventSql = `INSERT INTO evento (Horario, nome, descricao, publico, fk_Imagem_id, fk_Usuario_id, fk_Endereco_id) 
+  const insertEventSql = `INSERT INTO evento (Horario, nome, descricao, publico, imagemId, usuarioId, enderecoId) 
   VALUES (?, ?, ?, ?, ?, ?, ?); SELECT LAST_INSERT_ID();`;
   const variables = [horario, nome, descricao, publico === "true", imageId, userId, addressId];
   const [row] = await pool.query(insertEventSql, variables);
