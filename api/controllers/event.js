@@ -59,8 +59,8 @@ async function updateEvent(req, res) {
 
 async function removeEvent(req, res) {
   try {
-    const events = await eventsRepositories.deleteEvent({ id: req.params.id });
-    res.status(200).send(events);
+    await eventsRepositories.deleteEvent(req.params.id);
+    res.sendStatus(200);
   } catch (error) {
     console.error(error);
     res.sendStatus(500);

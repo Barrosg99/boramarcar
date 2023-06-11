@@ -74,6 +74,11 @@ async function deleteUser(id) {
   return row;
 }
 
+async function deletePerson(id) {
+  const [row] = await pool.query("DELETE FROM pessoa WHERE usuarioId = ?", [id]);
+  return row;
+}
+
 module.exports = {
   findUsers,
   findUserBy,
@@ -83,5 +88,6 @@ module.exports = {
   editUser,
   editPerson,
   deleteUser,
+  deletePerson,
   // findUserById,
 };

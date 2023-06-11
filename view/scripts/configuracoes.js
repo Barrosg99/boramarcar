@@ -49,6 +49,7 @@ try {
   if (e.response && e.response.status === 401) {
     errorMsg = "Algo deu errado\nLogue novamente";
     localStorage.removeItem("token");
+    location.reload();
   }
   alert(errorMsg);
 }
@@ -64,6 +65,7 @@ fileInput.onchange = () => {
 };
 
 const editButton = document.getElementById("editar");
+const excluirButton = document.getElementById("excluir");
 const fileLabel = document.querySelector("label");
 const form = document.querySelector("form");
 
@@ -81,6 +83,7 @@ form.onsubmit = function () {
       },
     })
     .then(() => {
+      alert("Dados atualizados");
       location.reload();
     })
     .catch((e) => {
@@ -99,7 +102,6 @@ form.onsubmit = function () {
       toggleAllInputs();
     });
   return false;
-  // editButton.disabled = true;
 };
 
 editButton.onclick = () => {
@@ -116,5 +118,31 @@ editButton.onclick = () => {
     // editButton.innerText = "Editar perfil";
     // editButton.className = "btn btn-primary";
     // editButton.type = "submit";
+  }
+};
+
+excluirButton.onclick = () => {
+  const excluir = confirm("Deseja excluir sua conta ?\nIsso apagará todos os seus eventos criados.");
+  if (excluir) {
+    api
+      .delete("/pessoas/eu", {
+        headers: {
+          Authorization: `Bearer ${userInfo.token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then(() => {
+        utils.goTo("index.html");
+        localStorage.removeItem("token");
+      })
+      .catch((e) => {
+        let errorMsg = e.response ? e.response.data.error || e.message : e;
+        if (e.response && e.response.status === 401) {
+          errorMsg = "Algo deu errado, tente novamente\nLogue novamente";
+          localStorage.removeItem("token");
+          location.reload();
+        }
+        alert(errorMsg);
+      });
   }
 };

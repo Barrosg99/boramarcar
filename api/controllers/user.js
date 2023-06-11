@@ -146,8 +146,11 @@ async function editUser(req, res) {
 
 async function removeUser(req, res) {
   try {
-    const user = await usersRepositories.deleteUser({ id: req.params.id });
-    return res.status(200).send(user);
+    const { id } = req.user;
+    await sessionsRepositories.destroyByUserId(id);
+    await imageRepositories.deleteEventImages(id);
+    await imageRepositories.deleteImage(req.user.imagemId);
+    return res.sendStatus(200);
   } catch (e) {
     console.error(e);
     return res.sendStatus(500);
