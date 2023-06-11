@@ -47,6 +47,5 @@ try {
 } catch (e) {
   const errorMsg = e.response ? e.response.data.error || e.message : e;
   const msg = `Algo deu errado, tente novamente\n${errorMsg}`;
-  // eslint-disable-next-line no-alert
   alert(msg);
 }

@@ -18,6 +18,16 @@ export function verificaSenha(password, confirmPassword) {
   }
 }
 
+export function verificaData(data) {
+  const hoje = new Date();
+
+  if (new Date(data.value) > hoje) {
+    data.setCustomValidity("Data não aceita.");
+  } else {
+    data.setCustomValidity("");
+  }
+}
+
 export function getParameters() {
   const paramsRet = {};
   const url = window.location.href;
@@ -51,18 +61,19 @@ export const signOut = (userInfo, axios) => {
   });
   requisicao
     .then(() => {
-      localStorage.removeItem("token");
-      location.reload();
+      goTo("index.html");
     })
     .catch((e) => {
       const errorMsg = e.response.data.error ? e.response.data.error : e;
       const msg = `Algo deu errado, tente novamente\n${errorMsg}`;
-      // eslint-disable-next-line no-alert
       alert(msg);
       if (e.response && e.response.status === 401) {
-        localStorage.removeItem("token");
-        location.reload();
+        goTo("index.html");
       }
+    })
+    .finally(() => {
+      localStorage.removeItem("token");
+      localStorage.removeItem("beforeLoginRoute");
     });
 };
 

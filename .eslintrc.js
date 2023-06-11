@@ -20,5 +20,6 @@ module.exports = {
     "no-shadow": ["off"],
     "no-restricted-globals": "off",
     "no-continue": "off",
+    "no-alert": "off",
   },
 };

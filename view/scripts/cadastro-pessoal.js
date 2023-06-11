@@ -3,17 +3,7 @@ import * as utils from "./utils.js";
 
 const data = document.getElementById("input-nascimento");
 
-function verificaData() {
-  const hoje = new Date();
-
-  if (new Date(data.value) > hoje) {
-    data.setCustomValidity("Data não aceita.");
-  } else {
-    data.setCustomValidity("");
-  }
-}
-
-data.onchange = verificaData;
+data.onchange = () => utils.verificaData(data);
 
 const params = utils.getParameters();
 const form = document.querySelector("form.form-cadastro");
