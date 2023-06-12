@@ -1,4 +1,3 @@
-const bcrypt = require("bcrypt");
 const pool = require("../database/DB_config");
 
 // {
@@ -14,7 +13,6 @@ const pool = require("../database/DB_config");
 //   "enderco": "Rua iapó 1174, rebouças"
 // }
 
-// funcoes de usuário
 async function findUsers() {
   const [rows] = await pool.query("SELECT * FROM pessoa");
   return rows;
@@ -25,36 +23,62 @@ async function findUserBy(key, value) {
   return rows[0];
 }
 
-async function createUser({ nome, email, senha, telefone }) {
-  const encrypPassword = bcrypt.hashSync(senha, 10);
-  const insertUserSql = `INSERT INTO usuario (nome, telefone, email, senha) 
-  VALUES (?, ?, ?, ?); SELECT LAST_INSERT_ID();`;
-  const [row] = await pool.query(insertUserSql, [nome, telefone, email, encrypPassword]);
+async function createUser({ nome, email, senha, telefone, imageId }) {
+  const insertUserSql = `INSERT INTO usuario (nome, telefone, email, senha, imagemId) 
+  VALUES (?, ?, ?, ?, ?); SELECT LAST_INSERT_ID();`;
+  const [row] = await pool.query(insertUserSql, [nome, telefone, email, senha, imageId]);
   return { userId: row[1][0]["LAST_INSERT_ID()"] };
 }
 
-async function deleteUser({ id }) {
-  const row = await pool.query("DELETE FROM pessoa WHERE idPessoa = ?", [id]);
+async function editUser({ userId, nome, email, telefone, senha, imageId, removeImageId }) {
+  let fields = "nome = ?, telefone = ?, email = ?";
+  const variables = [nome, telefone, email, userId];
+  if (senha) {
+    fields += ", senha = ?";
+    variables.splice(variables.length - 1, 0, senha);
+  }
+  if (imageId) {
+    fields += ", imagemId = ?";
+    variables.splice(variables.length - 1, 0, imageId);
+  }
+  const editUserSql = `UPDATE usuario SET ${fields} WHERE id = ?;`;
+  const [row] = await pool.query(editUserSql, variables);
+  if (removeImageId) pool.query("DELETE FROM imagem WHERE id = ?", [removeImageId]);
   return row;
 }
 
-// funcoes de pessoa
-async function findPersonByCpf(cpf) {
-  const [rows] = await pool.query("SELECT * FROM pessoa WHERE cpf = ?", [cpf]);
+async function deleteUser(id) {
+  const [row] = await pool.query("DELETE FROM usuario WHERE id = ?", [id]);
+  return row;
+}
+
+async function findPersonByKey(key, value) {
+  const [rows] = await pool.query(`SELECT * FROM pessoa JOIN usuario ON id = usuarioId WHERE ${key} = ?`, [value]);
   return rows[0];
 }
 
 async function createPerson({ userId, cpf, dataNascimento }) {
-  const insertPersonSql = `INSERT INTO pessoa (cpf, data_nascimento, fk_Usuario_id)
+  const insertPersonSql = `INSERT INTO pessoa (cpf, dataNascimento, usuarioId)
   VALUES (?,?,?);
   SELECT nome, telefone, email, cpf FROM boramarcar.usuario 
   JOIN boramarcar.pessoa 
-  ON usuario.id = pessoa.fk_Usuario_id`;
+  ON usuario.id = pessoa.usuarioId`;
   const [row] = await pool.query(insertPersonSql, [cpf, dataNascimento, userId]);
   return row[1][0];
 }
 
-// funcoes de estabelecimento
+async function editPerson({ id, cpf, dataNascimento }) {
+  const editPersonSql = "UPDATE pessoa SET cpf = ?, dataNascimento = ? WHERE usuarioId = ?;";
+
+  const [row] = await pool.query(editPersonSql, [cpf, dataNascimento, id]);
+  return row;
+}
+
+async function deletePerson(id) {
+  const [row] = await pool.query("DELETE FROM pessoa WHERE usuarioId = ?", [id]);
+  return row;
+}
+
 async function createEstablishment({ userId, cnpj, tipo, addressId }) {
   const insertEstablishmentSql = `INSERT INTO estabelecimento (cnpj, tipo, fk_Usuario_id, fk_Endereco_id)
   VALUES (?,?,?, ?);
@@ -81,12 +105,14 @@ async function createAddress({ logradouro, complemento, cep, municipio, estado }
 module.exports = {
   findUsers,
   findUserBy,
-  findPersonByCpf,
+  findPersonByKey,
   createUser,
   createPerson,
+  editUser,
+  editPerson,
   deleteUser,
   createEstablishment,
   createAddress,
   findEstablishmentByCnpj,
-  // findUserById,
+  deletePerson,
 };

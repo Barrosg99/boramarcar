@@ -1,4 +1,7 @@
+const fs = require("fs");
+
 const eventsRepositories = require("../repositories/event");
+const imageRepositories = require("../repositories/image");
 
 async function getEvents(req, res) {
   try {
@@ -12,12 +15,16 @@ async function getEvents(req, res) {
 
 async function createEvent(req, res) {
   try {
+    const { file } = req;
+    const { imageId } = await imageRepositories.createImage({ file });
     const { addressId } = await eventsRepositories.createAddress({ ...req.body });
     const events = await eventsRepositories.createEvent({
       addressId,
+      imageId,
       userId: req.user.id,
       ...req.body,
     });
+    fs.rmSync(`${__dirname}/../static/temp/${file.filename}`);
     res.status(200).send(events);
   } catch (e) {
     console.error(e);
@@ -52,8 +59,8 @@ async function updateEvent(req, res) {
 
 async function removeEvent(req, res) {
   try {
-    const events = await eventsRepositories.deleteEvent({ id: req.params.id });
-    res.status(200).send(events);
+    await eventsRepositories.deleteEvent(req.params.id);
+    res.sendStatus(200);
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
