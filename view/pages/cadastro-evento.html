@@ -29,10 +29,14 @@
       </div>
       <div class="d-flex botoes" id="navbarSupportedContent">
         <div class="d-flex">
-          <button class="btn btn1">Entrar</button>
+          <a href="login.html">
+            <button class="btn btn1">Entrar</button>
+          </a>
         </div>
         <div class="d-flex">
-          <button class="btn btn-primary btn2 disabled">Cadastre-se</button>
+          <a href="cadastro.html">
+            <button class="btn btn-primary btn2">Cadastre-se</button>
+          </a>
         </div>
       </div>
     </div>
@@ -48,11 +52,15 @@
           placeholder="Nome do evento:" pattern="[A-Za-záàâãéèêíóôõúç\s]{8,50}" title="Nome com 8 a 50 letras"
           maxlength="50" name="nome" required>
       </div>
-
+      <div class="mb-4">
+        <input type="text" class="form-control" id="input-descricao" aria-describedby="nomeHelp"
+          placeholder="Descrição do evento:" pattern="[A-Za-záàâãéèêíóôõúç\s]{8,50}" title="Descrição com 8 a 50 letras"
+          maxlength="50" name="descricao" required>
+      </div>
       <div class="mb-4 d-flex justify-content-between">
         <label for="file-upload" class="custom-file-upload">
           <i class="fa fa-cloud-upload">Upload da Imagem</i>
-          <input id="file-upload" type="file" name="file" required />
+          <input id="file-upload" type="file" name="file" accept="image/*" required />
         </label>
 
         <select class="form-select same-line-input" id="tipo" name="publico" required>
@@ -62,7 +70,13 @@
         </select>
       </div>
       <div class="mb-4 d-flex justify-content-between">
-        <select class="form-select same-line-input" id="estado" name="estado" required>
+        <input type="text" placeholder="Data do evento:" class="form-control same-line-input" type="text"
+          id="input-data-evento" name="horario" required>
+        <input type="text" class="form-control cep-mask same-line-input endereco" id="input-cep" name="cep"
+          placeholder="CEP:" pattern="(\d{5}-\d{3})" required>
+      </div>
+      <div class="mb-4 d-flex justify-content-between">
+        <select class="form-select same-line-input endereco" id="estado" name="estado" required>
           <option value="" selected hidden>Estado</option>
           <option value="AC">Acre</option>
           <option value="AL">Alagoas</option>
@@ -93,24 +107,18 @@
           <option value="TO">Tocantins</option>
           <option value="EX">Estrangeiro</option>
         </select>
-        <input type="text" class="form-control cep-mask same-line-input" id="input-cep" name="cep" placeholder="CEP:"
-          pattern="(\d{5}-\d{3})" required>
+        <input type="text" class="form-control same-line-input endereco" name="municipio" placeholder="Municipio:"
+          minlength="8" required>
       </div>
-      <div class="mb-4 d-flex justify-content-between">
-        <input type="text" class="form-control same-line-input" name="municipio" placeholder="Municipio:" minlength="8"
+      <div class="mb-4">
+        <input type="text" class="form-control endereco" name="logradouro" placeholder="Endereço:" minlength="8"
           required>
-        <input type="text" placeholder="Data do evento:" class="form-control same-line-input" type="text"
-          onfocus="this.max=new Date().toISOString().split('T')[0]; this.type='datetime-local'"
-          onblur="(this.type='text')" id="input-nascimento" name="horario" required>
       </div>
       <div class="mb-4">
-        <input type="text" class="form-control" name="logradouro" placeholder="Endereço:" minlength="8" required>
-      </div>
-      <div class="mb-4">
-        <input type="text" class="form-control" name="complemento" placeholder="Complemento:" minlength="8">
+        <input type="text" class="form-control endereco" name="complemento" placeholder="Complemento:" minlength="8">
       </div>
       <div class="d-md-flex flex-column align-items-center justify-content-md-center custom-buttons" id="type-buttons">
-        <button class="btn btn-primary cadastro" id="btn-pessoal" type="submit" formaction="sucesso-cadastro.html">
+        <button class="btn btn-primary cadastro" id="btn-pessoal" type="submit">
           Criar Evento
         </button>
         <div class="error-container"></div>
