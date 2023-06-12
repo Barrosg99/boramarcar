@@ -39,48 +39,77 @@
       </div>
     </div>
   </nav>
-  <h1 class="h1">Configurações:</h1>
-  <div class="d-flex justify-content-center">
+  <h1 class="h1" style="margin:5px ;">Configurações:</h1>
+  <form class="d-flex justify-content-around flex-wrap-reverse" style="padding: 0px 40px;"
+    enctype="multipart/form-data">
     <div>
-      <img src="../images/gato.jpg" class="img-fluid"
-        style="border-radius: 100%; max-width: 315px; max-height: 315px; width: 100%;">
-      <h2 style="color: #004AAD; font-weight: bold; margin-top: 25px; margin-bottom: 25px; text-align: center;">
-        Gatinho
-        Fofo</h2>
-      <button class=" btn btn-primary" type="button" style="max-width: 315px; width: 100%; margin-bottom: 25px;">Editar
-        perfil</button>
-    </div>
-    <div style="margin-left: 40px; max-height: 300px; height: 100%;">
-      <form class="form-cadastro" style="padding: 0; padding-bottom: 30px; ">
+      <div style="border-radius: 100%; width: 315px; height: 315px; position: relative;">
         <div>
-          <h1 style="color: #004AAD; font-weight: bold; font-size: 30px; margin-top: 25px; margin-bottom: 25px; ">
-            Meus
-            dados:</h1>
+          <label for="file-upload" class="custom-file-upload troca-avatar"
+            style="background: transparent; display: none;">
+            <i class="cloud-upload">Subir
+              arquivo</i>
+            <input id="file-upload" type="file" name="file" accept="image/*" disabled
+              style="background: transparent; font-size: 0; cursor: pointer;" />
+          </label>
         </div>
-        <div class="mb-4" style="margin-bottom: 0.5rem!important;">
-          <input type="text" class="form-control" id="input-nome" name="nome" placeholder="Nome:">
-        </div>
-        <div class="mb-4" style="margin-bottom: 0.5rem!important;">
-          <input type="text" class="form-control cpf-mask" id="input-cpf" name="cpf" placeholder="CPF:">
-        </div>
-        <div class="mb-4 d-flex justify-content-between" style="margin-bottom: 0.5rem!important;">
-          <input type="text" placeholder="Data de nascimento:" class="form-control" type="text" id="input-nascimento"
-            name="dataNascimento" style="width: 49%">
+        <img src="" class="img-fluid"
+          style="border-radius: 100%; width: 315px; height: 315px; width: 100%; position: absolute;">
 
-          <input type="text" class="form-control cel-sp-mask" id="input-telefone" name="telefone"
-            placeholder="Telefone:" style="width: 49%">
-        </div>
-        <div class="mb-4" style="margin-bottom: 0.5rem!important;">
-          <input type="text" class="form-control" placeholder="Email:">
-        </div>
-        <div class="mb-4" style="margin-bottom: 0.5rem!important;">
-          <input type="text" class="form-control" placeholder="Senha:">
-        </div>
-      </form>
+      </div>
+      <h2 style="color: #004AAD; font-weight: bold; margin-top: 25px; margin-bottom: 25px; text-align: center;">
+        Trocar avatar
+      </h2>
+      <div class="d-flex justify-content-around">
+        <button id="editar" class="btn btn-primary" type="button" style="max-width: 315px; margin-bottom: 25px;">Editar
+          perfil</button>
+        <button id="excluir" class="btn btn-danger" type="button" style="max-width: 315px; margin-bottom: 25px;">Excluir
+          perfil</button>
+      </div>
     </div>
+    <div class="form-cadastro" style="padding: 0;padding-bottom: 30px;margin: 0px 24px;">
+      <div class="mb-4" style="margin-bottom: 0.5rem!important;">
+        <input type="text" class="form-control" id="input-nome" name="nome" aria-describedby="nomeHelp"
+          placeholder="Nome:" pattern="[A-Za-záàâãéèêíóôõúç\s]{8,50}" title="Nome com 8 a 50 letras" disabled required>
+      </div>
+      <div class="mb-4 cpf-or-cnpj" style="margin-bottom: 0.5rem!important;">
+        <input disabled required minlength="14" type="text" class="form-control cpf-mask" id="input-cpf" name="cpf"
+          placeholder="CPF:">
+      </div>
+      <div class="mb-4 d-flex justify-content-between data-or-tipo" style="margin-bottom: 0.5rem!important;">
+        <input disabled required type="text" placeholder="Data de nascimento:" class="form-control same-line-input"
+          type="text" onfocus="this.max=new Date().toISOString().split('T')[0]; this.type='date'"
+          onblur="(this.type='text')" id="input-nascimento" name="dataNascimento" style="width: 49%">
+        <input type="text" minlength="15" class=" form-control cel-sp-mask same-line-input" id="input-telefone"
+          name="telefone" aria-describedby="nomeHelp" placeholder="Telefone:" style="width: 49%" disabled required>
+      </div>
+      <div class="mb-4" style="margin-bottom: 0.5rem!important;">
+        <input type="email" autocomplete="email" name="email" class="form-control" id="input-email"
+          aria-describedby="emailHelp" placeholder="E-mail:" required disabled>
+      </div>
+      <div class="mb-4" style="margin-bottom: 0.5rem!important;">
+        <input type="password" autocomplete="new-password" pattern="^[0-9a-zA-Z]+$" minlength="8" maxlength="12"
+          title="Senha precisa ter entre 8 a 12 caracteres e possui ao menos uma letra e um numero" name="senha"
+          class="form-control" id="input-senha" placeholder="Senha:" disabled>
+      </div>
+      <div class="mb-4" style="margin-bottom: 0.5rem!important;">
+        <input type="password" autocomplete="new-password" pattern="^[0-9a-zA-Z]+$" minlength="8" maxlength="12"
+          title="Senha precisa ter entre 8 a 12 caracteres e possui ao menos uma letra e um numero" class="form-control"
+          id="input-confirma-senha" placeholder="Confirmação de senha:" disabled>
+      </div>
+    </div>
+  </form>
   </div>
-
-
+  </div>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script type="module" src="../scripts/navbar.js"></script>
+  <script type="module" src="../scripts/configuracoes.js"></script>
+  <script async="" src="//www.google-analytics.com/analytics.js"></script>
+  <script type="text/javascript" src="//code.jquery.com/jquery-2.0.3.min.js"></script>
+  <script type="text/javascript" src="//assets.locaweb.com.br/locastyle/2.0.6/javascripts/locastyle.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
+    crossorigin="anonymous"></script>
 </body>
 
 </html>
