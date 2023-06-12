@@ -21,5 +21,7 @@ module.exports = {
     "no-restricted-globals": "off",
     "no-continue": "off",
     "no-alert": "off",
+    "implicit-arrow-linebreak": "off",
+    "function-paren-newline": "off",
   },
 };

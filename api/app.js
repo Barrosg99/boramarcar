@@ -19,9 +19,15 @@ app
   .get("/pessoas/eu", authenticate, usersController.getPerson)
   .post("/pessoas", upload.single("file"), usersController.signUpUser)
   .put("/pessoas/eu", authenticate, upload.single("file"), usersController.editUser)
-  .delete("/pessoas/:id", usersController.removeUser);
+  .delete("/pessoas/eu", authenticate, usersController.removeUser);
 
-app.post("/login", usersController.signInUser).post("/sign-out", authenticate, usersController.signOut);
+app
+  .post("/estabelecimento", upload.single("file"), (req, res) => usersController.signUpUser(req, res, "estabelecimento"))
+  .put("/estabelecimento/eu", authenticate, upload.single("file"), usersController.editUser)
+  .get("/estabelecimento/eu", authenticate, usersController.getEstablishment)
+  .delete("/estabelecimento/eu", authenticate, usersController.removeUser);
+
+app.post("/login", usersController.signInUser).post("/sign-out", authenticate, usersController.signOutUser);
 
 app.get("/imagens/:id", imagesController.getImage);
 

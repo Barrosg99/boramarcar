@@ -1,4 +1,4 @@
-const fs = require("fs");
+// const fs = require("fs");
 
 const pool = require("../database/DB_config");
 
@@ -40,29 +40,30 @@ async function updateEvent({ id, horario, nome, publico, imageUrl }) {
   return row;
 }
 
-async function deleteEvent({ id }) {
+async function deleteEvent(id) {
   const row = await pool.query("DELETE FROM evento WHERE id = ?", [id]);
   return row;
 }
 
-async function createImage({ file }) {
-  const tipo = file.mimetype;
-  const nome = file.originalname;
-  const arquivo = fs.readFileSync(`${__dirname}/../static/temp/${file.filename}`);
-  const insertImageSql = `INSERT INTO imagem (nome,tipo,arquivo) 
-  VALUES (?, ?, ?); SELECT LAST_INSERT_ID();`;
-  const variables = [nome, tipo, arquivo];
-  const [row] = await pool.query(insertImageSql, variables);
-  return { imageId: row[1][0]["LAST_INSERT_ID()"] };
-}
+// async function createImage({ file }) {
+//   const tipo = file.mimetype;
+//   const nome = file.originalname;
+//   const arquivo = fs.readFileSync(`${__dirname}/../static/temp/${file.filename}`);
+//   const insertImageSql = `INSERT INTO imagem (nome,tipo,arquivo)
+//   VALUES (?, ?, ?); SELECT LAST_INSERT_ID();`;
+//   const variables = [nome, tipo, arquivo];
+//   const [row] = await pool.query(insertImageSql, variables);
+//   return { imageId: row[1][0]["LAST_INSERT_ID()"] };
+// }
 
-async function createAddress({ logradouro, complemento, cep, municipio, estado }) {
-  const insertAddressSql = `INSERT INTO endereco (Logradouro, Complemento, CEP, Municipio, Estado) 
-  VALUES (?, ?, ?, ?, ?); SELECT LAST_INSERT_ID();`;
-  const variables = [logradouro, complemento, cep, municipio, estado];
-  const [row] = await pool.query(insertAddressSql, variables);
-  return { addressId: row[1][0]["LAST_INSERT_ID()"] };
-}
+// async function createAddress({ logradouro, complemento, cep, municipio, estado }) {
+// eslint-disable-next-line max-len
+//   const insertAddressSql = `INSERT INTO endereco (Logradouro, Complemento, CEP, Municipio, Estado)
+//   VALUES (?, ?, ?, ?, ?); SELECT LAST_INSERT_ID();`;
+//   const variables = [logradouro, complemento, cep, municipio, estado];
+//   const [row] = await pool.query(insertAddressSql, variables);
+//   return { addressId: row[1][0]["LAST_INSERT_ID()"] };
+// }
 
 module.exports = {
   findEvents,
@@ -70,6 +71,6 @@ module.exports = {
   createEvent,
   updateEvent,
   deleteEvent,
-  createAddress,
-  createImage,
+  // createAddress,
+  // createImage,
 };

@@ -19,6 +19,14 @@ async function findImageById(id) {
   return rows[0];
 }
 
+async function deleteEventImages(userId) {
+  const [row] = await pool.query("SELECT imagemId FROM boramarcar.evento where usuarioId = ?;", [userId]);
+  const imageIds = row.map(({ imagemId }) => imagemId);
+  if (imageIds.length) {
+    await pool.query("DELETE FROM imagem where id IN (?)", [imageIds]);
+  }
+}
+
 async function deleteImage(id) {
   const row = await pool.query("DELETE FROM imagem WHERE id = ?", [id]);
   return row;
@@ -28,4 +36,5 @@ module.exports = {
   createImage,
   findImageById,
   deleteImage,
+  deleteEventImages,
 };

@@ -57,7 +57,7 @@ export function goTo(url) {
 
 export const signOut = (userInfo, axios) => {
   const requisicao = axios.post("http://localhost:8080/sign-out", null, {
-    headers: { Authorization: `Bearer ${userInfo.token}` },
+    headers: { Authorization: `Bearer ${userInfo.token}`, "User-Type": userInfo.userType },
   });
   requisicao
     .then(() => {

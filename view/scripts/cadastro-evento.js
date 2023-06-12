@@ -4,6 +4,17 @@ const userInfo = utils.verifyLogin();
 const api = utils.api();
 
 const dateInput = document.getElementById("input-data-evento");
+const fileInput = document.getElementById("file-upload");
+const label = document.querySelector("label.custom-file-upload");
+const form = document.querySelector("form.form-cadastro");
+const enderecoInputs = document.querySelectorAll(".endereco");
+
+if (userInfo.userType === "estabelecimento") {
+  dateInput.style.width = "100%";
+  for (const endereco of enderecoInputs) {
+    endereco.remove();
+  }
+}
 
 dateInput.onblur = () => {
   dateInput.type = "text";
@@ -26,9 +37,6 @@ dateInput.onchange = () => {
   }
 };
 
-const fileInput = document.getElementById("file-upload");
-const label = document.querySelector("label.custom-file-upload");
-
 fileInput.onchange = () => {
   if (fileInput.files.length) {
     let formatedFileName;
@@ -47,8 +55,6 @@ fileInput.onchange = () => {
   }
 };
 
-const form = document.querySelector("form.form-cadastro");
-
 form.onsubmit = function () {
   const submitButton = document.getElementById("btn-pessoal");
   const formData = new FormData(form);
@@ -62,6 +68,7 @@ form.onsubmit = function () {
       headers: {
         Authorization: `Bearer ${userInfo.token}`,
         "Content-Type": "multipart/form-data",
+        "User-Type": userInfo.userType,
       },
     })
     .then(() => {

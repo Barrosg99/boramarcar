@@ -22,8 +22,7 @@
 .form-cadastro {
   width: 40%;
   min-width: 450px;
-  padding: 24px;
-  margin: 24px;
+  padding: 12px 24px;
 }
 
 #custom-style input,
@@ -177,17 +176,13 @@ input[type="file"] {
   color: white;
 }
 
-@media (max-width: 425px) {
+@media (max-width: 450px) {
   .form-cadastro {
     min-width: 100%;
   }
 }
 
 @media (max-width: 360px) {
-  .form-cadastro {
-    padding-top: 50px;
-  }
-
   .content {
     padding: 0px;
   }
