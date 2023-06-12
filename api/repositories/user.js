@@ -52,7 +52,7 @@ async function deleteUser(id) {
   return row;
 }
 
-async function findPersonByKey(key, value) {
+async function findPersonBy(key, value) {
   const [rows] = await pool.query(`SELECT * FROM pessoa JOIN usuario ON id = usuarioId WHERE ${key} = ?`, [value]);
   return rows[0];
 }
@@ -80,39 +80,38 @@ async function deletePerson(id) {
 }
 
 async function createEstablishment({ userId, cnpj, tipo, addressId }) {
-  const insertEstablishmentSql = `INSERT INTO estabelecimento (cnpj, tipo, fk_Usuario_id, fk_Endereco_id)
+  const insertEstablishmentSql = `INSERT INTO estabelecimento (cnpj, tipo, usuarioId, enderecoId)
   VALUES (?,?,?, ?);
-  SELECT nome, telefone, email, cpf FROM boramarcar.usuario 
+  SELECT nome, telefone, email, cnpj FROM boramarcar.usuario 
   JOIN boramarcar.estabelecimento 
-  ON usuario.id = estabelecimento.fk_Usuario_id`;
+  ON usuario.id = estabelecimento.usuarioId`;
   const [row] = await pool.query(insertEstablishmentSql, [cnpj, tipo, userId, addressId]);
   return row[1][0];
 }
 
-async function findEstablishmentByCnpj(cnpj) {
-  const [rows] = await pool.query("SELECT * FROM estabelecimento WHERE cnpj = ?", [cnpj]);
-  return rows[0];
+async function editEstablishment({ id, cnpj, tipo }) {
+  const editPersonSql = "UPDATE estabelecimento SET cnpj = ?, tipo = ? WHERE usuarioId = ?;";
+
+  const [row] = await pool.query(editPersonSql, [cnpj, tipo, id]);
+  return row;
 }
 
-async function createAddress({ logradouro, complemento, cep, municipio, estado }) {
-  const insertAddressSql = `INSERT INTO endereco (Logradouro, Complemento, CEP, Municipio, Estado) 
-  VALUES (?, ?, ?, ?, ?); SELECT LAST_INSERT_ID();`;
-  const variables = [logradouro, complemento, cep, municipio, estado];
-  const [row] = await pool.query(insertAddressSql, variables);
-  return { addressId: row[1][0]["LAST_INSERT_ID()"] };
+async function findEstablishmentBy(key, value) {
+  const [rows] = await pool.query(`SELECT * FROM estabelecimento JOIN usuario ON id = usuarioId WHERE ${key} = ?`, [value]);
+  return rows[0];
 }
 
 module.exports = {
   findUsers,
   findUserBy,
-  findPersonByKey,
+  findPersonBy,
   createUser,
   createPerson,
   editUser,
   editPerson,
   deleteUser,
   createEstablishment,
-  createAddress,
-  findEstablishmentByCnpj,
+  editEstablishment,
+  findEstablishmentBy,
   deletePerson,
 };

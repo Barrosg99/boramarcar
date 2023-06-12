@@ -16,9 +16,13 @@ form.onsubmit = function () {
       else utils.goTo("index.html");
     })
     .catch((e) => {
-      const errorMsg = e.response.data.error ? e.response.data.error : e;
+      const errorMsg = e.response ? e.response.data.error || e.message : e;
       const errorDiv = document.querySelector(".error-container");
       errorDiv.innerText = `Algo deu errado, tente novamente\n${errorMsg}`;
+      if (e.response && e.response.status === 401) {
+        errorDiv.innerText = "Algo deu errado, tente novamente\nLogue novamente";
+        localStorage.removeItem("token");
+      }
     })
     .finally(() => {
       submitButton.disabled = false;
