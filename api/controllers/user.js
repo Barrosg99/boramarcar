@@ -4,6 +4,7 @@ const fs = require("fs");
 const usersRepositories = require("../repositories/user");
 const sessionsRepositories = require("../repositories/session");
 const imageRepositories = require("../repositories/image");
+const addressRepositories = require("../repositories/address");
 
 function getUser(userData) {
   const { id, nome, email } = userData;
@@ -34,7 +35,7 @@ async function getUsers(req, res) {
   }
 }
 
-async function signUpUser(req, res) {
+async function signUpUser(req, res, userType) {
   try {
     if (await usersRepositories.findUserBy("email", req.body.email)) {
       return res.status(409).send({ error: "Email já está em uso" });
@@ -44,18 +45,35 @@ async function signUpUser(req, res) {
       return res.status(409).send({ error: "Telefone já está em uso" });
     }
 
-    if (await usersRepositories.findPersonByCpf(req.body.cpf)) {
+    if (userType === "estabelecimento") {
+      if (await usersRepositories.findEstablishmentBy("cnpj", req.body.cnpj)) {
+        return res.status(409).send({ error: "CNPJ já está em uso" });
+      }
+    } else if (await usersRepositories.findPersonBy("cpf", req.body.cpf)) {
       return res.status(409).send({ error: "CPF já está em uso" });
     }
 
+    req.body.senha = bcrypt.hashSync(req.body.senha, 10);
+    let person;
     const { file } = req;
     const { imageId } = await imageRepositories.createImage({ file });
     const { userId } = await usersRepositories.createUser({
       imageId,
       ...req.body,
     });
-    const person = await usersRepositories.createPerson({ userId, ...req.body });
-    fs.rmSync(`${__dirname}/../static/temp/${file.filename}`);
+    try {
+      if (userType === "estabelecimento") {
+        const { addressId } = await addressRepositories.createAddress({ ...req.body });
+        person = await usersRepositories.createEstablishment({ userId, addressId, ...req.body });
+      } else person = await usersRepositories.createPerson({ userId, ...req.body });
+    } catch (error) {
+      usersRepositories.deleteUser(userId);
+      imageRepositories.deleteImage(imageId);
+      throw error;
+    } finally {
+      fs.rmSync(`${__dirname}/../static/temp/${file.filename}`);
+    }
+
     return res.status(200).send(person);
   } catch (e) {
     console.error(e);
@@ -72,10 +90,14 @@ async function signInUser(req, res) {
     const checkPassword = bcrypt.compareSync(userInfo.senha, user.senha);
     if (!checkPassword) return res.status(401).send({ error: "Email ou senha incorretos" });
 
+    const isEstablishment = await usersRepositories.findEstablishmentBy("usuarioId", user.id);
+
+    const userType = isEstablishment ? "estabelecimento" : "pessoal";
+
     const { token } = await sessionsRepositories.createByUserId(user.id);
     const userData = getUser(user);
 
-    const response = { ...userData, token };
+    const response = { ...userData, userType, token };
 
     return res.status(200).send(response);
   } catch (e) {
@@ -84,7 +106,7 @@ async function signInUser(req, res) {
   }
 }
 
-async function signOut(req, res) {
+async function signOutUser(req, res) {
   try {
     const userId = `${req.user.id}`;
     await sessionsRepositories.destroyByUserId(userId);
@@ -95,20 +117,76 @@ async function signOut(req, res) {
   }
 }
 
+async function editUser(req, res) {
+  if (req.user.email !== req.body.email && (await usersRepositories.findUserBy("email", req.body.email))) {
+    return res.status(409).send({ error: "Email já está em uso" });
+  }
+
+  if (req.user.telefone !== req.body.telefone && (await usersRepositories.findUserBy("telefone", req.body.telefone))) {
+    return res.status(409).send({ error: "Telefone já está em uso" });
+  }
+
+  if (req.user.cpf !== req.body.cpf && (await usersRepositories.findPersonBy("cpf", req.body.cpf))) {
+    return res.status(409).send({ error: "CPF já está em uso" });
+  }
+
+  if (req.body.senha) req.body.senha = bcrypt.hashSync(req.body.senha, 10);
+
+  const { file } = req;
+
+  if (file) {
+    const { imageId } = await imageRepositories.createImage({ file });
+    req.body.imageId = imageId;
+    req.body.removeImageId = req.user.imagemId;
+    fs.rmSync(`${__dirname}/../static/temp/${file.filename}`);
+  }
+
+  await usersRepositories.editUser({
+    userId: req.user.usuarioId,
+    ...req.body,
+  });
+
+  if (req.user.userType === "estabelecimento") {
+    await usersRepositories.editEstablishment({ id: req.user.id, ...req.body });
+  } else {
+    await usersRepositories.editPerson({ id: req.user.id, ...req.body });
+  }
+
+  return res.status(200).send(req.user);
+}
+
 async function removeUser(req, res) {
   try {
-    const user = await usersRepositories.deleteUser({ id: req.params.id });
-    return res.status(200).send(user);
+    const { id } = req.user;
+    await sessionsRepositories.destroyByUserId(id);
+    await imageRepositories.deleteEventImages(id);
+    await imageRepositories.deleteImage(req.user.imagemId);
+    return res.sendStatus(200);
   } catch (e) {
     console.error(e);
     return res.sendStatus(500);
   }
 }
 
+async function getPerson(req, res) {
+  const person = await usersRepositories.findPersonBy("usuarioId", req.user.id);
+  delete person.senha;
+  return res.status(200).send(person);
+}
+
+async function getEstablishment(req, res) {
+  const establishment = await usersRepositories.findEstablishmentBy("usuarioId", req.user.id);
+  delete establishment.senha;
+  return res.status(200).send(establishment);
+}
+
 module.exports = {
   getUsers,
   signUpUser,
   signInUser,
+  editUser,
   removeUser,
-  signOut,
+  signOutUser,
+  getPerson,
+  getEstablishment,
 };

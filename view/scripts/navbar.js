@@ -23,7 +23,7 @@ if (userInfo) {
   const opcoes = [
     { href: "cadastro-evento.html", text: "Criar evento" },
     { href: "#", text: "Meus eventos" },
-    { href: "#", text: "Configurações" },
+    { href: "configuracoes.html", text: "Configurações" },
     { href: "#", text: "Sair", onclick: "signOut()" },
   ];
 
