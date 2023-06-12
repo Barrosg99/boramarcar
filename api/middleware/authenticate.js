@@ -5,8 +5,10 @@ const FIVE_HOURS = 5 * 60 * 60 * 1000;
 
 async function authenticate(req, res, next) {
   if (!req.header("Authorization")) return res.status(401).send({ error: "Token não enviado" });
+  if (!req.header("User-Type")) return res.status(401).send({ error: "User-Type não enviado" });
 
   const token = req.header("Authorization").split(" ")[1];
+  const userType = req.header("User-Type");
 
   try {
     const session = await sessionsRepositories.findByToken(token);
@@ -19,12 +21,17 @@ async function authenticate(req, res, next) {
       return res.status(401).send({ error: "Token expirado" });
     }
 
-    const person = await usersRepositories.findPersonByKey("usuarioId", session.usuarioId);
-    // const user = await usersRepositories.findUserBy("id", session.usuarioId);
+    let user;
 
-    if (!person) return res.status(401).send({ error: "Usuário não existe" });
+    if (userType === "estabelecimento") {
+      user = await usersRepositories.findEstablishmentBy("usuarioId", session.usuarioId);
+    } else {
+      user = await usersRepositories.findPersonBy("usuarioId", session.usuarioId);
+    }
 
-    req.user = person;
+    if (!user) return res.status(401).send({ error: "Usuário não existe" });
+    user.userType = userType;
+    req.user = user;
     return next();
   } catch (e) {
     console.error(e);

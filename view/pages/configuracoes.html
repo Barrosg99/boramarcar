@@ -68,21 +68,18 @@
       </div>
     </div>
     <div class="form-cadastro" style="padding: 0;padding-bottom: 30px;margin: 0px 24px;">
-
       <div class="mb-4" style="margin-bottom: 0.5rem!important;">
         <input type="text" class="form-control" id="input-nome" name="nome" aria-describedby="nomeHelp"
           placeholder="Nome:" pattern="[A-Za-záàâãéèêíóôõúç\s]{8,50}" title="Nome com 8 a 50 letras" disabled required>
       </div>
-      <div class="mb-4" style="margin-bottom: 0.5rem!important;">
+      <div class="mb-4 cpf-or-cnpj" style="margin-bottom: 0.5rem!important;">
         <input disabled required minlength="14" type="text" class="form-control cpf-mask" id="input-cpf" name="cpf"
           placeholder="CPF:">
       </div>
-      <div class="mb-4 d-flex justify-content-between" style="margin-bottom: 0.5rem!important;">
+      <div class="mb-4 d-flex justify-content-between data-or-tipo" style="margin-bottom: 0.5rem!important;">
         <input disabled required type="text" placeholder="Data de nascimento:" class="form-control same-line-input"
           type="text" onfocus="this.max=new Date().toISOString().split('T')[0]; this.type='date'"
           onblur="(this.type='text')" id="input-nascimento" name="dataNascimento" style="width: 49%">
-
-
         <input type="text" minlength="15" class=" form-control cel-sp-mask same-line-input" id="input-telefone"
           name="telefone" aria-describedby="nomeHelp" placeholder="Telefone:" style="width: 49%" disabled required>
       </div>

@@ -1,3 +1,7 @@
+#custom-style {
+  padding-top: 75px;
+}
+
 #custom-navbar {
   position: fixed;
   width: 100vw;
@@ -48,12 +52,23 @@
   color: white;
 }
 
+#custom-navbar .dropdown-item:focus,
+#custom-navbar .dropdown-item:hover {
+  color: var(--bs-dropdown-link-hover-color);
+  background-color: var(--bs-dropdown-link-hover-bg);
+}
+
 #custom-navbar .dropdown-menu {
+  font-family: "Fredoka", sans-serif;
   right: 0;
   left: inherit;
 }
 
 @media (max-width: 360px) {
+  #custom-style {
+    padding-top: 106px;
+  }
+
   #navbarSupportedContent {
     flex-wrap: wrap;
     padding: 5px 0px;

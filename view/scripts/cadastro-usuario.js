@@ -1,9 +1,10 @@
-/* global axios */
 import * as utils from "./utils.js";
+
+const api = utils.api();
 
 const data = document.getElementById("input-nascimento");
 
-data.onchange = () => utils.verificaData(data);
+if (data) data.onchange = () => utils.verificaData(data);
 
 const params = utils.getParameters();
 const form = document.querySelector("form.form-cadastro");
@@ -37,8 +38,9 @@ form.onsubmit = function () {
   formData.append("file", fileInput.files[0]);
   const body = Object.fromEntries(formData);
   submitButton.disabled = true;
+  const route = location.pathname === "/cadastro-estabelecimento.html" ? "/estabelecimento" : "/pessoas";
 
-  const requisicao = axios.post("http://localhost:8080/pessoas", body, {
+  const requisicao = api.post(route, body, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
