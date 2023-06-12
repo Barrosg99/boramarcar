@@ -26,7 +26,7 @@ async function authenticate(req, res, next) {
     if (userType === "estabelecimento") {
       user = await usersRepositories.findEstablishmentBy("usuarioId", session.usuarioId);
     } else {
-      user = await usersRepositories.findPersonByKey("usuarioId", session.usuarioId);
+      user = await usersRepositories.findPersonBy("usuarioId", session.usuarioId);
     }
 
     if (!user) return res.status(401).send({ error: "Usuário não existe" });
