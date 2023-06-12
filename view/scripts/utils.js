@@ -1,3 +1,5 @@
+/* global axios */
+
 export function verificaEmail(email) {
   const emailRegex = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 
@@ -13,6 +15,16 @@ export function verificaSenha(password, confirmPassword) {
     confirmPassword.setCustomValidity("Senhas não se coincidem.");
   } else {
     confirmPassword.setCustomValidity("");
+  }
+}
+
+export function verificaData(data) {
+  const hoje = new Date();
+
+  if (new Date(data.value) > hoje) {
+    data.setCustomValidity("Data não aceita.");
+  } else {
+    data.setCustomValidity("");
   }
 }
 
@@ -45,20 +57,23 @@ export function goTo(url) {
 
 export const signOut = (userInfo, axios) => {
   const requisicao = axios.post("http://localhost:8080/sign-out", null, {
-    headers: { Authorization: `Bearer ${userInfo.token}` },
+    headers: { Authorization: `Bearer ${userInfo.token}`, "User-Type": userInfo.userType },
   });
   requisicao
     .then(() => {
-      localStorage.removeItem("token");
-      location.reload();
+      goTo("index.html");
     })
     .catch((e) => {
       const errorMsg = e.response.data.error ? e.response.data.error : e;
       const msg = `Algo deu errado, tente novamente\n${errorMsg}`;
-      // eslint-disable-next-line no-alert
       alert(msg);
+      if (e.response && e.response.status === 401) {
+        goTo("index.html");
+      }
+    })
+    .finally(() => {
       localStorage.removeItem("token");
-      location.reload();
+      localStorage.removeItem("beforeLoginRoute");
     });
 };
 
@@ -72,4 +87,13 @@ export const verifyLogin = () => {
   }
 
   return userInfo;
+};
+
+export const api = () => {
+  const instance = axios.create({
+    baseURL: "http://localhost:8080/",
+    // timeout: 1000,
+  });
+
+  return instance;
 };
