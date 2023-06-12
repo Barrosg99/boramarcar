@@ -2,19 +2,32 @@
 
 const pool = require("../database/DB_config");
 
-async function findEvents() {
-  const getEventsSql = `SELECT ev.horario, ev.nome, ev.descricao, ev.publico, logradouro, complemento, cep, municipio, estado, imagemId 
-  FROM evento AS ev
-  join endereco ON endereco.id = enderecoId;`;
+async function findEvents({ userId, eventosMarcados, meusEventos }) {
+  let getEventsSql;
+  if (userId && meusEventos === "true") {
+    getEventsSql = `SELECT ev.horario, ev.nome, ev.descricao, ev.publico, logradouro, complemento, cep, municipio, estado, imagemId 
+    FROM evento AS ev
+    join endereco ON endereco.id = enderecoId
+    where ev.usuarioId = ${userId};`;
+  } else if (userId && eventosMarcados === "false") {
+    // getEventsSql = `SELECT ev.horario, ev.nome, ev.descricao, ev.publico, logradouro, complemento, cep, municipio, estado, imagemId
+    // FROM evento AS ev
+    // join endereco ON endereco.id = enderecoId
+    // where ev.usuarioId != ${userId};`;
+  } else if (userId && eventosMarcados === "true") {
+    // getEventsSql = `SELECT ev.horario, ev.nome, ev.descricao, ev.publico, logradouro, complemento, cep, municipio, estado, imagemId
+    // FROM evento AS ev
+    // join endereco ON endereco.id = enderecoId
+    // where ev.usuarioId != ${userId};`;
+  } else {
+    getEventsSql = `SELECT ev.horario, ev.nome, ev.descricao, ev.publico, logradouro, complemento, cep, municipio, estado, imagemId 
+    FROM evento AS ev
+    join endereco ON endereco.id = enderecoId;`;
+  }
+
   const [rows] = await pool.query(getEventsSql);
   return rows;
 }
-
-// const insertPersonSql = `SELECT Horario, Nome, Publico, url_imagem, usuarioId, enderecoId
-//   JOIN boramarcar.evento
-//   ON endereco.id = evento.enderecoId`;
-//   const [row] = await pool.query(insert, [cpf, data_nasc, addressId])
-//   return row[1][0];
 
 async function findEventById(id) {
   const [rows] = await pool.query("SELECT * FROM evento WHERE id = ?", [id]);
@@ -45,32 +58,10 @@ async function deleteEvent(id) {
   return row;
 }
 
-// async function createImage({ file }) {
-//   const tipo = file.mimetype;
-//   const nome = file.originalname;
-//   const arquivo = fs.readFileSync(`${__dirname}/../static/temp/${file.filename}`);
-//   const insertImageSql = `INSERT INTO imagem (nome,tipo,arquivo)
-//   VALUES (?, ?, ?); SELECT LAST_INSERT_ID();`;
-//   const variables = [nome, tipo, arquivo];
-//   const [row] = await pool.query(insertImageSql, variables);
-//   return { imageId: row[1][0]["LAST_INSERT_ID()"] };
-// }
-
-// async function createAddress({ logradouro, complemento, cep, municipio, estado }) {
-// eslint-disable-next-line max-len
-//   const insertAddressSql = `INSERT INTO endereco (Logradouro, Complemento, CEP, Municipio, Estado)
-//   VALUES (?, ?, ?, ?, ?); SELECT LAST_INSERT_ID();`;
-//   const variables = [logradouro, complemento, cep, municipio, estado];
-//   const [row] = await pool.query(insertAddressSql, variables);
-//   return { addressId: row[1][0]["LAST_INSERT_ID()"] };
-// }
-
 module.exports = {
   findEvents,
   findEventById,
   createEvent,
   updateEvent,
   deleteEvent,
-  // createAddress,
-  // createImage,
 };

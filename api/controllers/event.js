@@ -5,8 +5,13 @@ const imageRepositories = require("../repositories/image");
 const addressRepositories = require("../repositories/address");
 
 async function getEvents(req, res) {
+  const { eventosMarcados, id, meusEventos } = req.query;
   try {
-    const events = await eventsRepositories.findEvents(req.body);
+    const events = await eventsRepositories.findEvents({
+      userId: id,
+      eventosMarcados,
+      meusEventos,
+    });
     res.status(200).send(events);
   } catch (e) {
     console.error(e);

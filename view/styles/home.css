@@ -2,10 +2,6 @@
   padding-top: 80px;
 }
 
-#custom-style .card-text {
-  margin-bottom: 3rem;
-}
-
 #custom-style a.btn.btn-primary {
   position: absolute;
   bottom: 15px;
@@ -45,6 +41,7 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-bottom: 3rem;
 }
 
 #custom-style .list-cards {
