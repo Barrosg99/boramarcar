@@ -29,11 +29,30 @@ if (form && params) {
   }
 }
 
+const fileInput = document.getElementById("file-upload");
+
+fileInput.onchange = () => {
+  const image = document.getElementById("avatar");
+  if (fileInput.files.length) {
+    image.src = URL.createObjectURL(fileInput.files[0]);
+    image.style.display = "inherit";
+  } else {
+    image.style.display = "none";
+  }
+};
+
 form.onsubmit = function () {
   const submitButton = document.getElementById("btn-pessoal");
   const formData = new FormData(form);
+  formData.append("file", fileInput.files[0]);
+  const body = Object.fromEntries(formData);
   submitButton.disabled = true;
-  const requisicao = axios.post("http://localhost:8080/pessoas", Object.fromEntries(formData));
+
+  const requisicao = axios.post("http://localhost:8080/pessoas", body, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   requisicao
     .then(() => {
       utils.goTo("login.html");

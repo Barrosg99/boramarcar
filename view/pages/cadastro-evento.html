@@ -48,11 +48,15 @@
           placeholder="Nome do evento:" pattern="[A-Za-záàâãéèêíóôõúç\s]{8,50}" title="Nome com 8 a 50 letras"
           maxlength="50" name="nome" required>
       </div>
-
+      <div class="mb-4">
+        <input type="text" class="form-control" id="input-descricao" aria-describedby="nomeHelp"
+          placeholder="Descrição do evento:" pattern="[A-Za-záàâãéèêíóôõúç\s]{8,50}" title="Descrição com 8 a 50 letras"
+          maxlength="50" name="descricao" required>
+      </div>
       <div class="mb-4 d-flex justify-content-between">
         <label for="file-upload" class="custom-file-upload">
           <i class="fa fa-cloud-upload">Upload da Imagem</i>
-          <input id="file-upload" type="file" name="file" required />
+          <input id="file-upload" type="file" name="file" accept="image/*" required />
         </label>
 
         <select class="form-select same-line-input" id="tipo" name="publico" required>
@@ -100,8 +104,7 @@
         <input type="text" class="form-control same-line-input" name="municipio" placeholder="Municipio:" minlength="8"
           required>
         <input type="text" placeholder="Data do evento:" class="form-control same-line-input" type="text"
-          onfocus="this.max=new Date().toISOString().split('T')[0]; this.type='datetime-local'"
-          onblur="(this.type='text')" id="input-nascimento" name="horario" required>
+          id="input-data-evento" name="horario" required>
       </div>
       <div class="mb-4">
         <input type="text" class="form-control" name="logradouro" placeholder="Endereço:" minlength="8" required>

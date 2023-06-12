@@ -38,7 +38,7 @@
     </div>
   </nav>
   <div class="container-form">
-    <form class="form-cadastro" method="GET">
+    <form class="form-cadastro" enctype="multipart/form-data">
       <div class="mb-4 titulo">
         <h1>Informe seus dados:</h1>
       </div>
@@ -56,6 +56,16 @@
 
         <input type="text" class="form-control cel-sp-mask same-line-input" id="input-telefone" name="telefone"
           aria-describedby="nomeHelp" placeholder="Telefone:" required>
+      </div>
+      <div class="mb-4">
+        <label for="file-upload" class="custom-file-upload" style="width: 100%;">
+          <i class="fa fa-cloud-upload">Upload da Imagem</i>
+          <input id="file-upload" type="file" name="file" accept="image/*" required />
+        </label>
+      </div>
+      <div class="mb-4 d-flex justify-content-center">
+        <img id="avatar" alt="avatar"
+          style="display: none;border-radius: 100%; max-width: 315px; max-height: 315px; width: 100%;">
       </div>
       <div class="d-md-flex flex-column align-items-center justify-content-md-center custom-buttons" id="type-buttons">
         <button class="btn btn-primary cadastro" id="btn-pessoal" type="submit">CADASTRE-SE</button>
