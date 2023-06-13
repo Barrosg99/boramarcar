@@ -30,7 +30,14 @@ async function findEvents({ userId, eventosMarcados, meusEventos }) {
 }
 
 async function findEventById(id) {
-  const [rows] = await pool.query("select * from evento join endereco on endereco.id = enderecoId where evento.id = ?;", [id]);
+  const [rows] = await pool.query(
+    `SELECT ev.id,ev.nome,ev.descricao,ev.publico,ev.horario,ev.imagemId,en.logradouro,en.municipio,en.estado,en.cep,en.complemento,us.nome as nomeUsuario,us.imagemId as imagemUsuario,ev.usuarioId
+FROM evento as ev 
+JOIN endereco as en ON en.id = enderecoId 
+JOIN usuario as us ON us.id = usuarioId
+WHERE ev.id = ?;`,
+    [id],
+  );
   return rows[0];
 }
 

@@ -55,10 +55,9 @@ try {
       "User-Type": userInfo?.userType,
     },
   });
-
+  avatar = `http://localhost:8080/imagens/${evento.imagemId}`;
+  img.src = avatar;
   if (evento.meuEvento) {
-    avatar = `http://localhost:8080/imagens/${evento.imagemId}`;
-    img.src = avatar;
     oldImageId = evento.imagemId;
     const select = document.getElementById("tipo");
     if (select) select.value = evento.publico ? "true" : "false";
@@ -74,6 +73,41 @@ try {
       }
       input.value = evento[input.name];
     }
+  } else {
+    const h2 = document.querySelector("h2");
+    h2.innerText = evento.nome;
+
+    const div = document.querySelector(".botoes");
+    div.innerHTML = "";
+    div.style = "font-size: 20px;width: 315px;color: #004AAD;";
+    div.innerText = evento.descricao;
+
+    const info = document.querySelector(".form-cadastro");
+    info.innerHTML = "";
+
+    const [data, horario] = evento.horario.split("T");
+    const [horas, min] = horario.split(":");
+    const tipo = evento.publico === 1 ? "Público" : "Privado";
+
+    const p = document.createElement("p");
+    p.style = "font-size: 20px;color: #004AAD;";
+    p.innerText = `${evento.logradouro}, ${evento.municipio} - ${evento.estado}\nComplemento: ${evento.complemento}\nCEP: ${
+      evento.cep
+    }\n\nData: ${data.replaceAll("-", "/")} \nHorario: ${[horas, min].join(":")}\nTipo: ${tipo}`;
+    info.appendChild(p);
+
+    const criadorEvento = document.createElement("div");
+    criadorEvento.style = "display: flex;align-items: center;justify-content: space-between;width: 70%;flex-wrap:wrap;margin-bottom: 20px;";
+    criadorEvento.innerHTML = ` <img src="http://localhost:8080/imagens/${evento.imagemUsuario}" class="img-fluid" style="width: 100px; height: 100px; border-radius:100%"><p style="font-size: 20px;color: #004AAD;" >${evento.nomeUsuario}</p>
+    `;
+    info.appendChild(criadorEvento);
+
+    const divBotoes = document.createElement("div");
+    divBotoes.style = "display: flex;align-items: center;justify-content: space-between;width: 100%;flex-wrap:wrap;";
+    divBotoes.innerHTML = `<button id="marcar" class="btn btn-success" type="button" style="max-width: 315px; margin-bottom: 25px;">bora marcar
+</button><button id="pessoasConfirmadas" class="btn btn-primary" type="button" style="max-width: 315px; margin-bottom: 25px;">Ver pessoas confirmadas
+</button>`;
+    info.appendChild(divBotoes);
   }
 } catch (e) {
   let errorMsg = e.response ? e.response.data.error || e.message : e;
@@ -137,40 +171,44 @@ form.onsubmit = function () {
   return false;
 };
 
-editButton.onclick = () => {
-  if (fileLabel.style.display === "none") {
-    fileLabel.style.display = "inherit";
-    editButton.innerText = "Salvar mudanças";
-    editButton.className = "btn btn-success";
-    setTimeout(() => {
-      editButton.type = "submit";
-    }, 1);
-    toggleAllInputs();
-  }
-};
+if (editButton) {
+  editButton.onclick = () => {
+    if (fileLabel.style.display === "none") {
+      fileLabel.style.display = "inherit";
+      editButton.innerText = "Salvar mudanças";
+      editButton.className = "btn btn-success";
+      setTimeout(() => {
+        editButton.type = "submit";
+      }, 1);
+      toggleAllInputs();
+    }
+  };
+}
 
-excluirButton.onclick = () => {
-  const excluir = confirm("Deseja excluir sua conta ?\nIsso apagará todos os seus eventos criados.");
-  if (excluir) {
-    api
-      .delete(route, {
-        headers: {
-          Authorization: `Bearer ${userInfo.token}`,
-          "Content-Type": "multipart/form-data",
-          "User-Type": userInfo.userType,
-        },
-      })
-      .then(() => {
-        utils.goTo("index.html");
-      })
-      .catch((e) => {
-        let errorMsg = e.response ? e.response.data.error || e.message : e;
-        if (e.response && e.response.status === 401) {
-          errorMsg = "Algo deu errado, tente novamente\nLogue novamente";
-          localStorage.removeItem("token");
-          location.reload();
-        }
-        alert(errorMsg);
-      });
-  }
-};
+if (excluirButton) {
+  excluirButton.onclick = () => {
+    const excluir = confirm("Deseja excluir sua conta ?\nIsso apagará todos os seus eventos criados.");
+    if (excluir) {
+      api
+        .delete(route, {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+            "Content-Type": "multipart/form-data",
+            "User-Type": userInfo.userType,
+          },
+        })
+        .then(() => {
+          utils.goTo("index.html");
+        })
+        .catch((e) => {
+          let errorMsg = e.response ? e.response.data.error || e.message : e;
+          if (e.response && e.response.status === 401) {
+            errorMsg = "Algo deu errado, tente novamente\nLogue novamente";
+            localStorage.removeItem("token");
+            location.reload();
+          }
+          alert(errorMsg);
+        });
+    }
+  };
+}
