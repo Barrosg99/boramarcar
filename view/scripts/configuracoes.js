@@ -11,6 +11,11 @@ const confirmacaoSenha = document.getElementById("input-confirma-senha");
 const email = document.getElementById("input-email");
 const data = document.getElementById("input-nascimento");
 
+const editButton = document.getElementById("editar");
+const excluirButton = document.getElementById("excluir");
+const fileLabel = document.querySelector("label");
+const form = document.querySelector("form");
+
 senha.onchange = () => utils.verificaSenha(senha, confirmacaoSenha);
 confirmacaoSenha.onkeyup = () => utils.verificaSenha(senha, confirmacaoSenha);
 email.onchange = () => utils.verificaEmail(email);
@@ -26,6 +31,9 @@ if (userInfo.userType === "estabelecimento") {
 
   // prettier-ignore
   dataTipoDiv.innerHTML = "<select disabled class='form-select same-line-input' id='tipo' name='tipo' required><option value='' selected hidden>Tipo</option><option value='restaurante'>Restaurante</option><option value='bar'>Bar</option>        <option value='casaDeFestas'>Casa de Festas</option><option value='karaoke'>Karaokê</option><option value='buffet'>Buffet</option><option value='shopping'>Shopping</option></select><input type='text' minlength='15' class=' form-control cel-sp-mask same-line-input' id='input-telefone' name='telefone' aria-describedby='nomeHelp' placeholder='Telefone:' style='width: 49%' disabled required></input>";
+
+  editButton.innerText = "Editar\n estabelecimento";
+  excluirButton.innerText = "Excluir\n estabelecimento";
 }
 
 let avatar;
@@ -87,11 +95,6 @@ fileInput.onchange = () => {
     img.src = avatar;
   }
 };
-
-const editButton = document.getElementById("editar");
-const excluirButton = document.getElementById("excluir");
-const fileLabel = document.querySelector("label");
-const form = document.querySelector("form");
 
 form.onsubmit = function () {
   const formData = new FormData(form);
