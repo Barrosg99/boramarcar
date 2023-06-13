@@ -80,14 +80,14 @@ const listaEventos = (container, evento) => {
 const listaEventosAutenticados = (container, evento) => {
   const div = document.createElement("div");
   div.className = "card mb-3";
-  div.style = "max-width: 70%; margin-left: 0; margin-right: 0;";
+  div.style = "min-width: 70%; margin-left: 0; margin-right: 0;";
   div.innerHTML = `
       <div class="row g-0" style="min-height: 153px;">
         <div style="flex: 0 0 auto;width: 66.66666667%">
           <div class="card-body" style="height: 100%;">
             <h5 class="card-title" style="color: blue; font-weight: bold;">${evento.nome}</h5>
             <p class="card-text" style="color: blue;margin-bottom: 0;-webkit-line-clamp: 2;">${evento.descricao}</p>
-            <a href="#" style="right: unset;" class="btn btn-primary">bora marcar</a>
+            <a href="evento.html?idEvento=${evento.id}" style="right: unset;" class="btn btn-primary">bora marcar</a>
           </div>
         </div>
         <div style="flex: 0 0 auto;width: 33.33333333%;">
@@ -107,7 +107,7 @@ try {
   const filter = Object.fromEntries(entries);
 
   const { data: eventos } = await api.get("/eventos", {
-    params: { ...filter, id: userInfo.id },
+    params: { ...filter, id: userInfo?.id },
   });
 
   const container = document.querySelector("#lista-eventos");

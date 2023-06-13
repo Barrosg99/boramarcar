@@ -5,7 +5,7 @@ const pool = require("../database/DB_config");
 async function findEvents({ userId, eventosMarcados, meusEventos }) {
   let getEventsSql;
   if (userId && meusEventos === "true") {
-    getEventsSql = `SELECT ev.horario, ev.nome, ev.descricao, ev.publico, logradouro, complemento, cep, municipio, estado, imagemId 
+    getEventsSql = `SELECT ev.id ,ev.horario, ev.nome, ev.descricao, ev.publico, logradouro, complemento, cep, municipio, estado, imagemId 
     FROM evento AS ev
     join endereco ON endereco.id = enderecoId
     where ev.usuarioId = ${userId};`;
@@ -20,7 +20,7 @@ async function findEvents({ userId, eventosMarcados, meusEventos }) {
     // join endereco ON endereco.id = enderecoId
     // where ev.usuarioId != ${userId};`;
   } else {
-    getEventsSql = `SELECT ev.horario, ev.nome, ev.descricao, ev.publico, logradouro, complemento, cep, municipio, estado, imagemId 
+    getEventsSql = `SELECT ev.id, ev.horario, ev.nome, ev.descricao, ev.publico, logradouro, complemento, cep, municipio, estado, imagemId 
     FROM evento AS ev
     join endereco ON endereco.id = enderecoId;`;
   }
@@ -30,7 +30,7 @@ async function findEvents({ userId, eventosMarcados, meusEventos }) {
 }
 
 async function findEventById(id) {
-  const [rows] = await pool.query("SELECT * FROM evento WHERE id = ?", [id]);
+  const [rows] = await pool.query("select * from evento join endereco on endereco.id = enderecoId where evento.id = ?;", [id]);
   return rows[0];
 }
 
@@ -42,14 +42,15 @@ async function createEvent({ horario, nome, descricao, publico, imageId, userId,
   return row[1][0];
 }
 
-async function updateEvent({ id, horario, nome, publico, imageUrl }) {
-  const row = await pool.query("UPDATE evento SET Horario = ?, Nome = ?, Publico = ?, url_imagem = ? WHERE id = ?", [
-    horario,
-    nome,
-    publico,
-    imageUrl,
-    id,
-  ]);
+async function updateEvent({ id, horario, nome, publico, descricao, imageId, removeImageId }) {
+  let fields = "Horario = ?, Nome = ?, Publico = ?, Descricao = ?";
+  const variables = [horario, nome, publico === "true", descricao, id];
+  if (imageId) {
+    fields += ", imagemId = ?";
+    variables.splice(variables.length - 1, 0, imageId);
+  }
+  const row = await pool.query(`UPDATE evento SET ${fields} WHERE id = ?`, variables);
+  if (imageId) pool.query("DELETE FROM imagem WHERE id = ?", [removeImageId]);
   return row;
 }
 
