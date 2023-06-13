@@ -12,6 +12,15 @@ async function getEvents(req, res) {
       eventosMarcados,
       meusEventos,
     });
+    if (id) {
+      for (const event of events) {
+        const attendance = await eventsRepositories.getPersonEvent({
+          userId: id,
+          eventId: event.id,
+        });
+        event.presente = attendance && !!attendance.presente;
+      }
+    }
     res.status(200).send(events);
   } catch (e) {
     console.error(e);
@@ -22,8 +31,12 @@ async function getEvents(req, res) {
 async function getEvent(req, res) {
   try {
     const event = await eventsRepositories.findEventById(req.params.id);
+    const attendance = await eventsRepositories.getPersonEvent({
+      userId: req.user.usuarioId,
+      eventId: req.params.id,
+    });
     const meuEvento = event.usuarioId === req.user.usuarioId;
-    res.status(200).send({ meuEvento, ...event });
+    res.status(200).send({ meuEvento, presente: attendance && !!attendance.presente, ...event });
   } catch (e) {
     console.error(e);
     res.sendStatus(500);
@@ -93,10 +106,38 @@ async function removeEvent(req, res) {
   }
 }
 
+async function attendEvent(req, res) {
+  try {
+    const { comparece, eventoId } = req.body;
+    const userId = req.user.id;
+    let presente;
+    const personEvent = await eventsRepositories.getPersonEvent({
+      userId,
+      eventId: eventoId,
+    });
+    if (!personEvent) {
+      await eventsRepositories.createPersonEvent({ userId, eventId: eventoId });
+      presente = true;
+    } else {
+      const { presente: p } = await eventsRepositories.toggleAttendanceEvent({
+        userId,
+        eventId: eventoId,
+        comparece,
+      });
+      presente = p;
+    }
+    res.status(200).send({ presente: !!presente });
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+}
+
 module.exports = {
   getEvents,
   getEvent,
   createEvent,
   updateEvent,
   removeEvent,
+  attendEvent,
 };

@@ -23,5 +23,7 @@ module.exports = {
     "no-alert": "off",
     "implicit-arrow-linebreak": "off",
     "function-paren-newline": "off",
+    "no-param-reassign": "off",
+    "no-await-in-loop": "off",
   },
 };

@@ -4,7 +4,13 @@ const userInfo = utils.verifyLogin();
 const params = new URLSearchParams(location.search);
 const entries = params.entries();
 const filter = Object.fromEntries(entries);
-let oldImageId;
+
+const editButton = document.getElementById("editar");
+const excluirButton = document.getElementById("excluir");
+const fileLabel = document.querySelector("label");
+const form = document.querySelector("form");
+
+let evento;
 
 if (!filter.idEvento) utils.goTo("index.html");
 
@@ -47,18 +53,28 @@ const toggleAllInputs = () => {
   }
 };
 
+const toggleMarcar = (presente, marcarButton) => {
+  if (presente) {
+    marcarButton.innerText = "Desmarcar? :(";
+    marcarButton.className = "btn btn-danger";
+  } else {
+    marcarButton.innerText = "bora marcar";
+    marcarButton.className = "btn btn-success";
+  }
+};
+
 try {
-  const { data: evento } = await api.get(route, {
+  const { data: eventoApi } = await api.get(route, {
     headers: {
       Authorization: `Bearer ${userInfo?.token}`,
       "Content-Type": "multipart/form-data",
       "User-Type": userInfo?.userType,
     },
   });
+  evento = eventoApi;
   avatar = `http://localhost:8080/imagens/${evento.imagemId}`;
   img.src = avatar;
   if (evento.meuEvento) {
-    oldImageId = evento.imagemId;
     const select = document.getElementById("tipo");
     if (select) select.value = evento.publico ? "true" : "false";
 
@@ -84,7 +100,8 @@ try {
 
     const info = document.querySelector(".form-cadastro");
     info.innerHTML = "";
-
+    info.style = "padding-top: 0px;padding-bottom: 30px;margin: 0px 24px;";
+    form.style.marginTop = "30px";
     const [data, horario] = evento.horario.split("T");
     const [horas, min] = horario.split(":");
     const tipo = evento.publico === 1 ? "Público" : "Privado";
@@ -93,7 +110,7 @@ try {
     p.style = "font-size: 20px;color: #004AAD;";
     p.innerText = `${evento.logradouro}, ${evento.municipio} - ${evento.estado}\nComplemento: ${evento.complemento}\nCEP: ${
       evento.cep
-    }\n\nData: ${data.replaceAll("-", "/")} \nHorario: ${[horas, min].join(":")}\nTipo: ${tipo}`;
+    }\n\nData: ${data.replaceAll("-", "/")} \nHorario: ${[horas, min].join(":")}\nTipo: ${tipo}\nCriado por:`;
     info.appendChild(p);
 
     const criadorEvento = document.createElement("div");
@@ -101,13 +118,16 @@ try {
     criadorEvento.innerHTML = ` <img src="http://localhost:8080/imagens/${evento.imagemUsuario}" class="img-fluid" style="width: 100px; height: 100px; border-radius:100%"><p style="font-size: 20px;color: #004AAD;" >${evento.nomeUsuario}</p>
     `;
     info.appendChild(criadorEvento);
-
     const divBotoes = document.createElement("div");
-    divBotoes.style = "display: flex;align-items: center;justify-content: space-between;width: 100%;flex-wrap:wrap;";
-    divBotoes.innerHTML = `<button id="marcar" class="btn btn-success" type="button" style="max-width: 315px; margin-bottom: 25px;">bora marcar
+    if (userInfo.userType !== "estabelecimento") {
+      divBotoes.style = "display: flex;align-items: center;justify-content: space-between;width: 100%;flex-wrap:wrap;";
+      divBotoes.innerHTML = `<button id="marcar" class="btn btn-success" type="button" style="max-width: 315px; margin-bottom: 25px;">bora marcar
 </button><button id="pessoasConfirmadas" class="btn btn-primary" type="button" style="max-width: 315px; margin-bottom: 25px;">Ver pessoas confirmadas
 </button>`;
-    info.appendChild(divBotoes);
+      info.appendChild(divBotoes);
+      const marcarButton = document.getElementById("marcar");
+      toggleMarcar(evento.presente, marcarButton);
+    }
   }
 } catch (e) {
   let errorMsg = e.response ? e.response.data.error || e.message : e;
@@ -129,18 +149,13 @@ fileInput.onchange = () => {
   }
 };
 
-const editButton = document.getElementById("editar");
-const excluirButton = document.getElementById("excluir");
-const fileLabel = document.querySelector("label");
-const form = document.querySelector("form");
-
 form.onsubmit = function () {
   const formData = new FormData(form);
   if (fileInput.files[0]) formData.append("file", fileInput.files[0]);
   const body = Object.fromEntries(formData);
   if (!body.file.size) delete body.file;
   if (!body.senha?.length) delete body.senha;
-  body.removeImageId = oldImageId;
+  body.removeImageId = evento.imagemId;
   api
     .put(route, body, {
       headers: {
@@ -210,5 +225,38 @@ if (excluirButton) {
           alert(errorMsg);
         });
     }
+  };
+}
+
+const marcarButton = document.getElementById("marcar");
+// const confirmadasButton = document.getElementById("pessoasConfirmadas");
+
+if (marcarButton) {
+  marcarButton.onclick = () => {
+    api
+      .post(
+        "eventos/marcar",
+        { comparece: false, eventoId: evento.id },
+        {
+          headers: {
+            Authorization: `Bearer ${userInfo?.token}`,
+            "Content-Type": "application/json",
+            "User-Type": userInfo?.userType,
+          },
+        },
+      )
+      .then((res) => {
+        const { presente } = res.data;
+        toggleMarcar(presente, marcarButton);
+      })
+      .catch((e) => {
+        let errorMsg = e.response ? e.response.data.error || e.message : e;
+        if (e.response && e.response.status === 401) {
+          errorMsg = "Algo deu errado\nLogue novamente";
+          localStorage.removeItem("token");
+          location.reload();
+        }
+        alert(errorMsg);
+      });
   };
 }

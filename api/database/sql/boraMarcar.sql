@@ -58,10 +58,10 @@ estado VARCHAR(100) NOT NULL
 );
 
 CREATE TABLE Comparece (
-fk_Pessoa_CPF VARCHAR(20),
-usuarioId INT,
-fk_Evento_id INT,
-PRIMARY KEY (usuarioId, fk_Evento_id),
+usuarioId INT NOT NULL,
+eventoId INT NOT NULL,
+presente BOOLEAN NOT NULL,
+PRIMARY KEY (usuarioId, eventoId),
 criadoEm TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 atualizadoEm DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -100,11 +100,11 @@ REFERENCES Imagem (id)
 ON DELETE CASCADE;
 
 ALTER TABLE Comparece ADD CONSTRAINT FK_Comparece_1
-FOREIGN KEY (fk_Pessoa_CPF, usuarioId)
-REFERENCES Pessoa (CPF, usuarioId);
+FOREIGN KEY (usuarioId)
+REFERENCES Pessoa (usuarioId);
 
 ALTER TABLE Comparece ADD CONSTRAINT FK_Comparece_2
-FOREIGN KEY (fk_Evento_id)
+FOREIGN KEY (eventoId)
 REFERENCES Evento (id);
 
 ALTER TABLE Comparece ADD UNIQUE Comparece_Unique

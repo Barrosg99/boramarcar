@@ -2,7 +2,8 @@
   padding-top: 80px;
 }
 
-#custom-style a.btn.btn-primary {
+#custom-style a.btn.btn-primary,
+a.btn.btn-danger {
   position: absolute;
   bottom: 15px;
   right: 55px;

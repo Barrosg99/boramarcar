@@ -1,5 +1,3 @@
-// const fs = require("fs");
-
 const pool = require("../database/DB_config");
 
 async function findEvents({ userId, eventosMarcados, meusEventos }) {
@@ -10,19 +8,22 @@ async function findEvents({ userId, eventosMarcados, meusEventos }) {
     join endereco ON endereco.id = enderecoId
     where ev.usuarioId = ${userId};`;
   } else if (userId && eventosMarcados === "false") {
-    // getEventsSql = `SELECT ev.horario, ev.nome, ev.descricao, ev.publico, logradouro, complemento, cep, municipio, estado, imagemId
-    // FROM evento AS ev
-    // join endereco ON endereco.id = enderecoId
-    // where ev.usuarioId != ${userId};`;
+    getEventsSql = `SELECT ev.id ,ev.horario, ev.nome, ev.descricao, ev.publico, logradouro, complemento, cep, municipio, estado, imagemId
+    FROM evento AS ev
+    JOIN endereco ON endereco.id = enderecoId
+    WHERE 
+    (ev.id IN (SELECT eventoId FROM comparece WHERE usuarioId = ${userId} AND presente = false)
+    OR ev.id NOT IN (SELECT eventoId FROM comparece WHERE usuarioId = ${userId})) AND usuarioId != ${userId};`;
   } else if (userId && eventosMarcados === "true") {
-    // getEventsSql = `SELECT ev.horario, ev.nome, ev.descricao, ev.publico, logradouro, complemento, cep, municipio, estado, imagemId
-    // FROM evento AS ev
-    // join endereco ON endereco.id = enderecoId
-    // where ev.usuarioId != ${userId};`;
+    getEventsSql = `SELECT ev.id ,ev.horario, ev.nome, ev.descricao, ev.publico, logradouro, complemento, cep, municipio, estado, imagemId
+    FROM evento AS ev
+    JOIN endereco ON endereco.id = enderecoId
+    WHERE ev.id IN (SELECT eventoId FROM comparece WHERE usuarioId = ${userId} AND presente = ${true});`;
   } else {
     getEventsSql = `SELECT ev.id, ev.horario, ev.nome, ev.descricao, ev.publico, logradouro, complemento, cep, municipio, estado, imagemId 
     FROM evento AS ev
-    join endereco ON endereco.id = enderecoId;`;
+    join endereco ON endereco.id = enderecoId`;
+    if (userId) getEventsSql += `\nWHERE ev.usuarioId != ${userId}`;
   }
 
   const [rows] = await pool.query(getEventsSql);
@@ -66,10 +67,33 @@ async function deleteEvent(id) {
   return row;
 }
 
+async function getPersonEvent({ userId, eventId }) {
+  const selectSql = "SELECT presente FROM comparece WHERE usuarioId = ? AND eventoId = ?";
+  const [rows] = await pool.query(selectSql, [userId, eventId]);
+  return rows[0];
+}
+
+async function createPersonEvent({ userId, eventId }) {
+  const insertSql = `INSERT INTO comparece (usuarioId, eventoId, presente)
+  VALUES
+  (?,?,?);`;
+  await pool.query(insertSql, [userId, eventId, true]);
+}
+
+async function toggleAttendanceEvent({ userId, eventId }) {
+  const updateSql = `UPDATE comparece SET presente = not presente WHERE usuarioId = ? AND eventoId = ?;
+  SELECT presente FROM comparece WHERE usuarioId = ? AND eventoId = ?;`;
+  const [row] = await pool.query(updateSql, [userId, eventId, userId, eventId]);
+  return row[1][0];
+}
+
 module.exports = {
   findEvents,
   findEventById,
   createEvent,
   updateEvent,
   deleteEvent,
+  getPersonEvent,
+  createPersonEvent,
+  toggleAttendanceEvent,
 };
