@@ -108,7 +108,7 @@ FOREIGN KEY (eventoId)
 REFERENCES Evento (id);
 
 ALTER TABLE Comparece ADD UNIQUE Comparece_Unique
-(fk_Pessoa_CPF,usuarioId, fk_Evento_id);
+(usuarioId, eventoId);
 
 
 ALTER TABLE Sessao ADD CONSTRAINT FK_Sessao_1
