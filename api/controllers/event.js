@@ -19,6 +19,17 @@ async function getEvents(req, res) {
   }
 }
 
+async function getEvent(req, res) {
+  try {
+    const event = await eventsRepositories.findEventById(req.params.id);
+    const meuEvento = event.usuarioId === req.user.usuarioId;
+    res.status(200).send({ meuEvento, ...event });
+  } catch (e) {
+    console.error(e);
+    res.sendStatus(500);
+  }
+}
+
 async function createEvent(req, res) {
   try {
     const { file } = req;
@@ -50,22 +61,20 @@ async function createEvent(req, res) {
 async function updateEvent(req, res) {
   try {
     const eventId = req.params.id;
-    const { horario, nome, publico, imageUrl } = req.body;
+    const { file } = req;
 
-    // const existingEvent = await eventsRepositories.getEventById(eventId);
-    // if (!existingEvent) {
-    //   return res.status(404).send(`Event with ID ${eventId} not found`);
-    // }
+    if (file) {
+      const { imageId } = await imageRepositories.createImage({ file });
+      req.body.imageId = imageId;
+      fs.rmSync(`${__dirname}/../static/temp/${file.filename}`);
+    }
 
-    const updatedEvent = await eventsRepositories.updateEvent({
+    await eventsRepositories.updateEvent({
       id: eventId,
-      horario,
-      nome,
-      publico,
-      imageUrl,
+      ...req.body,
     });
 
-    res.status(200).json(updatedEvent);
+    res.sendStatus(200);
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
@@ -74,7 +83,9 @@ async function updateEvent(req, res) {
 
 async function removeEvent(req, res) {
   try {
+    const { imagemId } = await eventsRepositories.findEventById(req.params.id);
     await eventsRepositories.deleteEvent(req.params.id);
+    await imageRepositories.deleteImage(imagemId);
     res.sendStatus(200);
   } catch (error) {
     console.error(error);
@@ -84,6 +95,7 @@ async function removeEvent(req, res) {
 
 module.exports = {
   getEvents,
+  getEvent,
   createEvent,
   updateEvent,
   removeEvent,

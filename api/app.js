@@ -34,7 +34,8 @@ app.get("/imagens/:id", imagesController.getImage);
 app
   .post("/eventos", authenticate, upload.single("file"), eventsController.createEvent)
   .get("/eventos", eventsController.getEvents)
-  .delete("/eventos/:id", authenticate, eventsController.removeEvent)
-  .put("/eventos/:id", authenticate, eventsController.updateEvent);
+  .get("/eventos/:id", authenticate, eventsController.getEvent)
+  .put("/eventos/:id", authenticate, upload.single("file"), eventsController.updateEvent)
+  .delete("/eventos/:id", authenticate, eventsController.removeEvent);
 
 module.exports = app;
