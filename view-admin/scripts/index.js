@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import * as utils from "./utils.js";
 
 const api = utils.api();
@@ -15,7 +16,6 @@ const homeAutenticada = () => {
     <div class="list-group" style="margin-top: 30px; width: 80%;">
       <a href="index.html?tabela=pessoa" class="list-group-item list-group-item-action ">Pessoa</a>
       <a href="index.html?tabela=estabelecimento" class="list-group-item list-group-item-action">Estabelecimento</a>
-      <a href="index.html?tabela=evento" class="list-group-item list-group-item-action">Evento</a>
     </div>`;
 };
 
@@ -156,7 +156,7 @@ if (!token) {
       const formData = new FormData(form);
       const body = Object.fromEntries(formData);
       submitButton.disabled = true;
-      const requisicao = api.post(`/admin/pessoas/${id}`, body, {
+      const requisicao = api.put(`/admin/pessoas/${id}`, body, {
         headers: {
           Authorization: `Bearer ${token}`,
           from: "admin",
@@ -279,7 +279,7 @@ if (!token) {
       const formData = new FormData(form);
       const body = Object.fromEntries(formData);
       submitButton.disabled = true;
-      const requisicao = api.post(`/admin/estabelecimento/${id}`, body, {
+      const requisicao = api.put(`/admin/estabelecimento/${id}`, body, {
         headers: {
           Authorization: `Bearer ${token}`,
           from: "admin",
@@ -301,7 +301,7 @@ if (!token) {
       return false;
     };
   }
-} else if (tabela === "evento") {
+} /* else if (tabela === "evento") {
   if (!id) {
     const { data: eventos } = await api.get("admin/eventos", {
       headers: {
@@ -378,21 +378,21 @@ if (!token) {
 
     excluirButton.onclick = () => {
       api
-        .delete(`/admin/estabelecimento/${id}`, {
+        .delete(`/admin/eventos/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
             from: "admin",
           },
         })
         .then(() => {
-          alert("Usuario excluido");
+          alert("Evento excluido");
         })
         .catch((e) => {
           const errorMsg = e.response ? e.response.data.error || e.message : e;
           alert(`${errorMsg}`);
         })
         .finally(() => {
-          utils.goTo("index.html?tabela=estabelecimento");
+          utils.goTo("index.html?tabela=evento");
         });
     };
 
@@ -401,7 +401,7 @@ if (!token) {
       const formData = new FormData(form);
       const body = Object.fromEntries(formData);
       submitButton.disabled = true;
-      const requisicao = api.post(`/admin/estabelecimento/${id}`, body, {
+      const requisicao = api.put(`/admin/eventos/${id}`, body, {
         headers: {
           Authorization: `Bearer ${token}`,
           from: "admin",
@@ -423,4 +423,4 @@ if (!token) {
       return false;
     };
   }
-}
+} */

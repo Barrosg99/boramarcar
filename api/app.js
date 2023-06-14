@@ -46,15 +46,17 @@ app
   .post("/admin", adminController.signInAdmin)
   .get("/admin/pessoas", authenticateAdmin, adminController.getPeople)
   .get("/admin/pessoas/:id", authenticateAdmin, adminController.getPerson)
-  .post("/admin/pessoas/:id", authenticateAdmin, adminController.editPerson)
+  .put("/admin/pessoas/:id", authenticateAdmin, adminController.editPerson)
   .delete("/admin/pessoas/:id", authenticateAdmin, adminController.deleteUser)
 
   .get("/admin/estabelecimento", authenticateAdmin, adminController.getEstablishments)
   .get("/admin/estabelecimento/:id", authenticateAdmin, adminController.getEstablishment)
-  .post("/admin/estabelecimento/:id", authenticateAdmin, adminController.editEstablishment)
+  .put("/admin/estabelecimento/:id", authenticateAdmin, adminController.editEstablishment)
   .delete("/admin/estabelecimento/:id", authenticateAdmin, adminController.deleteUser)
 
   .get("/admin/eventos", authenticateAdmin, adminController.getEvents)
-  .get("/admin/eventos/:id", authenticateAdmin, adminController.getEvent);
+  .get("/admin/eventos/:id", authenticateAdmin, adminController.getEvent)
+  .put("/admin/eventos/:id", authenticateAdmin, adminController.editEvent)
+  .delete("/admin/eventos/:id", authenticateAdmin, adminController.deleteEvent);
 
 module.exports = app;

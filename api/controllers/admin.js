@@ -11,6 +11,8 @@ const {
   findEstablishmentBy,
 } = require("../repositories/user");
 const { removeUser } = require("./user");
+const { updateEvent } = require("../repositories/event");
+const { removeEvent } = require("./event");
 
 async function signInAdmin(req, res) {
   try {
@@ -155,6 +157,28 @@ async function getEvent(req, res) {
   }
 }
 
+async function editEvent(req, res) {
+  try {
+    await updateEvent({
+      id: req.params.id,
+      ...req.body,
+    });
+    return res.sendStatus(200);
+  } catch (e) {
+    console.error(e);
+    return res.sendStatus(500);
+  }
+}
+
+async function deleteEvent(req, res) {
+  try {
+    return await removeEvent(req, res);
+  } catch (e) {
+    console.error(e);
+    return res.sendStatus(500);
+  }
+}
+
 module.exports = {
   signInAdmin,
   deleteUser,
@@ -166,4 +190,6 @@ module.exports = {
   editEstablishment,
   getEvents,
   getEvent,
+  editEvent,
+  deleteEvent,
 };
