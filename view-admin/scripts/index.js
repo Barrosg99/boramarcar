@@ -301,4 +301,126 @@ if (!token) {
       return false;
     };
   }
+} else if (tabela === "evento") {
+  if (!id) {
+    const { data: eventos } = await api.get("admin/eventos", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        from: "admin",
+      },
+    });
+    let links = "";
+    for (const evento of eventos) {
+      const linkPessoa = `<a href="index.html?tabela=evento&id=${evento.id}" class="list-group-item list-group-item-action ">${evento.id} - ${evento.nome}</a>`;
+      links += linkPessoa;
+    }
+    main.innerHTML = `<h1 style="color: white;"><a href="index.html" style="color: inherit;text-decoration: none;" >ADMIN BORA MARCAR</a></h1>
+    <div class="list-group" style="margin-top: 30px;width: 80%;">
+      ${links}
+    </div>`;
+  } else {
+    main.innerHTML = `<h1 style="color: white;"><a href="index.html" style="color: inherit;text-decoration: none;">ADMIN BORA MARCAR</a>
+    </h1>
+    <form style="background: white;padding: 20px 20px 15px 15px;border-radius: 10px;width: 80%;margin-bottom: 20px;">
+      <div class="mb-3">
+        <label for="id" class="form-label">ID </label>
+        <input type="text" readonly class="form-control" id="id" name="id">
+      </div>
+      <div class="mb-3">
+        <label for="nome" class="form-label">Nome </label>
+        <input type="text" required class="form-control" id="nome" name="nome">
+      </div>
+      <div class="mb-3">
+        <label for="descricao" class="form-label">Descrição </label>
+        <input type="text" required class="form-control" id="descricao" name="descricao">
+      </div>
+      <div class="mb-3">
+        <label for="publico" class="form-label">Tipo</label>
+        <select class="form-select" id="publico" name="publico" required>
+          <option value="" selected hidden>Tipo</option>
+          <option value="true">Público</option>
+          <option value="false">Privado</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="cnpj" class="form-label">Data e horário</label>
+        <input type="text" placeholder="Data do evento:" class="form-control" type="text" id="input-data-evento"
+          onblur="(this.type='text')" name="horario" onfocus="(this.type ='datetime-local')" required>
+      </div>
+      <div style="display: flex;justify-content: space-evenly;">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <button type="button" class="btn btn-danger">Excluir</button>
+      </div>
+    </form>`;
+
+    const { data: evento } = await api.get(`admin/eventos/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        from: "admin",
+      },
+    });
+
+    const allInputs = document.querySelectorAll("input");
+    const select = document.querySelector("select");
+    select.value = evento.publico === 1 ? "true" : "false";
+
+    for (const input of allInputs) {
+      if (input.name === "horario") {
+        const [datetime, min] = evento[input.name].split(":");
+        input.value = [datetime, min].join(":");
+        continue;
+      }
+      input.value = evento[input.name];
+    }
+
+    const form = document.querySelector("form");
+    const excluirButton = document.querySelector("form .btn-danger");
+
+    excluirButton.onclick = () => {
+      api
+        .delete(`/admin/estabelecimento/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            from: "admin",
+          },
+        })
+        .then(() => {
+          alert("Usuario excluido");
+        })
+        .catch((e) => {
+          const errorMsg = e.response ? e.response.data.error || e.message : e;
+          alert(`${errorMsg}`);
+        })
+        .finally(() => {
+          utils.goTo("index.html?tabela=estabelecimento");
+        });
+    };
+
+    form.onsubmit = () => {
+      const submitButton = document.querySelector("form .btn-primary");
+      const formData = new FormData(form);
+      const body = Object.fromEntries(formData);
+      submitButton.disabled = true;
+      const requisicao = api.post(`/admin/estabelecimento/${id}`, body, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          from: "admin",
+        },
+      });
+
+      requisicao
+        .then(() => {
+          alert("Dados salvos");
+        })
+        .catch((e) => {
+          const errorMsg = e.response ? e.response.data.error || e.message : e;
+          alert(`${errorMsg}`);
+        })
+        .finally(() => {
+          submitButton.disabled = false;
+        });
+
+      return false;
+    };
+  }
 }

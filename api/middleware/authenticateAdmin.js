@@ -20,7 +20,7 @@ async function authenticateAdmin(req, res, next) {
       user = await usersRepositories.findEstablishmentBy("usuarioId", req.params.id);
     }
 
-    if (req.params.id && !user) return res.status(401).send({ error: "Usuário não existe" });
+    if (!req.url.includes("eventos") && req.params.id && !user) return res.status(401).send({ error: "Usuário não existe" });
 
     req.user = user;
     return next();

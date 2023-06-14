@@ -1,5 +1,5 @@
 const { v4: uuidv4 } = require("uuid");
-const { createSession } = require("../repositories/admin");
+const { createSession, findEvents, findEvent } = require("../repositories/admin");
 const {
   findPeople,
   findPersonBy,
@@ -135,6 +135,26 @@ async function editEstablishment(req, res) {
   }
 }
 
+async function getEvents(req, res) {
+  try {
+    const events = await findEvents();
+    return res.send(events);
+  } catch (e) {
+    console.error(e);
+    return res.sendStatus(500);
+  }
+}
+
+async function getEvent(req, res) {
+  try {
+    const event = await findEvent(req.params.id);
+    return res.send(event);
+  } catch (e) {
+    console.error(e);
+    return res.sendStatus(500);
+  }
+}
+
 module.exports = {
   signInAdmin,
   deleteUser,
@@ -144,4 +164,6 @@ module.exports = {
   getEstablishments,
   getEstablishment,
   editEstablishment,
+  getEvents,
+  getEvent,
 };

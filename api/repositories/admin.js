@@ -17,7 +17,23 @@ async function findByToken(token) {
   return row[0];
 }
 
+async function findEvents() {
+  const selectSql = "SELECT id, nome FROM evento";
+  const [rows] = await pool.query(selectSql);
+
+  return rows;
+}
+
+async function findEvent(id) {
+  const selectSql = "SELECT * FROM evento WHERE id = ?";
+  const [row] = await pool.query(selectSql, [id]);
+
+  return row[0];
+}
+
 module.exports = {
   createSession,
   findByToken,
+  findEvents,
+  findEvent,
 };

@@ -52,6 +52,9 @@ app
   .get("/admin/estabelecimento", authenticateAdmin, adminController.getEstablishments)
   .get("/admin/estabelecimento/:id", authenticateAdmin, adminController.getEstablishment)
   .post("/admin/estabelecimento/:id", authenticateAdmin, adminController.editEstablishment)
-  .delete("/admin/estabelecimento/:id", authenticateAdmin, adminController.deleteUser);
+  .delete("/admin/estabelecimento/:id", authenticateAdmin, adminController.deleteUser)
+
+  .get("/admin/eventos", authenticateAdmin, adminController.getEvents)
+  .get("/admin/eventos/:id", authenticateAdmin, adminController.getEvent);
 
 module.exports = app;
