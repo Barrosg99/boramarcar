@@ -127,10 +127,6 @@ async function editUser(req, res) {
     return res.status(409).send({ error: "Telefone já está em uso" });
   }
 
-  if (req.user.cpf !== req.body.cpf && (await usersRepositories.findPersonBy("cpf", req.body.cpf))) {
-    return res.status(409).send({ error: "CPF já está em uso" });
-  }
-
   if (req.body.senha) req.body.senha = bcrypt.hashSync(req.body.senha, 10);
 
   const { file } = req;
@@ -148,8 +144,14 @@ async function editUser(req, res) {
   });
 
   if (req.user.userType === "estabelecimento") {
+    if (req.user.cnpj !== req.body.cnpj && (await usersRepositories.findEstablishmentBy("cnpj", req.body.cnpj))) {
+      return res.status(409).send({ error: "CNPJ já está em uso" });
+    }
     await usersRepositories.editEstablishment({ id: req.user.id, ...req.body });
   } else {
+    if (req.user.cpf !== req.body.cpf && (await usersRepositories.findPersonBy("cpf", req.body.cpf))) {
+      return res.status(409).send({ error: "CPF já está em uso" });
+    }
     await usersRepositories.editPerson({ id: req.user.id, ...req.body });
   }
 
