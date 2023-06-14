@@ -81,7 +81,8 @@ export const verifyLogin = () => {
   const userInfo = getUserInfo();
 
   if (!userInfo) {
-    const beforeLoginRoute = window.location.pathname;
+    let beforeLoginRoute = window.location.pathname;
+    if (window.location.search) beforeLoginRoute += window.location.search;
     localStorage.setItem("beforeLoginRoute", beforeLoginRoute);
     goTo("login.html");
   }

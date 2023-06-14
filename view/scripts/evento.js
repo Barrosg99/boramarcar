@@ -203,43 +203,45 @@ const eventoInfo = () => {
   }
 };
 
-try {
-  const { data: eventoApi } = await api.get(route, {
-    headers: {
-      Authorization: `Bearer ${userInfo?.token}`,
-      "User-Type": userInfo?.userType,
-    },
-  });
-  evento = eventoApi;
-  presente = evento.presente;
-  avatar = `http://localhost:8080/imagens/${evento.imagemId}`;
-  img.src = avatar;
-  if (evento.meuEvento) {
-    const select = document.getElementById("tipo");
-    if (select) select.value = evento.publico ? "true" : "false";
+if (userInfo) {
+  try {
+    const { data: eventoApi } = await api.get(route, {
+      headers: {
+        Authorization: `Bearer ${userInfo?.token}`,
+        "User-Type": userInfo?.userType,
+      },
+    });
+    evento = eventoApi;
+    presente = evento.presente;
+    avatar = `http://localhost:8080/imagens/${evento.imagemId}`;
+    img.src = avatar;
+    if (evento.meuEvento) {
+      const select = document.getElementById("tipo");
+      if (select) select.value = evento.publico ? "true" : "false";
 
-    for (const input of allInputs) {
-      if (!input.name) continue;
-      if (input.name === "file") continue;
-      if (input.name === "senha") continue;
-      if (input.name === "horario") {
-        const [datetime, min] = evento[input.name].split(":");
-        input.value = [datetime, min].join(":");
-        continue;
+      for (const input of allInputs) {
+        if (!input.name) continue;
+        if (input.name === "file") continue;
+        if (input.name === "senha") continue;
+        if (input.name === "horario") {
+          const [datetime, min] = evento[input.name].split(":");
+          input.value = [datetime, min].join(":");
+          continue;
+        }
+        input.value = evento[input.name];
       }
-      input.value = evento[input.name];
+    } else {
+      eventoInfo();
     }
-  } else {
-    eventoInfo();
+  } catch (e) {
+    let errorMsg = e.response ? e.response.data.error || e.message : e;
+    if (e.response && e.response.status === 401) {
+      errorMsg = "Algo deu errado\nLogue novamente";
+      localStorage.removeItem("token");
+      location.reload();
+    }
+    alert(errorMsg);
   }
-} catch (e) {
-  let errorMsg = e.response ? e.response.data.error || e.message : e;
-  if (e.response && e.response.status === 401) {
-    errorMsg = "Algo deu errado\nLogue novamente";
-    localStorage.removeItem("token");
-    location.reload();
-  }
-  alert(errorMsg);
 }
 
 const fileInput = document.getElementById("file-upload");

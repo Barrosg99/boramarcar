@@ -69,7 +69,7 @@ const listaEventos = (container, evento) => {
   subTitle.innerText = evento.descricao;
 
   const link = document.createElement("a");
-  link.href = "#";
+  link.href = `evento.html?idEvento=${evento.id}`;
   link.className = "btn btn-primary";
   link.innerText = "bora marcar";
 
