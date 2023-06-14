@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const fs = require("fs");
+const { v4: uuidv4 } = require("uuid");
 
 const usersRepositories = require("../repositories/user");
 const sessionsRepositories = require("../repositories/session");
@@ -94,7 +95,7 @@ async function signInUser(req, res) {
 
     const userType = isEstablishment ? "estabelecimento" : "pessoal";
 
-    const { token } = await sessionsRepositories.createByUserId(user.id);
+    const { token } = await sessionsRepositories.createByUserId(user.id, uuidv4());
     const userData = getUser(user);
 
     const response = { ...userData, userType, token };

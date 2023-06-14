@@ -1,12 +1,11 @@
-const { v4: uuidv4 } = require("uuid");
 const pool = require("../database/DB_config");
 
-async function createByUserId(userId) {
+async function createByUserId(userId, token) {
   const insertSessionSql = `INSERT INTO sessao (usuarioId, token) 
   VALUES (?,?);
   SELECT * FROM sessao WHERE id = LAST_INSERT_ID();
   `;
-  const [row] = await pool.query(insertSessionSql, [userId, uuidv4()]);
+  const [row] = await pool.query(insertSessionSql, [userId, token]);
 
   return row[1][0];
 }
