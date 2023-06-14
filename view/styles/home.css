@@ -2,11 +2,8 @@
   padding-top: 80px;
 }
 
-#custom-style .card-text {
-  margin-bottom: 3rem;
-}
-
-#custom-style a.btn.btn-primary {
+#custom-style a.btn.btn-primary,
+a.btn.btn-danger {
   position: absolute;
   bottom: 15px;
   right: 55px;
@@ -45,15 +42,11 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  margin-bottom: 3rem;
 }
 
 #custom-style .list-cards {
   overflow-x: scroll;
-}
-
-/* Hide scrollbar for Chrome, Safari and Opera */
-#custom-style .list-cards::-webkit-scrollbar {
-  display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
@@ -74,4 +67,11 @@
   margin-bottom: 30px;
   padding-left: 40px;
   font-size: 40;
+}
+
+@media (max-width: 768px) {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  #custom-style .list-cards::-webkit-scrollbar {
+    display: none;
+  }
 }
