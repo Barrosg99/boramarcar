@@ -4,8 +4,10 @@ const cors = require("cors");
 const usersController = require("./controllers/user");
 const eventsController = require("./controllers/event");
 const imagesController = require("./controllers/image");
+const adminController = require("./controllers/admin");
 
 const authenticate = require("./middleware/authenticate");
+const authenticateAdmin = require("./middleware/authenticateAdmin");
 const upload = require("./middleware/upload");
 
 const app = express();
@@ -39,5 +41,22 @@ app
   .delete("/eventos/:id", authenticate, eventsController.removeEvent)
   .post("/eventos/marcar", authenticate, eventsController.attendEvent)
   .get("/eventos/:id/presentes", authenticate, eventsController.getEventAttendants);
+
+app
+  .post("/admin", adminController.signInAdmin)
+  .get("/admin/pessoas", authenticateAdmin, adminController.getPeople)
+  .get("/admin/pessoas/:id", authenticateAdmin, adminController.getPerson)
+  .put("/admin/pessoas/:id", authenticateAdmin, adminController.editPerson)
+  .delete("/admin/pessoas/:id", authenticateAdmin, adminController.deleteUser)
+
+  .get("/admin/estabelecimento", authenticateAdmin, adminController.getEstablishments)
+  .get("/admin/estabelecimento/:id", authenticateAdmin, adminController.getEstablishment)
+  .put("/admin/estabelecimento/:id", authenticateAdmin, adminController.editEstablishment)
+  .delete("/admin/estabelecimento/:id", authenticateAdmin, adminController.deleteUser)
+
+  .get("/admin/eventos", authenticateAdmin, adminController.getEvents)
+  .get("/admin/eventos/:id", authenticateAdmin, adminController.getEvent)
+  .put("/admin/eventos/:id", authenticateAdmin, adminController.editEvent)
+  .delete("/admin/eventos/:id", authenticateAdmin, adminController.deleteEvent);
 
 module.exports = app;

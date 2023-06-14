@@ -25,6 +25,17 @@
       "runtimeExecutable": "nodemon",
       "skipFiles": ["<node_internals>/**"],
       "type": "node"
+    },
+    {
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "name": "admin",
+      "program": "${workspaceFolder}/view-admin/site.js",
+      "request": "launch",
+      "restart": true,
+      "runtimeExecutable": "nodemon",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node"
     }
   ]
 }
