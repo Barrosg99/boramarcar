@@ -1,5 +1,9 @@
 /* global axios */
 
+export function getToken() {
+  return JSON.parse(localStorage.getItem("token"));
+}
+
 export function goTo(url) {
   window.location.href = url;
 }
