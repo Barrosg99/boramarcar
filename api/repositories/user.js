@@ -71,6 +71,11 @@ async function deletePerson(id) {
   return row;
 }
 
+async function findEstablishments() {
+  const [rows] = await pool.query("SELECT id,nome FROM estabelecimento JOIN usuario ON id = usuarioId");
+  return rows;
+}
+
 async function createEstablishment({ userId, cnpj, tipo, addressId }) {
   const insertEstablishmentSql = `INSERT INTO estabelecimento (cnpj, tipo, usuarioId, enderecoId)
   VALUES (?,?,?, ?);
@@ -103,6 +108,7 @@ module.exports = {
   editUser,
   editPerson,
   deleteUser,
+  findEstablishments,
   createEstablishment,
   editEstablishment,
   findEstablishmentBy,

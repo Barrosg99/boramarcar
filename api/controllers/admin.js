@@ -1,6 +1,15 @@
 const { v4: uuidv4 } = require("uuid");
 const { createSession } = require("../repositories/admin");
-const { findPeople, findPersonBy, findUserBy, editUser, editPerson: userEditPerson } = require("../repositories/user");
+const {
+  findPeople,
+  findPersonBy,
+  findUserBy,
+  editUser,
+  editPerson: userEditPerson,
+  editEstablishment: userEditEstablishment,
+  findEstablishments,
+  findEstablishmentBy,
+} = require("../repositories/user");
 const { removeUser } = require("./user");
 
 async function signInAdmin(req, res) {
@@ -13,6 +22,15 @@ async function signInAdmin(req, res) {
     }
 
     return res.status(401).send({ error: "Você não tem permissão para acessar o admin" });
+  } catch (e) {
+    console.error(e);
+    return res.sendStatus(500);
+  }
+}
+
+async function deleteUser(req, res) {
+  try {
+    return await removeUser(req, res);
   } catch (e) {
     console.error(e);
     return res.sendStatus(500);
@@ -68,13 +86,62 @@ async function editPerson(req, res) {
   }
 }
 
-async function deletePerson(req, res) {
+async function getEstablishments(req, res) {
   try {
-    return await removeUser(req, res);
+    const people = await findEstablishments();
+    return res.send(people);
   } catch (e) {
     console.error(e);
     return res.sendStatus(500);
   }
 }
 
-module.exports = { signInAdmin, getPeople, getPerson, editPerson, deletePerson };
+async function getEstablishment(req, res) {
+  try {
+    const establishment = await findEstablishmentBy("usuarioId", req.params.id);
+    delete establishment.senha;
+    return res.status(200).send(establishment);
+  } catch (e) {
+    console.error(e);
+    return res.sendStatus(500);
+  }
+}
+
+async function editEstablishment(req, res) {
+  try {
+    if (req.user.email !== req.body.email && (await findUserBy("email", req.body.email))) {
+      return res.status(409).send({ error: "Email já está em uso" });
+    }
+
+    if (req.user.telefone !== req.body.telefone && (await findUserBy("telefone", req.body.telefone))) {
+      return res.status(409).send({ error: "Telefone já está em uso" });
+    }
+
+    if (req.user.cnpj !== req.body.cnpj && (await findEstablishmentBy("cnpj", req.body.cnpj))) {
+      return res.status(409).send({ error: "CNPJ já está em uso" });
+    }
+
+    await editUser({
+      userId: req.params.id,
+      ...req.body,
+    });
+
+    await userEditEstablishment({ id: req.params.id, ...req.body });
+
+    return res.sendStatus(200);
+  } catch (e) {
+    console.error(e);
+    return res.sendStatus(500);
+  }
+}
+
+module.exports = {
+  signInAdmin,
+  deleteUser,
+  getPeople,
+  getPerson,
+  editPerson,
+  getEstablishments,
+  getEstablishment,
+  editEstablishment,
+};

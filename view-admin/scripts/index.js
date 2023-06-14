@@ -178,4 +178,127 @@ if (!token) {
       return false;
     };
   }
+} else if (tabela === "estabelecimento") {
+  if (!id) {
+    const { data: estabelecimentos } = await api.get("admin/estabelecimento", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        from: "admin",
+      },
+    });
+    let links = "";
+    for (const estabelecimento of estabelecimentos) {
+      const linkPessoa = `<a href="index.html?tabela=estabelecimento&id=${estabelecimento.id}" class="list-group-item list-group-item-action ">${estabelecimento.id} - ${estabelecimento.nome}</a>`;
+      links += linkPessoa;
+    }
+    main.innerHTML = `<h1 style="color: white;"><a href="index.html" style="color: inherit;text-decoration: none;" >ADMIN BORA MARCAR</a></h1>
+    <div class="list-group" style="margin-top: 30px;width: 80%;">
+      ${links}
+    </div>`;
+  } else {
+    main.innerHTML = ` <h1 style="color: white;"><a href="index.html" style="color: inherit;text-decoration: none;">ADMIN BORA MARCAR</a>
+    </h1>
+    <form style="background: white;padding: 20px 20px 15px 15px;border-radius: 10px;width: 80%;margin-bottom: 20px;">
+      <div class="mb-3">
+        <label for="id" class="form-label">ID </label>
+        <input type="text" readonly class="form-control" id="id" name="id">
+      </div>
+      <div class="mb-3">
+        <label for="nome" class="form-label">Nome </label>
+        <input type="text" required class="form-control" id="nome" name="nome">
+      </div>
+      <div class="mb-3">
+        <label for="tipo" class="form-label">Tipo</label>
+        <select class="form-select" id="tipo" name="tipo" required>
+          <option value="" selected hidden>Tipo</option>
+          <option value="restaurante">Restaurante</option>
+          <option value="bar">Bar</option>
+          <option value="casaDeFestas">Casa de Festas</option>
+          <option value="karaoke">Karaokê</option>
+          <option value="buffet">Buffet</option>
+          <option value="shopping">Shopping</option>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="cnpj" class="form-label">CNPJ</label>
+        <input type="text" required class="form-control" id="cnpj" name="cnpj">
+      </div>
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="text" required class="form-control" id="email" name="email">
+      </div>
+      <div class="mb-3">
+        <label for="telefone" class="form-label">Telefone</label>
+        <input type="text" required class="form-control" id="telefone" name="telefone">
+      </div>
+      <div style="display: flex;justify-content: space-evenly;">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <button type="button" class="btn btn-danger">Excluir</button>
+      </div>
+    </form>`;
+
+    const { data: estabelecimento } = await api.get(`admin/estabelecimento/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        from: "admin",
+      },
+    });
+
+    const allInputs = document.querySelectorAll("input");
+    const select = document.querySelector("select");
+    select.value = estabelecimento.tipo;
+    for (const input of allInputs) {
+      input.value = estabelecimento[input.name];
+    }
+
+    const form = document.querySelector("form");
+    const excluirButton = document.querySelector("form .btn-danger");
+
+    excluirButton.onclick = () => {
+      api
+        .delete(`/admin/estabelecimento/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            from: "admin",
+          },
+        })
+        .then(() => {
+          alert("Usuario excluido");
+        })
+        .catch((e) => {
+          const errorMsg = e.response ? e.response.data.error || e.message : e;
+          alert(`${errorMsg}`);
+        })
+        .finally(() => {
+          utils.goTo("index.html?tabela=estabelecimento");
+        });
+    };
+
+    form.onsubmit = () => {
+      const submitButton = document.querySelector("form .btn-primary");
+      const formData = new FormData(form);
+      const body = Object.fromEntries(formData);
+      submitButton.disabled = true;
+      const requisicao = api.post(`/admin/estabelecimento/${id}`, body, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          from: "admin",
+        },
+      });
+
+      requisicao
+        .then(() => {
+          alert("Dados salvos");
+        })
+        .catch((e) => {
+          const errorMsg = e.response ? e.response.data.error || e.message : e;
+          alert(`${errorMsg}`);
+        })
+        .finally(() => {
+          submitButton.disabled = false;
+        });
+
+      return false;
+    };
+  }
 }
