@@ -56,7 +56,7 @@ export function goTo(url) {
 }
 
 export const signOut = (userInfo, axios) => {
-  const requisicao = axios.post("https://localhost:8080/sign-out", null, {
+  const requisicao = axios.post(`${location.protocol}//localhost:8080/sign-out`, null, {
     headers: { Authorization: `Bearer ${userInfo.token}`, "User-Type": userInfo.userType },
   });
   requisicao
@@ -64,7 +64,7 @@ export const signOut = (userInfo, axios) => {
       goTo("index.html");
     })
     .catch((e) => {
-      const errorMsg = e.response.data.error ? e.response.data.error : e;
+      const errorMsg = e.response ? e.response.data.error || e.message : e;
       const msg = `Algo deu errado, tente novamente\n${errorMsg}`;
       alert(msg);
       if (e.response && e.response.status === 401) {

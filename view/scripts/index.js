@@ -98,7 +98,7 @@ const listaEventosAutenticados = (container, evento) => {
           </div>
         </div>
         <div style="flex: 0 0 auto;width: 33.33333333%;">
-          <img src="https://localhost:8080/imagens/${evento.imagemId}" style="height: 100%;" class="img-fluid rounded-start" alt="...">
+          <img src="${location.protocol}//localhost:8080/imagens/${evento.imagemId}" style="height: 100%;" class="img-fluid rounded-start" alt="...">
         </div>
       </div>
     `;
