@@ -16,7 +16,7 @@ app.get("/", (req, res) => {
 app.get("/:page", (req, res) => {
   const { page } = req.params;
   const fileExists = fs.existsSync(`${__dirname}/pages/${page}`);
-  if (!fileExists) throw new Error("Página não encontrada");
+  if (!fileExists) res.status(404).send("<h1>Essa página não existe!</h1>");
   res.sendFile(`${__dirname}/pages/${page}`);
 });
 
