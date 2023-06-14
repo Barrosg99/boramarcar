@@ -4,6 +4,7 @@ const cors = require("cors");
 const usersController = require("./controllers/user");
 const eventsController = require("./controllers/event");
 const imagesController = require("./controllers/image");
+const adminController = require("./controllers/admin");
 
 const authenticate = require("./middleware/authenticate");
 const upload = require("./middleware/upload");
@@ -39,5 +40,7 @@ app
   .delete("/eventos/:id", authenticate, eventsController.removeEvent)
   .post("/eventos/marcar", authenticate, eventsController.attendEvent)
   .get("/eventos/:id/presentes", authenticate, eventsController.getEventAttendants);
+
+app.post("/admin", adminController.signInAdmin);
 
 module.exports = app;
