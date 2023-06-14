@@ -87,7 +87,7 @@ const pegarPessoasConfirmadas = async () => {
   for (const pessoa of pessoasPresentes) {
     const div = document.createElement("div");
     div.style.margin = "10px";
-    div.innerHTML = `<img src="http://localhost:8080/imagens/${pessoa.imagemId}" class="img-fluid" style="width: 100px; height: 100px; border-radius:100%"><p style="width: 110px;text-overflow: ellipsis;overflow: hidden;text-wrap: nowrap;">${pessoa.nome}</p>`;
+    div.innerHTML = `<img src="${location.protocol}//localhost:8080/imagens/${pessoa.imagemId}" class="img-fluid" style="width: 100px; height: 100px; border-radius:100%"><p style="width: 110px;text-overflow: ellipsis;overflow: hidden;text-wrap: nowrap;">${pessoa.nome}</p>`;
     info.appendChild(div);
   }
 };
@@ -146,7 +146,7 @@ const montaEventos = () => {
 
   const criadorEvento = document.createElement("div");
   criadorEvento.style = "display: flex;align-items: center;justify-content: space-between;width: 70%;flex-wrap:wrap;margin-bottom: 20px;";
-  criadorEvento.innerHTML = ` <img src="http://localhost:8080/imagens/${evento.imagemUsuario}" class="img-fluid" style="width: 100px; height: 100px; border-radius:100%"><p style="font-size: 20px;color: #004AAD;" >${evento.nomeUsuario}</p>
+  criadorEvento.innerHTML = ` <img src="${location.protocol}//localhost:8080/imagens/${evento.imagemUsuario}" class="img-fluid" style="width: 100px; height: 100px; border-radius:100%"><p style="font-size: 20px;color: #004AAD;" >${evento.nomeUsuario}</p>
     `;
   info.appendChild(criadorEvento);
 };
@@ -213,7 +213,7 @@ if (userInfo) {
     });
     evento = eventoApi;
     presente = evento.presente;
-    avatar = `http://localhost:8080/imagens/${evento.imagemId}`;
+    avatar = `${location.protocol}//localhost:8080/imagens/${evento.imagemId}`;
     img.src = avatar;
     if (evento.meuEvento) {
       const select = document.getElementById("tipo");

@@ -54,7 +54,7 @@ const listaEventos = (container, evento) => {
   card.className = "card";
 
   const img = document.createElement("img");
-  img.src = `http://localhost:8080/imagens/${evento.imagemId}`;
+  img.src = `${location.protocol}//localhost:8080/imagens/${evento.imagemId}`;
   img.className = "card-img-top";
 
   const cardBody = document.createElement("div");
@@ -98,7 +98,7 @@ const listaEventosAutenticados = (container, evento) => {
           </div>
         </div>
         <div style="flex: 0 0 auto;width: 33.33333333%;">
-          <img src="http://localhost:8080/imagens/${evento.imagemId}" style="height: 100%;" class="img-fluid rounded-start" alt="...">
+          <img src="https://localhost:8080/imagens/${evento.imagemId}" style="height: 100%;" class="img-fluid rounded-start" alt="...">
         </div>
       </div>
     `;

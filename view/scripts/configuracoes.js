@@ -60,7 +60,7 @@ try {
     },
   });
 
-  avatar = `http://localhost:8080/imagens/${dadosUsuario.imagemId}`;
+  avatar = `${location.protocol}//localhost:8080/imagens/${dadosUsuario.imagemId}`;
   img.src = avatar;
 
   const select = document.getElementById("tipo");

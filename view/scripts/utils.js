@@ -56,7 +56,7 @@ export function goTo(url) {
 }
 
 export const signOut = (userInfo, axios) => {
-  const requisicao = axios.post("http://localhost:8080/sign-out", null, {
+  const requisicao = axios.post("https://localhost:8080/sign-out", null, {
     headers: { Authorization: `Bearer ${userInfo.token}`, "User-Type": userInfo.userType },
   });
   requisicao
@@ -92,8 +92,7 @@ export const verifyLogin = () => {
 
 export const api = () => {
   const instance = axios.create({
-    baseURL: "http://localhost:8080/",
-    // timeout: 1000,
+    baseURL: `${location.protocol}//localhost:8080/`,
   });
 
   return instance;

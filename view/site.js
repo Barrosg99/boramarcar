@@ -24,21 +24,21 @@ app.use((err, req, res) => {
   if (err.message) res.status(404).send("<h1>Essa página não existe!</h1>");
 });
 
-const useHttps = fs.existsSync(`${__dirname}/localhost.test.key`) && fs.existsSync(`${__dirname}/localhost.test.crt`);
+const useHttps = fs.existsSync(`${__dirname}/../localhost.test.key`) && fs.existsSync(`${__dirname}/../localhost.test.crt`);
 
-const options = {
-  key: fs.readFileSync(`${__dirname}/localhost.test.key`),
-  cert: fs.readFileSync(`${__dirname}/localhost.test.crt`),
+const options = useHttps && {
+  key: fs.readFileSync(`${__dirname}/../localhost.test.key`),
+  cert: fs.readFileSync(`${__dirname}/../localhost.test.crt`),
 };
 
 const PORT = process.env.PORT || 3000;
 
 if (useHttps) {
   // eslint-disable-next-line no-console
-  https.createServer(options, app).listen(PORT, console.log(`server runs on port ${PORT}`));
+  https.createServer(options, app).listen(PORT, console.log(`O site está rodando na porta ${PORT}`));
 } else {
   app.listen(3000, () => {
     // eslint-disable-next-line no-console
-    console.log("O site está rodando na porta 3000");
+    console.log(`O site está rodando na porta ${PORT}`);
   });
 }
