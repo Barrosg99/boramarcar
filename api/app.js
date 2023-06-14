@@ -37,6 +37,7 @@ app
   .get("/eventos/:id", authenticate, eventsController.getEvent)
   .put("/eventos/:id", authenticate, upload.single("file"), eventsController.updateEvent)
   .delete("/eventos/:id", authenticate, eventsController.removeEvent)
-  .post("/eventos/marcar", authenticate, eventsController.attendEvent);
+  .post("/eventos/marcar", authenticate, eventsController.attendEvent)
+  .get("/eventos/:id/presentes", authenticate, eventsController.getEventAttendants);
 
 module.exports = app;

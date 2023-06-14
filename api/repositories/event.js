@@ -87,6 +87,12 @@ async function toggleAttendanceEvent({ userId, eventId }) {
   return row[1][0];
 }
 
+async function getEventPersons({ eventId }) {
+  const selectSql = "SELECT nome,imagemId FROM comparece JOIN usuario ON usuario.id = usuarioId WHERE eventoId = ? AND presente = TRUE;";
+  const [rows] = await pool.query(selectSql, [eventId]);
+  return rows;
+}
+
 module.exports = {
   findEvents,
   findEventById,
@@ -96,4 +102,5 @@ module.exports = {
   getPersonEvent,
   createPersonEvent,
   toggleAttendanceEvent,
+  getEventPersons,
 };

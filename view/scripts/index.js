@@ -3,6 +3,10 @@ import * as utils from "./utils.js";
 const api = utils.api();
 const userInfo = utils.getUserInfo();
 
+const params = new URLSearchParams(location.search);
+const entries = params.entries();
+const filter = Object.fromEntries(entries);
+
 if (userInfo) {
   const h2 = document.querySelector(".h2");
   if (h2) h2.remove();
@@ -34,8 +38,8 @@ if (userInfo) {
         </div>
         <div class="mb-3">
           <div class="form-check">
-            <input class="form-check-input" type="radio" name="eventosMarcados" value="" id="flexRadioDefault2" checked>
-            <label class="form-check-label" for="flexRadioDefault2">
+            <input class="form-check-input" type="radio" name="eventosMarcados" value="" id="flexRadioDefault3" checked>
+            <label class="form-check-label" for="flexRadioDefault3">
               Todos
             </label>
           </div>
@@ -81,6 +85,8 @@ const listaEventosAutenticados = (container, evento) => {
   const div = document.createElement("div");
   div.className = "card mb-3";
   div.style = "min-width: 70%; margin-left: 0; margin-right: 0;";
+
+  const textButton = filter?.meusEventos === "true" ? "Editar Evento" : evento.presente ? "Desmarcar ? :(" : "bora marcar";
   // prettier-ignore
   div.innerHTML = `
       <div class="row g-0" style="min-height: 153px;">
@@ -88,7 +94,7 @@ const listaEventosAutenticados = (container, evento) => {
           <div class="card-body" style="height: 100%;">
             <h5 class="card-title" style="color: blue; font-weight: bold;">${evento.nome}</h5>
             <p class="card-text" style="color: blue;margin-bottom: 0;-webkit-line-clamp: 2;">${evento.descricao}</p>
-            <a href="evento.html?idEvento=${evento.id}" style="right: unset;" class="btn ${evento.presente ? "btn-danger" : "btn-primary"}">${evento.presente ? "Desmarcar ? :(" : "bora marcar"}</a>
+            <a href="evento.html?idEvento=${evento.id}" style="right: unset;" class="btn ${evento.presente ? "btn-danger" : "btn-primary"}">${textButton}</a>
           </div>
         </div>
         <div style="flex: 0 0 auto;width: 33.33333333%;">
@@ -103,10 +109,6 @@ const listaEventosAutenticados = (container, evento) => {
 };
 
 try {
-  const params = new URLSearchParams(location.search);
-  const entries = params.entries();
-  const filter = Object.fromEntries(entries);
-
   const { data: eventos } = await api.get("/eventos", {
     params: { ...filter, id: userInfo?.id },
   });

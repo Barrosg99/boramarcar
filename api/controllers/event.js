@@ -18,7 +18,7 @@ async function getEvents(req, res) {
           userId: id,
           eventId: event.id,
         });
-        event.presente = attendance && !!attendance.presente;
+        event.presente = !!(attendance && !!attendance.presente);
       }
     }
     res.status(200).send(events);
@@ -133,6 +133,11 @@ async function attendEvent(req, res) {
   }
 }
 
+async function getEventAttendants(req, res) {
+  const persons = await eventsRepositories.getEventPersons({ eventId: req.params.id });
+  res.send(persons);
+}
+
 module.exports = {
   getEvents,
   getEvent,
@@ -140,4 +145,5 @@ module.exports = {
   updateEvent,
   removeEvent,
   attendEvent,
+  getEventAttendants,
 };

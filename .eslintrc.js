@@ -15,7 +15,7 @@ module.exports = {
     "func-names": ["off", "as-needed"],
     quotes: ["error", "double"],
     "object-curly-newline": "off",
-    "prefer-destructuring": ["error", { object: true, array: false }],
+    "prefer-destructuring": ["error", { object: false, array: false }],
     "no-console": ["error", { allow: ["error"] }],
     "no-shadow": ["off"],
     "no-restricted-globals": "off",
@@ -25,5 +25,7 @@ module.exports = {
     "function-paren-newline": "off",
     "no-param-reassign": "off",
     "no-await-in-loop": "off",
+    "no-nested-ternary": "off",
+    "no-plusplus": "off",
   },
 };
