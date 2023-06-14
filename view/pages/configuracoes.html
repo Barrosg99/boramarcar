@@ -88,13 +88,15 @@
           aria-describedby="emailHelp" placeholder="E-mail:" required disabled>
       </div>
       <div class="mb-4" style="margin-bottom: 0.5rem!important;">
-        <input type="password" autocomplete="new-password" pattern="^[0-9a-zA-Z]+$" minlength="8" maxlength="12"
-          title="Senha precisa ter entre 8 a 12 caracteres e possui ao menos uma letra e um numero" name="senha"
+        <input type="password" autocomplete="new-password" pattern="(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,20})$"
+          minlength="8" maxlength="20"
+          title="Senha precisa ter entre 8 a 20 caracteres e possui ao menos uma letra e um numero" name="senha"
           class="form-control" id="input-senha" placeholder="Senha:" disabled>
       </div>
       <div class="mb-4" style="margin-bottom: 0.5rem!important;">
-        <input type="password" autocomplete="new-password" pattern="^[0-9a-zA-Z]+$" minlength="8" maxlength="12"
-          title="Senha precisa ter entre 8 a 12 caracteres e possui ao menos uma letra e um numero" class="form-control"
+        <input type="password" autocomplete="new-password" pattern="(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,20})$"
+          minlength="8" maxlength="20"
+          title="Senha precisa ter entre 8 a 20 caracteres e possui ao menos uma letra e um numero" class="form-control"
           id="input-confirma-senha" placeholder="Confirmação de senha:" disabled>
       </div>
     </div>
