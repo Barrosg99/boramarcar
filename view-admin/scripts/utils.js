@@ -1,7 +1,7 @@
 /* global axios */
 
 export function getToken() {
-  return JSON.parse(localStorage.getItem("token"));
+  return JSON.parse(localStorage.getItem("token"))?.token || {};
 }
 
 export function goTo(url) {

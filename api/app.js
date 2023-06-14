@@ -7,6 +7,7 @@ const imagesController = require("./controllers/image");
 const adminController = require("./controllers/admin");
 
 const authenticate = require("./middleware/authenticate");
+const authenticateAdmin = require("./middleware/authenticateAdmin");
 const upload = require("./middleware/upload");
 
 const app = express();
@@ -41,6 +42,11 @@ app
   .post("/eventos/marcar", authenticate, eventsController.attendEvent)
   .get("/eventos/:id/presentes", authenticate, eventsController.getEventAttendants);
 
-app.post("/admin", adminController.signInAdmin);
+app
+  .post("/admin", adminController.signInAdmin)
+  .get("/admin/pessoas", authenticateAdmin, adminController.getPeople)
+  .get("/admin/pessoas/:id", authenticateAdmin, adminController.getPerson)
+  .post("/admin/pessoas/:id", authenticateAdmin, adminController.editPerson)
+  .delete("/admin/pessoas/:id", authenticateAdmin, adminController.deletePerson);
 
 module.exports = app;

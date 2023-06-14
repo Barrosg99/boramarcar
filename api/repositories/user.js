@@ -52,6 +52,11 @@ async function deleteUser(id) {
   return row;
 }
 
+async function findPeople() {
+  const [rows] = await pool.query("SELECT id,nome FROM pessoa JOIN usuario ON id = usuarioId");
+  return rows;
+}
+
 async function findPersonBy(key, value) {
   const [rows] = await pool.query(`SELECT * FROM pessoa JOIN usuario ON id = usuarioId WHERE ${key} = ?`, [value]);
   return rows[0];
@@ -104,6 +109,7 @@ async function findEstablishmentBy(key, value) {
 module.exports = {
   findUsers,
   findUserBy,
+  findPeople,
   findPersonBy,
   createUser,
   createPerson,

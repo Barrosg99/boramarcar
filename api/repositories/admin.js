@@ -10,6 +10,14 @@ async function createSession(token) {
   return row[1][0];
 }
 
+async function findByToken(token) {
+  const querySessionSql = "SELECT * FROM sessaoadmin WHERE token = ?";
+  const [row] = await pool.query(querySessionSql, [token]);
+
+  return row[0];
+}
+
 module.exports = {
   createSession,
+  findByToken,
 };
