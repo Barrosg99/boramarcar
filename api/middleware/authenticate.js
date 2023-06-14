@@ -14,7 +14,7 @@ async function authenticate(req, res, next) {
     const session = await sessionsRepositories.findByToken(token);
     if (!session) return res.status(401).send({ error: "Token Inválido" });
 
-    const sessionDate = new Date(session.criado_em);
+    const sessionDate = new Date(session.criadoEm);
 
     if (new Date() - sessionDate > FIVE_HOURS) {
       await sessionsRepositories.destroyByUserId(session.usuarioId);
